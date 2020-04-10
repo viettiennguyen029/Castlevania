@@ -1,0 +1,90 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+20	resources\object.png	255	0	225
+30	resources\simon.png	255	0	255
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#BRICK
+20001	98	121	114	136	20
+#SIMON
+#idle right
+50000	734	9	750	39	30
+#walking right
+50001	709	8	721	39	30
+50002	680	9	695	39	30
+50003	734	9	750	39	30	
+#idle left
+50010	81 	10 	97 	40	30
+#walking left
+50011	110	9 	122 	40	30	
+50012	136	10 	151 	40	30
+50013	81 	10 	97 	40	30
+						
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+
+# ==== BRICK =========
+601	20001	100
+
+# ==== SIMON  =========
+#idle right
+900	50000	100
+#walking right
+901	50001	100	50002	100	50003	100
+#idle left
+910	50010	100
+#walking left
+911	50011	100	50012	100	50013	100
+
+#
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# BRICK 
+2	601
+# SIMON
+4	900	901	910	911
+
+[OBJECTS]
+# type	x	y	ani_set_id	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 2 = Goomba
+
+# SIMON
+4	50.0	0	4
+
+# BRICK 
+# --- platform (hint: I created the list using Excel!) ----
+1	0	170	2
+1	16	170	2
+1	32	170	2
+1	48	170	2
+1	64	170	2
+1	80	170	2
+1	96	170	2
+1	112	170	2
+1	128	170	2
+1	144	170	2
+1	160	170	2
+1	176	170	2
+1	192	170	2
+1	208	170	2
+1	224	170	2
+1	240	170	2
+1	256	170	2
+1	272	170	2
+1	288	170	2
+1	304	170	2
+1	320	170	2
+1	336	170	2
+1	352	170	2
+1	368	170	2
+1	384	170	2
+1	400	170	2
+1	416	170	2
+1	432	170	2
+1	448	170	2
+
+# --- SCENE PORTAL ----
+# type	l	t	ani_set_id	r	b	scene_id
+50	300	98	0	316	150	2
+
