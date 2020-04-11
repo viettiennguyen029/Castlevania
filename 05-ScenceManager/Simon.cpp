@@ -64,29 +64,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 }
 
-void CSimon::Render()
-{
-	int ani = -1;
-	if (state == SIMON_STATE_DIE)  ani = SIMON_ANI_DIE;
-	else
-	{
-		if (vx == 0)
-		{
-			if (nx > 0) ani = SIMON_ANI_IDLE_RIGHT;
-			else ani = SIMON_ANI_IDLE_LEFT;
-		}
-		else if (vx > 0)
-		{
-			ani = SIMON_ANI_WALKING_RIGHT;
-		}
-		else
-			ani = SIMON_ANI_WALKING_LEFT;
-	}
-
-	int alpha = 255;
-	animation_set->at(ani)->Render(x, y, alpha);
-	RenderBoundingBox();
-}
 
 void CSimon::SetState(int state)
 {
@@ -108,13 +85,7 @@ void CSimon::SetState(int state)
 		break;
 	}
 
-	case SIMON_STATE_JUMP:
-	{
-		vy = -SIMON_JUMP_SPEED_Y;
-		break;
-	}
-
-	case SIMON_STATE_IDLE:
+		case SIMON_STATE_IDLE:
 	{
 		vx = 0;
 		break;
@@ -125,7 +96,78 @@ void CSimon::SetState(int state)
 		vy = -SIMON_DIE_DEFLECT_SPEED;
 		break;
 	}
+	
+	case SIMON_STATE_JUMP:
+	{
+		vy = -SIMON_JUMP_SPEED_Y;
+		break;
 	}
+
+	case SIMON_STATE_SIT:
+	{
+		vx = 0;
+		break;
+	}
+
+	}
+}
+
+void CSimon::Render()
+{
+	int ani = -1;
+	
+	if ( state == SIMON_STATE_DIE)
+	{
+		ani = SIMON_ANI_DIE;
+	}
+
+	else if (state == SIMON_STATE_JUMP )
+	{
+		if (nx > 0)
+		{
+			ani = SIMON_ANI_JUMP_RIGHT;
+		}
+		else ani = SIMON_ANI_JUMP_LEFT;
+	}
+
+	else if (state == SIMON_STATE_SIT)
+	{
+		if (nx > 0)
+		{
+			ani = SIMON_ANI_SIT_RIGHT;
+		}
+		else ani = SIMON_ANI_SIT_LEFT;
+	}
+
+	else if (state == SIMON_STATE_ATTACK)
+	{
+		if (nx > 0)
+		{
+			ani = SIMON_ANI_ATTACK_TYPE_1_RIGHT;
+		}
+		else ani = SIMON_ANI_ATTACK_TYPE_1_LEFT;
+	}
+
+	else
+	{
+		if (vx == 0)
+		{
+			if (nx > 0)
+			{
+				ani = SIMON_ANI_IDLE_RIGHT;
+			}
+			else ani = SIMON_ANI_IDLE_LEFT;
+		}
+		else if (vx > 0)
+		{
+			ani = SIMON_ANI_WALKING_RIGHT;
+		}
+		else ani = SIMON_ANI_WALKING_LEFT;	
+	}
+
+	int alpha = 255;
+	animation_set->at(ani)->Render(x, y, alpha);
+	RenderBoundingBox();
 }
 
 void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom)

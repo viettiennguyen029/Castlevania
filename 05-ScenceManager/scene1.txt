@@ -1,24 +1,40 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
+0	resources\simon.png	255	0	255
 20	resources\object.png	255	0	225
-30	resources\simon.png	255	0	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-#BRICK
-20001	98	121	114	136	20
 #SIMON
 #idle right
-50000	734	9	750	39	30
+50000	734	9	750	39	0
 #walking right
-50001	709	8	721	39	30
-50002	680	9	695	39	30
-50003	734	9	750	39	30	
+50001	709	8	721	39	0
+50002	680	9	695	39	0
+50003	734	9	750	39	0
+#jump right
+50004	651	16 	667 	39	0
+#sit right
+50005	651	9 	667 	39	0
 #idle left
-50010	81 	10 	97 	40	30
+50010	81 	10 	97 	40	0
 #walking left
-50011	110	9 	122 	40	30	
-50012	136	10 	151 	40	30
-50013	81 	10 	97 	40	30
+50011	110	9 	122 	40	0
+50012	136	10 	151 	40	0
+50013	81 	10 	97 	40	0
+#jump left
+50014	164	17 	180	40	0
+#sit left
+50015	164	10 	180	40	0 
+#attack type 1 right
+51001	762	92 	794	123	0 
+51002	714	92 	746	122	0
+51003	651	91 	695	121	0
+#attack type 1 left
+51011	37 	93 	69 	124	0
+51012	85 	93 	117	123	0
+51013	136	93 	180	122	0
+#BRICK
+20001	98	121	114	136	20
 						
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -31,26 +47,38 @@
 900	50000	100
 #walking right
 901	50001	100	50002	100	50003	100
+#jump right
+902	50004	100
+#sit right
+903	50005	100
 #idle left
 910	50010	100
 #walking left
 911	50011	100	50012	100	50013	100
+#jump left
+912	50014	100
+#sit left
+913	50015	100
+#attack type 1 right
+914	51001	100	51002	100	51003	100
+#attack type 1 left
+915	51011	100	51012	100	51013	100
 
 #
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
+# SIMON
+0	900	901	902	903	910	911	912	913	914	915	
 # BRICK 
 2	601
-# SIMON
-4	900	901	910	911
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba
+# type: 0 = Simon , 1 = Brick, 2 = Goomba
 
 # SIMON
-4	50.0	0	4
+0	50.0	0	0
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----

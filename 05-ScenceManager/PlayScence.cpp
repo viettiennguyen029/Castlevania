@@ -27,11 +27,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-//#define OBJECT_TYPE_MARIO	0
+#define OBJECT_TYPE_SIMON	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_GOOMBA	2
 #define OBJECT_TYPE_KOOPAS	3
-#define OBJECT_TYPE_SIMON	4
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -144,15 +143,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	//case OBJECT_TYPE_MARIO: obj = new CMario(); break;
-		/* if (player!=NULL) 
-		{
-			DebugOut(L"[ERROR] MARIO object was created before! ");
-			return;
-		}
-		obj = new CMario(); 
-		player = (CMario*)obj;  
-		break;*/
+	
 	case OBJECT_TYPE_SIMON:
 	{
 		if (player != NULL)
@@ -164,7 +155,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CSimon*)obj;
 		break;
 	}
-	// case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_PORTAL:
@@ -292,9 +282,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	CSimon *simon = ((CPlayScene*)scence)->player;
 	switch (KeyCode)
 	{
-	//case DIK_SPACE:
-		//simon->SetState(MARIO_STATE_JUMP);
-		//break;
+	case DIK_D:
+		simon->isAttack = true;
+		simon->SetState(SIMON_STATE_ATTACK);
+		
+		break;
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);
 		simon->SetPosition(50.0f, 0.0f);
@@ -316,8 +308,15 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	// if (mario->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT))
 		simon->SetState(SIMON_STATE_WALKING_RIGHT);
+
 	else if (game->IsKeyDown(DIK_LEFT))
 		simon->SetState(SIMON_STATE_WALKING_LEFT);
+
+	else if (game->IsKeyDown(DIK_S))
+		simon->SetState(SIMON_STATE_JUMP);
+
+	else if (game->IsKeyDown(DIK_DOWN))
+		simon->SetState(SIMON_STATE_SIT);
 	else
 		simon->SetState(SIMON_STATE_IDLE);
 }

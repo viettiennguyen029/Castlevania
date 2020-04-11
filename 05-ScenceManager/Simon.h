@@ -4,7 +4,7 @@
 #include "Utils.h"
 #include "Game.h"
 
-#define SIMON_GRAVITY				0.002f	
+#define SIMON_GRAVITY				0.0007f	
 
 #define SIMON_STATE_IDLE						0
 #define SIMON_STATE_WALKING_RIGHT	100
@@ -12,19 +12,24 @@
 #define SIMON_STATE_JUMP						300
 #define SIMON_STATE_DIE						400
 #define SIMON_STATE_SIT							500
+#define SIMON_STATE_ATTACK					600
 
 #define SIMON_ANI_IDLE_RIGHT			0
 #define SIMON_ANI_WALKING_RIGHT	1
-#define SIMON_ANI_IDLE_LEFT				2
-#define SIMON_ANI_WALKING_LEFT		3
-#define SIMON_ANI_JUMP_RIGHT			4
-#define SIMON_ANI_JUMP_LEFT			5
-#define SIMON_ANI_SIT_RIGHT				6
+#define SIMON_ANI_JUMP_RIGHT			2
+#define SIMON_ANI_SIT_RIGHT				3
+
+#define SIMON_ANI_IDLE_LEFT				4
+#define SIMON_ANI_WALKING_LEFT		5
+#define SIMON_ANI_JUMP_LEFT			6
 #define SIMON_ANI_SIT_LEFT				7
 #define SIMON_ANI_DIE							8
 
-#define SIMON_WALKING_SPEED			0.15f
-#define SIMON_JUMP_SPEED_Y			0.5f
+#define SIMON_ANI_ATTACK_TYPE_1_RIGHT		9
+#define SIMON_ANI_ATTACK_TYPE_1_LEFT		10
+
+#define SIMON_WALKING_SPEED			0.08f
+#define SIMON_JUMP_SPEED_Y			0.22f
 #define SIMON_DIE_DEFLECT_SPEED	0.5f
 
 
@@ -33,6 +38,7 @@
 class CSimon : public CGameObject
 {
 public: 
+	bool isAttack = false;
 	CSimon();
 	virtual void Update(DWORD dt, vector <LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
@@ -41,4 +47,3 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 };
-
