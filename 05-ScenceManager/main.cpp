@@ -19,7 +19,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Textures.h"
-
+#include "TileMap.h"
 
 #include "Brick.h"
 
@@ -30,12 +30,13 @@
 #define MAIN_WINDOW_TITLE L"SAMPLE 05 - SCENCE MANAGER"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(10, 10,10)
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#define SCREEN_WIDTH 312
+#define SCREEN_HEIGHT 280
 
 #define MAX_FRAME_RATE 90
 
 CGame *game;
+
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {

@@ -82,7 +82,8 @@ public:
 	LPDIRECT3DSURFACE9 GetBackBuffer() { return backBuffer; }
 	LPD3DXSPRITE GetSpriteHandler() { return this->spriteHandler; }
 
-	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
+	void SetCamPos(float x, float y);
+	D3DXVECTOR2 GetCamPos();
 
 	static CGame * GetInstance();
 

@@ -121,13 +121,25 @@ void CSimon::Render()
 		ani = SIMON_ANI_DIE;
 	}
 
-	else if (state == SIMON_STATE_JUMP )
+	else if (state == SIMON_STATE_ATTACK)
 	{
 		if (nx > 0)
+			ani = SIMON_ANI_ATTACK_RIGHT;
+		else
+			ani = SIMON_ANI_ATTACK_LEFT;
+	}
+
+	else if (state == SIMON_STATE_JUMP )
+	{
+		if (!isOnGround)
 		{
-			ani = SIMON_ANI_JUMP_RIGHT;
-		}
-		else ani = SIMON_ANI_JUMP_LEFT;
+			if (nx > 0)
+			{
+				ani = SIMON_ANI_JUMP_RIGHT;
+			}
+			else ani = SIMON_ANI_JUMP_LEFT;
+		}	
+		
 	}
 
 	else if (state == SIMON_STATE_SIT)
@@ -139,15 +151,7 @@ void CSimon::Render()
 		else ani = SIMON_ANI_SIT_LEFT;
 	}
 
-	else if (state == SIMON_STATE_ATTACK)
-	{
-		if (nx > 0)
-		{
-			ani = SIMON_ANI_ATTACK_TYPE_1_RIGHT;
-		}
-		else ani = SIMON_ANI_ATTACK_TYPE_1_LEFT;
-	}
-
+	
 	else
 	{
 		if (vx == 0)
@@ -176,4 +180,26 @@ void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	top = y;
 	right = x + SIMON_BBOX_WIDTH;
 	bottom = y + SIMON_BBOX_HEIGHT;
+}
+
+void CSimon::StartAttacking()
+{
+	if (startAttackingTime > 0) return;
+
+	if (state != SIMON_STATE_JUMP) vx = 0;
+
+	if (state == SIMON_STATE_SIT)
+		SetState(SIMON_STATE_SIT_ATTACK);
+	else
+		SetState(SIMON_STATE_ATTACK);
+
+	startAttackingTime = GetTickCount();
+
+}
+
+void CSimon::StartJumping()
+{
+	SetState(SIMON_STATE_JUMP);
+	isOnGround = false;
+	startJjumpingTime = GetTickCount();
 }

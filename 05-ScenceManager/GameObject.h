@@ -60,6 +60,7 @@ public:
 
 	DWORD dt; 
 
+	CAnimationSet animations;
 	LPANIMATION_SET animation_set;
 
 public: 
@@ -95,5 +96,6 @@ public:
 
 
 	~CGameObject();
+	virtual void ResetAnimation();
 };
 

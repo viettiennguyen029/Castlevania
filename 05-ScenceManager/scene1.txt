@@ -2,6 +2,7 @@
 [TEXTURES]
 0	resources\simon.png	255	0	255
 20	resources\object.png	255	0	225
+
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #SIMON

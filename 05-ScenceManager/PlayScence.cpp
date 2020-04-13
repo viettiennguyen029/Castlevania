@@ -6,13 +6,14 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "TileMap.h"
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):
-	CScene(id, filePath)
+CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
+	LoadTiledMap();
 }
 
 /*
@@ -35,7 +36,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_PORTAL	50
 
 #define MAX_SCENE_LINE 1024
-
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
@@ -275,6 +275,13 @@ void CPlayScene::Unload()
 	player = NULL;
 }
 
+void CPlayScene::LoadTiledMap()
+{
+	CTileMaps* tilemaps = CTileMaps::GetInstance();
+	tilemaps->Add(-10, L"resources\\Map\\Scene1.png", L"resources\\Map\\Scene1_map.txt", 1536, 320);
+	tilemaps->Get(-10)->DrawMap(CGame::GetInstance()->GetCamPos());
+} 
+
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
@@ -283,9 +290,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_D:
-		simon->isAttack = true;
-		simon->SetState(SIMON_STATE_ATTACK);
-		
+		simon->StartAttacking();	
+		break;
+	case DIK_S:
+		if (simon->GetState() != SIMON_STATE_JUMP && simon->GetState() != SIMON_STATE_ATTACK)
+			simon->StartJumping();
 		break;
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);
@@ -301,22 +310,22 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
-	// CMario *mario = ((CPlayScene*)scence)->player;
 	CSimon *simon = ((CPlayScene*)scence)->player;
 
 	// disable control key when Mario die 
 	// if (mario->GetState() == MARIO_STATE_DIE) return;
+
+	if (simon->GetStartAttackTime() > 0 || simon->GetStartJumpTime() > 0)
+		return;
 	if (game->IsKeyDown(DIK_RIGHT))
 		simon->SetState(SIMON_STATE_WALKING_RIGHT);
 
 	else if (game->IsKeyDown(DIK_LEFT))
 		simon->SetState(SIMON_STATE_WALKING_LEFT);
 
-	else if (game->IsKeyDown(DIK_S))
-		simon->SetState(SIMON_STATE_JUMP);
-
 	else if (game->IsKeyDown(DIK_DOWN))
 		simon->SetState(SIMON_STATE_SIT);
+
 	else
 		simon->SetState(SIMON_STATE_IDLE);
 }

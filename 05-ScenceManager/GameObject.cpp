@@ -137,3 +137,9 @@ CGameObject::~CGameObject()
 {
 
 }
+
+void CGameObject::ResetAnimation()
+{
+	for (auto iter : animations)
+		iter->Reset();
+}

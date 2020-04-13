@@ -13,6 +13,7 @@
 #define SIMON_STATE_DIE						400
 #define SIMON_STATE_SIT							500
 #define SIMON_STATE_ATTACK					600
+#define SIMON_STATE_SIT_ATTACK			700
 
 #define SIMON_ANI_IDLE_RIGHT			0
 #define SIMON_ANI_WALKING_RIGHT	1
@@ -25,8 +26,10 @@
 #define SIMON_ANI_SIT_LEFT				7
 #define SIMON_ANI_DIE							8
 
-#define SIMON_ANI_ATTACK_TYPE_1_RIGHT		9
-#define SIMON_ANI_ATTACK_TYPE_1_LEFT		10
+#define SIMON_ANI_ATTACK_RIGHT		9
+#define SIMON_ANI_ATTACK_LEFT		10
+#define SIMON_ANI_SIT_ATTACK_RIGHT 11
+#define SIMON_ANI_SIT_ATTACK_LEFT	12
 
 #define SIMON_WALKING_SPEED			0.08f
 #define SIMON_JUMP_SPEED_Y			0.22f
@@ -34,16 +37,27 @@
 
 
 #define SIMON_BBOX_WIDTH				15
-#define SIMON_BBOX_HEIGHT			27
+#define SIMON_BBOX_HEIGHT			30
 class CSimon : public CGameObject
 {
+	bool isOnGround;
+
+	DWORD startAttackingTime;
+	DWORD startJjumpingTime;
 public: 
-	bool isAttack = false;
 	CSimon();
+
 	virtual void Update(DWORD dt, vector <LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 	void SetState(int state);
-
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	
+	bool IsOnGround() { return isOnGround; }
+
+	void StartAttacking();
+	void StartJumping();
+
+	DWORD GetStartAttackTime() { return startAttackingTime; }
+	DWORD GetStartJumpTime() { return startJjumpingTime; }
 
 };

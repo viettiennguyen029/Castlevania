@@ -74,6 +74,19 @@ void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top
 	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
 }
 
+void CGame::SetCamPos(float x, float y)
+{
+	cam_x = x;
+	cam_y = y;
+	if (cam_x <0) cam_x = 0;		
+	if (cam_y < 0) cam_y = 0;	
+}
+
+D3DXVECTOR2 CGame::GetCamPos()
+{
+	return D3DXVECTOR2(cam_x, cam_y);
+}
+
 int CGame::IsKeyDown(int KeyCode)
 {
 	return (keyStates[KeyCode] & 0x80) > 0;
