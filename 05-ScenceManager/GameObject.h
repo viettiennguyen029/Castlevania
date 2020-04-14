@@ -44,8 +44,15 @@ struct CCollisionEvent
 class CGameObject
 {
 public:
+	enum ObjectTypes
+	{
+		None,
+		Brick,
+		Torch,
+	};
+	ObjectTypes ObjectTag;
 
-	float x; 
+	float x;  
 	float y;
 
 	float dx;	// dx = vx*dt
@@ -54,7 +61,7 @@ public:
 	float vx;
 	float vy;
 
-	int nx;	 
+	int nx;	 // riight =1, lefft =-1
 
 	int state;
 
@@ -68,6 +75,11 @@ public:
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
+
+	void SetPosition(D3DXVECTOR2 pos) { SetPosition(pos.x, pos.y); }
+	void SetOrientation(int nx) { this->nx = nx; }
+
+	D3DXVECTOR2 GetPosition() { return D3DXVECTOR2(x, y); }
 
 	int GetState() { return this->state; }
 

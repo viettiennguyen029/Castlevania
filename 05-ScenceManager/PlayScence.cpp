@@ -252,7 +252,7 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow simon
 	float cx, cy;
 	player->GetPosition(cx, cy);
-
+	// player->SetOrientation(-1);
 
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth()/2 ;
@@ -317,10 +317,16 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (simon->GetStartAttackTime() > 0 || simon->GetStartJumpTime() > 0)
 		return;
 	if (game->IsKeyDown(DIK_RIGHT))
-		simon->SetState(SIMON_STATE_WALKING_RIGHT);
+	{
+		simon->SetOrientation(1);
+		simon->SetState(SIMON_STATE_WALKING);		
+	}	
 
 	else if (game->IsKeyDown(DIK_LEFT))
-		simon->SetState(SIMON_STATE_WALKING_LEFT);
+	{
+		simon->SetOrientation(-1);
+		simon->SetState(SIMON_STATE_WALKING);
+	}	
 
 	else if (game->IsKeyDown(DIK_DOWN))
 		simon->SetState(SIMON_STATE_SIT);
