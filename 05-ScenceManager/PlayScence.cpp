@@ -6,14 +6,14 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
-#include "TileMap.h"
+
 
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
-	LoadTiledMap();
+	//LoadTiledMap();
 }
 
 /*
@@ -226,6 +226,10 @@ void CPlayScene::Load()
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(237, 28, 36));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+
+	//map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 36, -4);
+	//map->LoadMap("resources\\Scene1_map.csv");
+	
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -251,14 +255,15 @@ void CPlayScene::Update(DWORD dt)
 
 
 	CGame *game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
-	cy -= game->GetScreenHeight() / 2;
+	cx -= game->GetScreenWidth()/2 ;
+	cy -= game->GetScreenHeight()/2;
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }
 
 void CPlayScene::Render()
 {
+	
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
@@ -275,12 +280,6 @@ void CPlayScene::Unload()
 	player = NULL;
 }
 
-void CPlayScene::LoadTiledMap()
-{
-	CTileMaps* tilemaps = CTileMaps::GetInstance();
-	tilemaps->Add(-10, L"resources\\Map\\Scene1.png", L"resources\\Map\\Scene1_map.txt", 1536, 320);
-	tilemaps->Get(-10)->DrawMap(CGame::GetInstance()->GetCamPos());
-} 
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {

@@ -1,59 +1,46 @@
 ﻿#pragma once
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
+#include <string>
 #include "PlayScence.h"
 #include "Utils.h"
 #include "Sprites.h"
 #include "Textures.h"
+#include "Game.h"
+
+#define MAP_SCENCE_1 -10
+
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
 
 using namespace std;
 
 class CTileMap
 {
-	CSprites* sprites = CSprites::GetInstance();
-	vector<vector<LPSPRITE>> tiledMap;
 
 	int ID;
-
-	int mapWidth;
-	int mapHeight;
-
-	int rows;
-	int columns;
 
 	int tileWidth;
 	int tileHeight;
 
-	LPCWSTR picPath;
-	LPCWSTR dataPath;		
-	// tile[50][100];
+	int translate_y, translate_x;
 
-public: 
-	CTileMap(int ID, LPCWSTR picPath, LPCWSTR dataPath, int mapWidth, int mapHeight, int tileWidth = 32, int tileHeight = 32);
-	void LoadMap();
-	void LoadResources();
-	void DrawMap(D3DXVECTOR2 camPosition);
+	int mapRows; // number of  rows in map matrix
+	int mapColumns; // // number of  columns in map matrix
+
+	int tiledMap[50][100]; // 2 dimensional array for parsing data from file
+
+public:
+	CGame* game = CGame::GetInstance();
+	CTextures* textures = CTextures::GetInstance();
+
+	CTileMap(LPCWSTR picturePath, int id, int translate_y, int translate_x);
+	// RECT GetSourceRect(int index);
+	void LoadMap(const char* filePath);
+	void DrawMap();
 };
 typedef CTileMap* LPTILEMAP;
 
 
-/*
-Manage TileMaps database
-*/
-class CTileMaps
-{
-	static CTileMaps* _instance;
-	unordered_map<int, LPTILEMAP> tilemaps;
 
-public:
-	 void Add(int ID, LPCWSTR picPath, LPCWSTR dataPath, int mapWidth, int mapHeight, int tileWidth = 32, int tileHeight = 32);
-	LPTILEMAP Get(int ID) { return tilemaps[ID]; }
-
-	static CTileMaps* GetInstance();
-};
 
 
 
