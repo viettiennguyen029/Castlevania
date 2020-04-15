@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "PlayScence.h"
@@ -288,12 +288,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	CSimon *simon = ((CPlayScene*)scence)->player;
 	switch (KeyCode)
 	{
-	case DIK_D:
-		simon->StartAttacking();	
-		break;
+
 	case DIK_S:
-		if (simon->GetState() != SIMON_STATE_JUMP && simon->GetState() != SIMON_STATE_ATTACK)
-			simon->StartJumping();
+		if (simon->isOnGround == false) return;
+		simon->SetState(SIMON_STATE_JUMP);
+		
 		break;
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);
@@ -311,8 +310,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	CGame *game = CGame::GetInstance();
 	CSimon *simon = ((CPlayScene*)scence)->player;
 
-	// disable control key when Mario die 
-	// if (mario->GetState() == MARIO_STATE_DIE) return;
+	if ((simon->GetState() == SIMON_STATE_JUMP || simon->GetState() == SIMON_STATE_DIE)
+		&& simon->isOnGround == false)
+		return;
 
 	if (simon->GetStartAttackTime() > 0 || simon->GetStartJumpTime() > 0)
 		return;
