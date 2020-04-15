@@ -83,6 +83,8 @@ public:
 
 	int GetState() { return this->state; }
 
+	// bool isOnGround = false;
+
 	void RenderBoundingBox();
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }

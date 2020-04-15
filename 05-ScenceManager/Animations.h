@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Windows.h>
 #include <d3dx9.h>
 #include <unordered_map>
@@ -24,8 +24,11 @@ typedef CAnimationFrame *LPANIMATION_FRAME;
 class CAnimation
 {
 	DWORD lastFrameTime;
+	DWORD animStartTime;   // mốc thời gian kể từ lúc bắt đầu render một animation
+
 	int currentFrame;
 	int defaultTime;
+
 	vector<LPANIMATION_FRAME> frames;
 public:
 	CAnimation(int defaultTime = 100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
@@ -33,6 +36,8 @@ public:
 
 	void Render(float x, float y, int nx =-1, int alpha = 255);
 	void Reset() { lastFrameTime = -1; currentFrame = -1; }
+
+	void SetAniStartTime(DWORD t) { animStartTime = t; }
 };
 
 typedef CAnimation *LPANIMATION;
