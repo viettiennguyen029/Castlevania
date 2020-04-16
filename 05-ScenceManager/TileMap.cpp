@@ -38,23 +38,23 @@ void CTileMap::DrawMap()
 {
 	float cam_x = CGame::GetInstance()->GetCamPos().x;
 	float cam_y = CGame::GetInstance()->GetCamPos().y;
-
+	
 	float remain_x = fmod(cam_x, tileWidth);
 	float remain_y = fmod(cam_y, tileHeight);
 
 	// draw tiles within the viewport only
 	int colCamLeft = cam_x/tileWidth;
-	int colCamRight = colCamLeft + 320 / tileWidth;
+	int colCamRight = colCamLeft + SCREEN_WIDTH / tileWidth+SCREEN_WIDTH/2;
 
 	int rowCamTop = cam_y / tileHeight;
-	int rowCamBottom = rowCamTop + 240/ tileHeight;
+	int rowCamBottom = rowCamTop + 180 / tileHeight;
 
 	for (int j = colCamLeft; j <= colCamRight; j++) 
 	{
 		for (int i = rowCamTop; i < rowCamBottom; i++)
 		{
 			float pos_x = (j - colCamLeft) * tileWidth- remain_x+ translate_x;
-			float pos_y = (i - rowCamTop) * tileHeight-remain_y+translate_y+20;
+			float pos_y = (i - rowCamTop) * tileHeight-remain_y+translate_y+22;
 
 			RECT rectTile;
 			int index = tiledMap[i][j];
@@ -64,7 +64,9 @@ void CTileMap::DrawMap()
 			rectTile.right = rectTile.left + tileWidth;
 			rectTile.bottom = rectTile.top + tileHeight;
 
-			CGame::GetInstance()->Draw(pos_x, pos_y, 1,CTextures::GetInstance()->Get(MAP_SCENCE_1), rectTile.left, rectTile.top, rectTile.right, rectTile.bottom);
+			CGame::GetInstance()->Draw(pos_x, pos_y, -1,CTextures::GetInstance()->Get(MAP_SCENCE_1), rectTile.left, rectTile.top, rectTile.right, rectTile.bottom);
 		}
 	}
+
+	
 }

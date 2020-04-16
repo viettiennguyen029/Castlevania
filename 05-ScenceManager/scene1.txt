@@ -51,7 +51,7 @@
 #
 [ANIMATION_SETS]
 # SIMON
-0	900	901	902	903	914	915	
+0	900	901	902	903	914	915
 # BRICK 
 2	601
 
@@ -60,7 +60,7 @@
 # type: 0 = Simon , 1 = Brick, 2 = Goomba
 
 # SIMON
-0	50.0	0	0
+0	48.0	0	0
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -93,8 +93,9 @@
 1	416	170	2
 1	432	170	2
 1	448	170	2
+1	464	170	2
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	300	98	0	316	150	2
+50	360	98	0	316	150	2
 

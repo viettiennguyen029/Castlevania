@@ -2,9 +2,10 @@
 
 CSimon::CSimon() :CGameObject()
 {
-
+	SetState(SIMON_STATE_IDLE);
+	// startAttack = 0;
+	isOnGround = true;
 }
-
 
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -30,10 +31,11 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-		if (vy>0.03f)
+		// isFalling = false;
+		/*if (vy>0.03f)
 		{
-			isFalling = true;
-		}
+			
+		}*/
 		
 	}
 	else
@@ -55,15 +57,13 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			LPCOLLISIONEVENT  e = coEventsResult[i];
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
-				if (e->ny != 0)
-				{
+				if (e->ny !=0)
+				{			
 					vy = 0;
 					isOnGround = true;
 					isFalling = false;
-					
 				}
-				//else					
-					//y += dy;
+				
 			}
 
 			// switching scene logic		
@@ -82,13 +82,17 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		delete coEvents[i];
 	}
 
+	
 }
+
+
+
 
 
 void CSimon::SetState(int state)
 {
+	
 	CGameObject::SetState(state);
-
 	switch (state)
 	{
 	case SIMON_STATE_WALKING:
@@ -100,6 +104,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_IDLE:
 	{
+		//isOnGround = true;
 		vx = 0;
 		break;
 	}
@@ -113,13 +118,22 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_JUMP:
 	{
 		isOnGround = false;
-		vy = -SIMON_JUMP_SPEED_Y;
-		// animations[SIMON_ANI_JUMP]->SetAniStartTime(GetTickCount());	
+		vy = -SIMON_JUMP_SPEED_Y;		
+		break;
 	}
 
 	case SIMON_STATE_SIT:
 	{
 		vx = 0;
+		break;
+	}
+	case SIMON_STATE_ATTACK:
+	{
+		
+		isAttacking = true;
+		vx = 0;
+		//CAnimations::GetInstance()->Get(914)->Reset();
+		// CAnimations::GetInstance()->Get(914)->SetAniStartTime(GetTickCount());		
 		break;
 	}
 	}
@@ -129,12 +143,17 @@ void CSimon::Render()
 {
 	int ani = -1;
 
-	if (isFalling == true)
-	{
-		state = SIMON_STATE_SIT;
-	}
+	// simon luôn co chân khi rơi xuóng
+	//if (isFalling == true)
+	//{
+	//state = SIMON_STATE_SIT;
+	//}
 
-	if (state == SIMON_STATE_ATTACK) ani = SIMON_ANI_ATTACK;
+	if (state ==SIMON_STATE_DIE)
+	{
+		ani = SIMON_ANI_IDLE;
+	}
+	else if (state == SIMON_STATE_ATTACK) ani = SIMON_ANI_ATTACK;
 	else if (state == SIMON_STATE_JUMP) ani = SIMON_ANI_JUMP;
 	else if (state == SIMON_STATE_SIT) ani = SIMON_ANI_SIT;
 	else
@@ -142,7 +161,7 @@ void CSimon::Render()
 		if (vx == 0) ani = SIMON_ANI_IDLE;
 		else	ani = SIMON_ANI_WALKING;
 	}
-
+	
 	int alpha = 255;
 	animation_set->at(ani)->Render(x, y, nx, alpha);
 	RenderBoundingBox();
@@ -156,26 +175,14 @@ void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	bottom = y + SIMON_BBOX_HEIGHT;
 }
 
-/*void CSimon::StartAttacking()
-{
-	if (startAttackingTime > 0) return;
+void CSimon::Simon_Attack()
+{	
+	SetState(SIMON_STATE_ATTACK);
+	
 
-	if (state != SIMON_STATE_JUMP) vx = 0;
-
-	if (state == SIMON_STATE_SIT)
-		SetState(SIMON_STATE_SIT_ATTACK);
-	else
-		SetState(SIMON_STATE_ATTACK);
-
-	startAttackingTime = GetTickCount();
-	//animations[SIMON_ANI_JUMP]->SetAniStartTime(GetTickCount());
 }
 
-void CSimon::StartJumping()
-{
-	SetState(SIMON_STATE_JUMP);
-	isOnGround = false;
-	startJumpingTime = GetTickCount();
-	//animations[SIMON_ANI_JUMP]->SetAniStartTime(GetTickCount());
-}*/
+
+
+
 
