@@ -31,7 +31,7 @@
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0,0)
 #define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#define SCREEN_HEIGHT 230
 
 #define MAX_FRAME_RATE 90
 
@@ -40,7 +40,7 @@ CTileMap* map;
 
 void LoadMaps()
 {
-	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 10, 0);
+	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 10, 10);
 	map->LoadMap("resources\\Scene1_map.csv");
 }
 

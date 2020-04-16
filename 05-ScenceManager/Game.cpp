@@ -98,6 +98,7 @@ void CGame::SetCamPos(float x, float y)
 	cam_x = x;
 	cam_y = y;
 	if (cam_x <0) cam_x = 0;		
+	
 	if (cam_y < 0) cam_y = 0;	
 }
 
