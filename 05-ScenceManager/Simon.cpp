@@ -31,11 +31,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-		// isFalling = false;
-		/*if (vy>0.03f)
-		{
-			
-		}*/
+		
 		
 	}
 	else
@@ -85,10 +81,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 }
 
-
-
-
-
 void CSimon::SetState(int state)
 {
 	
@@ -104,7 +96,6 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_IDLE:
 	{
-		//isOnGround = true;
 		vx = 0;
 		break;
 	}
@@ -118,22 +109,28 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_JUMP:
 	{
 		isOnGround = false;
-		vy = -SIMON_JUMP_SPEED_Y;		
+		vy = -SIMON_JUMP_SPEED_Y;			
+		animation_set->at(SIMON_ANI_JUMP)->SetAniStartTime(GetTickCount());
 		break;
 	}
 
 	case SIMON_STATE_SIT:
 	{
 		vx = 0;
+		vy = 0;
 		break;
 	}
 	case SIMON_STATE_ATTACK:
 	{
-		
-		isAttacking = true;
-		vx = 0;
-		//CAnimations::GetInstance()->Get(914)->Reset();
-		// CAnimations::GetInstance()->Get(914)->SetAniStartTime(GetTickCount());		
+		animation_set->at(SIMON_ANI_ATTACK)->Reset();
+		animation_set->at(SIMON_ANI_ATTACK)->SetAniStartTime(GetTickCount());
+		break;
+	}
+
+	case SIMON_STATE_SIT_ATTACK:
+	{
+		animation_set->at(SIMON_ANI_SIT_ATTACK)->Reset();
+		animation_set->at(SIMON_ANI_SIT_ATTACK)->SetAniStartTime(GetTickCount());
 		break;
 	}
 	}
@@ -144,10 +141,10 @@ void CSimon::Render()
 	int ani = -1;
 
 	// simon luôn co chân khi rơi xuóng
-	//if (isFalling == true)
-	//{
-	//state = SIMON_STATE_SIT;
-	//}
+	if (isFalling == true&&isAttacking()==false)
+	{
+	state = SIMON_STATE_SIT;
+	}
 
 	if (state ==SIMON_STATE_DIE)
 	{
@@ -175,12 +172,34 @@ void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	bottom = y + SIMON_BBOX_HEIGHT;
 }
 
-void CSimon::Simon_Attack()
-{	
-	SetState(SIMON_STATE_ATTACK);
-	
-
+void CSimon::Simon_Jumping()
+{
+	if (isOnGround == false || isAttacking() == true) return;
+	SetState(SIMON_STATE_JUMP);
 }
+
+void CSimon::Simon_Attacking()
+{
+	if (isAttacking() == true) return;
+	if (isFalling == true) return;
+
+	// Đứng đánh, nhảy đánh
+	if(state== SIMON_STATE_IDLE || state== SIMON_STATE_JUMP)
+	{
+		SetState(SIMON_STATE_ATTACK);
+	}
+	// Ngồi đánh
+	else if (state== SIMON_STATE_SIT)
+	{
+		SetState(SIMON_STATE_SIT_ATTACK);
+	}
+}
+
+bool CSimon::isAttacking()
+{
+	return state == SIMON_STATE_ATTACK || state == SIMON_STATE_SIT_ATTACK;
+}
+
 
 
 

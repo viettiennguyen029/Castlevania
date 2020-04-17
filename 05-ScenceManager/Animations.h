@@ -21,10 +21,13 @@ public:
 
 typedef CAnimationFrame *LPANIMATION_FRAME;
 
+/*
+Manage all frames of an animation
+*/
 class CAnimation
 {
 	DWORD lastFrameTime;
-	DWORD animStartTime;   // mốc thời gian kể từ lúc bắt đầu render một animation
+	DWORD aniStartTime;   // mốc thời gian kể từ lúc bắt đầu render một animation
 
 	int currentFrame;
 	int defaultTime;
@@ -36,8 +39,9 @@ public:
 
 	void Render(float x, float y, int nx =-1, int alpha = 255);
 	void Reset() { currentFrame = -1; }
+	void SetAniStartTime(DWORD t) { aniStartTime = t; }
 
-	void SetAniStartTime(DWORD t) { animStartTime = t; }
+	bool IsOver(DWORD dt) { return GetTickCount() - aniStartTime >= dt; }
 };
 
 typedef CAnimation *LPANIMATION;

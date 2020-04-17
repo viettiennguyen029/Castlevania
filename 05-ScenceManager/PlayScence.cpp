@@ -284,6 +284,27 @@ void CPlayScene::Unload()
 	player = NULL;
 }
 
+bool CPlayScenceKeyHandler::AnimationDelay()
+{
+	CSimon* simon = ((CPlayScene*)scence)->player;
+	if (isNeedToWaitingAnimation == true)
+	{
+		if (simon->GetState() == SIMON_STATE_ATTACK
+			&& simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(300) == false)
+			return true;
+
+		if (simon->GetState() == SIMON_STATE_SIT_ATTACK
+			&& simon->animation_set->at(SIMON_ANI_SIT_ATTACK)->IsOver(300) == false)
+			return true;
+	}
+	else
+	{
+		// Đặt lại biến chờ render animation
+		isNeedToWaitingAnimation = true;
+	}
+	return false;
+}
+
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
@@ -294,14 +315,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	{	
 	case DIK_S:			
 	{
-		// if (simon->isAttacking==false) return;
-		simon->SetState(SIMON_STATE_ATTACK);
-		//simon->Simon_Attack();
+		simon->Simon_Attacking();
 		break;
 	}		
 	case DIK_SPACE:
-		if (simon->isOnGround == false) return;
-		simon->SetState(SIMON_STATE_JUMP);		
+		simon->Simon_Jumping();
 		break;
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);
@@ -314,15 +332,24 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {}
 
+bool CPlayScenceKeyHandler::CanProcessKeyboard()
+{
+	if (AnimationDelay() == true) return false;
+	else	
+	return true;
+}
+
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
 	CSimon *simon = ((CPlayScene*)scence)->player;
 
+	if (CanProcessKeyboard() == false)
+		return;
+
 	// nếu simon đang nhảy và chưa chạm đất
 	
-	if ((simon->GetState() == SIMON_STATE_IDLE ||
-		simon->GetState()==SIMON_STATE_ATTACK)
+	if ((simon->GetState() == SIMON_STATE_IDLE ||	simon->GetState()==SIMON_STATE_JUMP)
 	 &&simon->isOnGround == false)
 		return;
 		

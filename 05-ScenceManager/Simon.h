@@ -39,10 +39,9 @@ public:
 	bool isOnGround =false;
 	bool isJumping = false;
 	bool isFalling=false;
-	bool isAttacking = false;
-
-	DWORD startAttack;
-	DWORD attackSubStart;
+	
+	// Xác định trạng thái đang đánh
+	bool isAttacking();
 
 	CSimon();
 
@@ -50,8 +49,12 @@ public:
 
 	virtual void Render();
 	void SetState(int state);
+	bool AnimationDelay();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	void Simon_Attack();
+	void Simon_Jumping();
+	void Simon_Attacking();
+
+	
 	
 };

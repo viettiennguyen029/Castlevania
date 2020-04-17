@@ -25,7 +25,6 @@ protected:
 public: 
 	// CTileMap* map;
 	CPlayScene(int id, LPCWSTR filePath);
-
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
@@ -36,10 +35,14 @@ public:
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler
 {
+	bool isNeedToWaitingAnimation = true;
+
 public: 
+	bool AnimationDelay();
 	void KeyState(BYTE *states);
 	void OnKeyDown(int KeyCode);
 	void OnKeyUp(int KeyCode);
+	bool CanProcessKeyboard();
 	CPlayScenceKeyHandler(CScene *s) :CScenceKeyHandler(s) {};
 };
 
