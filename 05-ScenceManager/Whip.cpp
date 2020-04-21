@@ -63,7 +63,7 @@ void CWhip::Render(int currentFrame)
 				CAnimationSets::GetInstance()->Get(4)->at(NORMAL_WHIP)->RenderByFrame(currentFrame, nx, x +16, y + 7);
 			}
 			else 
-				CAnimationSets::GetInstance()->Get(4)->at(NORMAL_WHIP)->RenderByFrame(currentFrame, nx, x - 16, y + 7);
+				CAnimationSets::GetInstance()->Get(4)->at(NORMAL_WHIP)->RenderByFrame(currentFrame, nx, x - 6, y + 7);
 		}			
 		else if (currentFrame == 2)
 		{
