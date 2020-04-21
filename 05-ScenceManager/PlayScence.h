@@ -7,13 +7,18 @@
 #include "Koopas.h"
 #include "Simon.h"
 #include "TileMap.h"
+#include "Candle.h"
+#include "Whip.h"
 
 using namespace std;
 class CPlayScene: public CScene
 {
 protected: 
 	CSimon* player;	// A play scene has to have player, right? 
-	
+	CWhip* whip;
+	CTileMap* map;
+	// CGame* game = CGame::GetInstance();
+
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_TEXTURES(string line);
@@ -23,12 +28,14 @@ protected:
 	void _ParseSection_OBJECTS(string line);
 
 public: 
-	// CTileMap* map;
+	
 	CPlayScene(int id, LPCWSTR filePath);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+
+	void Whip_Update(DWORD dt);
 	
 	friend class CPlayScenceKeyHandler;
 };

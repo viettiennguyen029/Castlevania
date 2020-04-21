@@ -1,6 +1,5 @@
 ﻿#pragma once
-#include <string>
-#include "PlayScence.h"
+
 #include "Utils.h"
 #include "Sprites.h"
 #include "Textures.h"
@@ -33,12 +32,9 @@ public:
 	CTextures* textures = CTextures::GetInstance();
 
 	CTileMap(LPCWSTR picturePath, int id, int translate_y, int translate_x);
-	// RECT GetSourceRect(int index);
 	void LoadMap(const char* filePath);
 	void DrawMap();
 };
-typedef CTileMap* LPTILEMAP;
-
 
 
 

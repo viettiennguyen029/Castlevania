@@ -3,8 +3,7 @@
 CSimon::CSimon() :CGameObject()
 {
 	SetState(SIMON_STATE_IDLE);
-	// startAttack = 0;
-	isOnGround = true;
+	
 }
 
 
@@ -16,6 +15,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// Simple fall down
 	vy += SIMON_GRAVITY * dt;
 	// CheckCollisionWithGround(dt, coObjects);
+
+	if (vx < 0 && x < 0) x = 0;
 
 	vector <LPCOLLISIONEVENT> coEvents;
 	vector <LPCOLLISIONEVENT> coEventsResult;
@@ -30,8 +31,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (coEvents.size() == 0)
 	{
 		x += dx;
-		y += dy;
-		
+		y += dy;	
 		
 	}
 	else
@@ -146,11 +146,12 @@ void CSimon::Render()
 	state = SIMON_STATE_SIT;
 	}
 
-	if (state ==SIMON_STATE_DIE)
+	if (state == SIMON_STATE_DIE)
 	{
 		ani = SIMON_ANI_IDLE;
 	}
 	else if (state == SIMON_STATE_ATTACK) ani = SIMON_ANI_ATTACK;
+	else if (state == SIMON_STATE_SIT_ATTACK) ani = SIMON_ANI_SIT_ATTACK;
 	else if (state == SIMON_STATE_JUMP) ani = SIMON_ANI_JUMP;
 	else if (state == SIMON_STATE_SIT) ani = SIMON_ANI_SIT;
 	else
@@ -162,6 +163,7 @@ void CSimon::Render()
 	int alpha = 255;
 	animation_set->at(ani)->Render(x, y, nx, alpha);
 	RenderBoundingBox();
+	
 }
 
 void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -193,6 +195,7 @@ void CSimon::Simon_Attacking()
 	{
 		SetState(SIMON_STATE_SIT_ATTACK);
 	}
+
 }
 
 bool CSimon::isAttacking()

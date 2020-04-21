@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Brick.h"
 #include "Animations.h"
+#include "Whip.h"
 
 #define SIMON_GRAVITY				0.0007f	
 
@@ -44,17 +45,16 @@ public:
 	bool isAttacking();
 
 	CSimon();
+	CWhip* whip;
 
 	virtual void Update(DWORD dt, vector <LPGAMEOBJECT>* colliable_objects = NULL);
 
 	virtual void Render();
 	void SetState(int state);
-	bool AnimationDelay();
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	void Simon_Jumping();
-	void Simon_Attacking();
-
-	
+	void Simon_Attacking();	
 	
 };

@@ -1,7 +1,9 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	resources\simon0.png	116	116	116
-20	resources\object.png	255	0	225
+10	resources\Objects.png	116	116	116
+20	resources\Brick.png	0	0	0
+
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #SIMON
@@ -20,11 +22,19 @@
 51002	26	79	42	109	0
 51003	45	79 	67	109	0
 #sit attack
-52001	147	86	171	109	0
-52002	172	86	188	109	0
-52003	191	86	213	109	0
+52001	147	79	171	109	0
+52002	172	79	188	109	0
+52003	191	79	213	109	0
+#WHIP
+#level 1
+30001	1	485	9	509	0
+30002	10	482	26	501	0
+30003	27	485	81	493	0
+#CANDLE
+22001	175	1	191	33	10
+22002	192	1	208	33	10
 #BRICK
-20001	98	121	114	136	20
+20001	0	0	32	32	20
 						
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -46,6 +56,12 @@
 #sit attack
 915	52001	100	52002	100	52003	100
 
+# ==== WHIP  =========
+300	30001	100	30002	100	30003	100
+
+# ==== CANDLE =========
+201	22001	100	22002	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -54,13 +70,20 @@
 0	900	901	902	903	914	915
 # BRICK 
 2	601
+#CANDLE
+3	201
+#Whip
+4	300
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Goomba
+# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip
 
 # SIMON
-0	48.0	0	0
+0	46.0	0	0
+
+# WHIP
+3	-46.0	0	4
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -94,6 +117,27 @@
 1	432	170	2
 1	448	170	2
 1	464	170	2
+1	480	170	2
+1	496	170	2
+1	512	170	2
+1	528	170	2
+1	544	170	2
+1	560	170	2
+1	576	170	2
+1	592	170	2
+1	608	170	2
+1	624	170	2
+1	640	170	2
+1	656	170	2
+1	672	170	2
+
+
+# CANDLE
+2	100.0	136	3
+2	210.0	136	3
+2	330.0	136	3
+2	450.0	136	3
+2	570.0	136	3
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

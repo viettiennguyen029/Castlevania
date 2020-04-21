@@ -76,12 +76,14 @@ public:
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
-	void SetPosition(D3DXVECTOR2 pos) { SetPosition(pos.x, pos.y); }
+ 	//void SetPosition(D3DXVECTOR2 pos) { SetPosition(pos.x, pos.y); }
 	void SetOrientation(int nx) { this->nx = nx; }
+	int GetOrientation() { return nx; }
 
 	D3DXVECTOR2 GetPosition() { return D3DXVECTOR2(x, y); }
 
 	int GetState() { return this->state; }
+	
 
 	// bool isOnGround = false;
 
