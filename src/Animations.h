@@ -21,10 +21,13 @@ public:
 
 typedef CAnimationFrame *LPANIMATION_FRAME;
 
+/*
+Manage all frames of an animation
+*/
 class CAnimation
 {
 	DWORD lastFrameTime;
-	DWORD animStartTime;   // mốc thời gian kể từ lúc bắt đầu render một animation
+	DWORD aniStartTime;   // mốc thời gian kể từ lúc bắt đầu render một animation
 
 	int currentFrame;
 	int defaultTime;
@@ -33,11 +36,13 @@ class CAnimation
 public:
 	CAnimation(int defaultTime = 100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
 	void Add(int spriteId, DWORD time = 0);
-
-	void Render(float x, float y, int nx =-1, int alpha = 255);
+	int GetCurrentFrame() { return currentFrame; }
+	void Render(float x, float y, int nx =1, int alpha = 255);
+	void RenderByFrame(int fameID, int nx, float x, float y, int alpha = 255); // Specific function for rendering whip
 	void Reset() { currentFrame = -1; }
+	void SetAniStartTime(DWORD t) { aniStartTime = t; }
 
-	void SetAniStartTime(DWORD t) { animStartTime = t; }
+	bool IsOver(DWORD dt) { return GetTickCount() - aniStartTime >= dt; }
 };
 
 typedef CAnimation *LPANIMATION;

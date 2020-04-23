@@ -69,7 +69,7 @@ void CGame::Draw(float x, float y, int nx, LPDIRECT3DTEXTURE9 texture, int left,
 	RECT r;
 	r.left = left;
 	r.top = top;
-	r.right = right;
+	r.right = right ;
 	r.bottom = bottom;
 
 	// flip sprite, using nx parameter
@@ -91,6 +91,7 @@ void CGame::Draw(float x, float y, int nx, LPDIRECT3DTEXTURE9 texture, int left,
 	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
 
 	spriteHandler->SetTransform(&oldTransform);
+	
 }
 
 void CGame::SetCamPos(float x, float y)
@@ -257,10 +258,8 @@ void CGame::SweptAABB(
 	t = -1.0f;			// no collision
 	nx = ny = 0;
 
-	//
 	// Broad-phase test 
-	//
-
+	
 	float bl = dx > 0 ? ml : ml + dx;
 	float bt = dy > 0 ? mt : mt + dy;
 	float br = dx > 0 ? mr + dx : mr;

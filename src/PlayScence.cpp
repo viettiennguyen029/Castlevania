@@ -13,7 +13,7 @@ using namespace std;
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
-	//LoadTiledMap();
+	
 }
 
 /*
@@ -28,10 +28,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_SIMON	0
+#define OBJECT_TYPE_SIMON	 0
 #define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
+#define OBJECT_TYPE_CANDLE	2
+#define OBJECT_TYPE_WHIP 3
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -156,7 +156,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+	case OBJECT_TYPE_CANDLE: obj = new CCandle(); break;
+	case OBJECT_TYPE_WHIP: obj = new CWhip(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[4].c_str());
@@ -178,6 +179,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
+	int a = 1;
 }
 
 void CPlayScene::Load()
@@ -223,19 +225,24 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(237, 28, 36));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(0, 0, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
-	//map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 36, -4);
-	//map->LoadMap("resources\\Scene1_map.csv");
+	// Load map resource 
+	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 36, -4);
+	map->LoadMap("resources\\Scene1_map.csv");	
+
 	
 }
+
 
 void CPlayScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
+
+	// Whip_Update(dt);
 
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
@@ -248,28 +255,67 @@ void CPlayScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}
 
-
 	// Update camera to follow simon
 	float cx, cy;
 	player->GetPosition(cx, cy);
-	// player->SetOrientation(-1);
-
-	CGame *game = CGame::GetInstance();
-	cx -= game->GetScreenWidth()/2 ;
-	cy -= game->GetScreenHeight()/2;
-	if (cx>SCREEN_WIDTH-(SCREEN_WIDTH/4+20))
+	if ( cx>600)
 	{
 		return;
 	}
+	CGame *game = CGame::GetInstance();
+	cx -= game->GetScreenWidth()/2 ;
+	cy -= game->GetScreenHeight()/2;
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }
 
+
+void CPlayScene::Whip_Update(DWORD dt)
+{
+	whip = new CWhip();
+	float simon_x, simon_y;
+	
+	player->GetPosition(simon_x, simon_y);
+	player->GetOrientation();
+
+	/*if (player->GetState() == SIMON_STATE_ATTACK|| player->GetState() == SIMON_STATE_SIT_ATTACK)
+	{
+		whip->SetOrientation(player->GetOrientation());
+		whip->SetWhipPosition(D3DXVECTOR2(simon_x, simon_y));
+		
+	}
+	int currentFrame = CAnimationSets::GetInstance()->Get(OBJECT_TYPE_SIMON)->at(SIMON_ANI_ATTACK)->GetCurrentFrame();
+
+	if (player->isAttacking() && currentFrame == 2)
+	{
+		vector<LPGAMEOBJECT> coObjects;
+
+		// GetColliableObjects(whip, coObjects);
+
+		whip->Update(dt, &coObjects);
+	}*/
+		
+
+}
+
 void CPlayScene::Render()
 {
-	
+	// Render map
+	map->DrawMap();
+
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+
+	/* if (player->isAttacking() == true)
+	{
+		int currentFrame = CAnimationSets::GetInstance()->	Get(OBJECT_TYPE_SIMON)->at(SIMON_ANI_ATTACK)->GetCurrentFrame();
+		whip->Render(currentFrame);
+	}
+	else
+	{
+			whip->Render(-1);
+	}*/ 
+
 }
 
 /*
@@ -284,6 +330,27 @@ void CPlayScene::Unload()
 	player = NULL;
 }
 
+bool CPlayScenceKeyHandler::AnimationDelay()
+{
+	CSimon* simon = ((CPlayScene*)scence)->player;
+	if (isNeedToWaitingAnimation == true)
+	{
+		if (simon->GetState() == SIMON_STATE_ATTACK
+			&& simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(300) == false)
+			return true;
+
+		if (simon->GetState() == SIMON_STATE_SIT_ATTACK
+			&& simon->animation_set->at(SIMON_ANI_SIT_ATTACK)->IsOver(300) == false)
+			return true;
+	}
+	else
+	{
+		// Đặt lại biến chờ render animation
+		isNeedToWaitingAnimation = true;
+	}
+	return false;
+}
+
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
@@ -294,14 +361,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	{	
 	case DIK_S:			
 	{
-		// if (simon->isAttacking==false) return;
-		simon->SetState(SIMON_STATE_ATTACK);
-		//simon->Simon_Attack();
+		simon->Simon_Attacking();
 		break;
 	}		
 	case DIK_SPACE:
-		if (simon->isOnGround == false) return;
-		simon->SetState(SIMON_STATE_JUMP);		
+		simon->Simon_Jumping();
 		break;
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);
@@ -314,15 +378,24 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {}
 
+bool CPlayScenceKeyHandler::CanProcessKeyboard()
+{
+	if (AnimationDelay() == true) return false;
+	else	
+	return true;
+}
+
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
 	CSimon *simon = ((CPlayScene*)scence)->player;
 
+	if (CanProcessKeyboard() == false)
+		return;
+
 	// nếu simon đang nhảy và chưa chạm đất
 	
-	if ((simon->GetState() == SIMON_STATE_IDLE ||
-		simon->GetState()==SIMON_STATE_ATTACK)
+	if ((simon->GetState() == SIMON_STATE_IDLE ||	simon->GetState()==SIMON_STATE_JUMP)
 	 &&simon->isOnGround == false)
 		return;
 		
