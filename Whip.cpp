@@ -1,5 +1,6 @@
 ﻿#include "Whip.h"
 #include "Candle.h"
+
 CWhip::CWhip():CGameObject()
 {
 	SetState(NORMAL_WHIP);
@@ -7,25 +8,8 @@ CWhip::CWhip():CGameObject()
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	
-}
-
-
-
-void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
-{
-	top = y + 15;
-	bottom = top + WHIP_BBOX_HEIGHT;
-	if (nx < 0)
-	{
-		left = x + 50;
-		right = left + WHIP_BBOX_WIDTH;
-	}
-	else if (nx > 0)
-	{
-		left = 190 - WHIP_BBOX_WIDTH + x;
-		right = left + WHIP_BBOX_WIDTH;
-	}
+	CGameObject::Update(dt);
+	// SetWhipPosition(x,y);
 }
 
 bool CWhip::isColliding(float obj_left, float obj_top, float obj_right, float obj_bottom)
@@ -36,11 +20,23 @@ bool CWhip::isColliding(float obj_left, float obj_top, float obj_right, float ob
 	return CGameObject::AABB(whip_left, whip_top, whip_right, whip_bottom, obj_left, obj_top, obj_right, obj_bottom);
 }
 
-void CWhip::SetWhipPosition(D3DXVECTOR2 simonPos)
+void CWhip::SetWhipPosition(float x, float y)
 {
-	simonPos.x -= 50;
-	simonPos.y -= 4;
-	SetPosition(simonPos.x, simonPos.y);
+	float xW, yW;
+	if (nx > 0)
+	{
+		xW =x- 8.0f;
+		yW =y+ 4.0f;	
+
+	}
+	else 
+	{
+		xW =x+22.0f;
+		yW= y+4.0f;
+	}
+	
+
+	SetPosition(xW, yW);
 }
 	
 void CWhip::PowerUp()
@@ -50,13 +46,31 @@ void CWhip::PowerUp()
 }
 
 void CWhip::Render(int currentFrame)
-{
-	
-	CAnimationSets::GetInstance()->Get(4)->at(NORMAL_WHIP)->RenderByFrame(currentFrame, nx, x+6, y);
+{	
+	if (0 <= currentFrame < 2)
+	{
+		CAnimationSets::GetInstance()->Get(4)->at(state)->RenderByFrame(currentFrame, nx, x, y);
+	}
+	else
+	{
+		return;
+	}
 	RenderBoundingBox();
 }
 
 void CWhip::SetState(int state)
 {
 
+}
+
+void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	top = y ;
+	bottom = top + WHIP_BBOX_HEIGHT;
+	if (state == NORMAL_WHIP)
+	{
+		left = x;
+		right = x + WHIP_BBOX_WIDTH;
+	}
+	
 }

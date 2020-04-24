@@ -46,7 +46,7 @@ void CTileMap::DrawMap()
 	int colCamRight = colCamLeft + SCREEN_WIDTH / tileWidth+SCREEN_WIDTH/2;
 
 	int rowCamTop = y / tileHeight;
-	int rowCamBottom = rowCamTop + SCREEN_HEIGHT / tileHeight;
+	int rowCamBottom = rowCamTop + 180 / tileHeight;
 
 	for (int j = colCamLeft; j <= colCamRight; j++) 
 	{

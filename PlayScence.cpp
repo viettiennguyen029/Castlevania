@@ -232,7 +232,6 @@ void CPlayScene::Load()
 	// Load map resource 
 	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 36, -4);
 	map->LoadMap("resources\\Scene1_map.csv");	
-
 	
 }
 
@@ -270,51 +269,15 @@ void CPlayScene::Update(DWORD dt)
 }
 
 
-void CPlayScene::Whip_Update(DWORD dt)
-{
-	whip = new CWhip();
-	float simon_x, simon_y;
-	
-	player->GetPosition(simon_x, simon_y);
-	player->GetOrientation();
-
-	/*if (player->GetState() == SIMON_STATE_ATTACK|| player->GetState() == SIMON_STATE_SIT_ATTACK)
-	{
-		whip->SetOrientation(player->GetOrientation());
-		whip->SetWhipPosition(D3DXVECTOR2(simon_x, simon_y));
-		
-	}
-	int currentFrame = CAnimationSets::GetInstance()->Get(OBJECT_TYPE_SIMON)->at(SIMON_ANI_ATTACK)->GetCurrentFrame();
-
-	if (player->isAttacking() && currentFrame == 2)
-	{
-		vector<LPGAMEOBJECT> coObjects;
-
-		// GetColliableObjects(whip, coObjects);
-
-		whip->Update(dt, &coObjects);
-	}*/
-		
-
-}
-
 void CPlayScene::Render()
 {
 	// Render map
-	map->DrawMap();
+	 map->DrawMap();
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 
-	/* if (player->isAttacking() == true)
-	{
-		int currentFrame = CAnimationSets::GetInstance()->	Get(OBJECT_TYPE_SIMON)->at(SIMON_ANI_ATTACK)->GetCurrentFrame();
-		whip->Render(currentFrame);
-	}
-	else
-	{
-			whip->Render(-1);
-	}*/ 
+	
 
 }
 

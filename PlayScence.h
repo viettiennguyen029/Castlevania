@@ -35,8 +35,6 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-	void Whip_Update(DWORD dt);
-	
 	friend class CPlayScenceKeyHandler;
 };
 

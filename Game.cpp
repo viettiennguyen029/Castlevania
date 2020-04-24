@@ -87,9 +87,9 @@ void CGame::Draw(float x, float y, int nx, LPDIRECT3DTEXTURE9 texture, int left,
 	// Cần nhân với ma trận cũ để tính ma trận biến đổi cuối cùng
 	D3DXMATRIX finalTransform = newTransform * oldTransform;
 	spriteHandler->SetTransform(&finalTransform);
-
+	// spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
-
+	// spriteHandler->End();
 	spriteHandler->SetTransform(&oldTransform);
 	
 }

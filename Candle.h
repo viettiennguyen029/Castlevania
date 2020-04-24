@@ -10,5 +10,6 @@ class CCandle : public CGameObject
 public:
 	CCandle();	
 	virtual void Render();
+	// virtual void Update
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

@@ -3,7 +3,7 @@
 
 CSimon::CSimon() :CGameObject()
 {
-	SetState(SIMON_STATE_IDLE);
+	//	SetState(SIMON_STATE_IDLE);
 	whip = new CWhip();
 }
 
@@ -22,6 +22,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector <LPCOLLISIONEVENT> coEvents;
 	vector <LPCOLLISIONEVENT> coEventsResult;
 
+	coEvents.clear();
 	// turn off collision when simon is die
 	if (state != SIMON_STATE_DIE)
 	{
@@ -32,8 +33,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (coEvents.size() == 0)
 	{
 		x += dx;
-		y += dy;	
-		
+		y += dy;
+
 	}
 	else
 	{
@@ -63,15 +64,15 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			}
 
-			if (dynamic_cast<CBrick*>(e->obj))
+			else if (dynamic_cast<CBrick*>(e->obj))
 			{
-				if (e->ny !=0)
-				{			
+				if (e->ny != 0)
+				{
 					vy = 0;
 					isOnGround = true;
 					isFalling = false;
 				}
-				
+
 			}
 
 			// switching scene logic		
@@ -91,40 +92,49 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	// Check collsion when simon attacking
-	if (isAttacking() == true)
-	{
+	if (state == SIMON_STATE_ATTACK|| state == SIMON_STATE_SIT_ATTACK)
+	{		
 		whip->SetOrientation(nx);
-		whip->SetWhipPosition(D3DXVECTOR2(x, y));	
+		whip->SetWhipPosition(x, y);
 
-	if (animation_set->at(SIMON_ANI_ATTACK)->GetCurrentFrame()==2) // Only check collsion at the last frame of the whip
-	{
-		for (UINT i = 0; i < coObjects->size(); i++)
+		if (animation_set->at(4)->GetCurrentFrame() == 2) // Only check collsion when simon 
 		{
-			LPGAMEOBJECT temp = coObjects->at(i);
-			if (dynamic_cast<CCandle*>(temp))
+			if (nx > 0)
 			{
-				CCandle* candle = dynamic_cast<CCandle*> (temp);
-				float left, top, right, bottom;
-				temp->GetBoundingBox(left, top, right, bottom);
+				whip->SetPosition(x + 30, y + 4);
 
-				if (whip->isColliding(left, top, right, bottom) == true)
+			}
+			else
+				whip->SetPosition(x - 20,y + 4);
+
+			for (UINT i = 0; i < coObjects->size(); i++)
+			{
+				LPGAMEOBJECT temp = coObjects->at(i);
+			
+				if (dynamic_cast<CCandle*>(temp))
 				{
-					DebugOut(L"Whip Collision with Torch %d %d\n", temp->dx, temp->dy);
+					CCandle* e = dynamic_cast<CCandle*> (temp);
+					float left, top, right, bottom;
+					e->GetBoundingBox(left, top, right, bottom);
+					if (whip->isColliding(left, top, right, bottom) == true)
+					{
+						DebugOut(L"collision\n");
+					}
 				}
 			}
 		}
-
-		}
+		
+		
 	}
-	
 
 
-	
+
+
 }
 
 void CSimon::SetState(int state)
 {
-	
+
 	CGameObject::SetState(state);
 	switch (state)
 	{
@@ -150,7 +160,7 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_JUMP:
 	{
 		isOnGround = false;
-		vy = -SIMON_JUMP_SPEED_Y;			
+		vy = -SIMON_JUMP_SPEED_Y;
 		animation_set->at(SIMON_ANI_JUMP)->SetAniStartTime(GetTickCount());
 		break;
 	}
@@ -182,9 +192,9 @@ void CSimon::Render()
 	int ani = -1;
 
 	// simon luôn co chân khi rơi xuóng
-	if (isFalling == true&&isAttacking()==false)
+	if (isFalling == true && isAttacking() == false)
 	{
-	state = SIMON_STATE_SIT;
+		state = SIMON_STATE_SIT;
 	}
 
 	if (state == SIMON_STATE_DIE)
@@ -200,26 +210,39 @@ void CSimon::Render()
 		if (vx == 0) ani = SIMON_ANI_IDLE;
 		else	ani = SIMON_ANI_WALKING;
 	}
-	
+
 	int alpha = 255;
 	animation_set->at(ani)->Render(x, y, nx, alpha);
 	RenderBoundingBox();
-	
+
 	// Rendering whip
 	if (isAttacking() == true)
 	{
 		int currentFrame = animation_set->at(SIMON_ANI_ATTACK)->GetCurrentFrame();
 		whip->Render(currentFrame);
+		// currentFrame = -1;
+
 	}
-	
+
 }
 
 void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
+	//if (nx > 0)
+	//{
+	left = x - SIMON_BBOX_WIDTH ;
 	top = y;
-	right = x + SIMON_BBOX_WIDTH;
-	bottom = y+ SIMON_BBOX_HEIGHT;
+	right = x + SIMON_BBOX_WIDTH ;
+	bottom = y + SIMON_BBOX_HEIGHT;
+	//	}
+		/*else
+		{
+			left = x+SIMON_BBOX_WIDTH;
+			top = y;
+			right = x + SIMON_BBOX_WIDTH;
+			bottom = y + SIMON_BBOX_HEIGHT;
+		}*/
+
 }
 
 void CSimon::Simon_Jumping()
@@ -234,12 +257,12 @@ void CSimon::Simon_Attacking()
 	if (isFalling == true) return;
 
 	// Đứng đánh, nhảy đánh
-	if(state== SIMON_STATE_IDLE || state== SIMON_STATE_JUMP)
+	if (state == SIMON_STATE_IDLE || state == SIMON_STATE_JUMP)
 	{
 		SetState(SIMON_STATE_ATTACK);
 	}
 	// Ngồi đánh
-	else if (state== SIMON_STATE_SIT)
+	else if (state == SIMON_STATE_SIT)
 	{
 		SetState(SIMON_STATE_SIT_ATTACK);
 	}

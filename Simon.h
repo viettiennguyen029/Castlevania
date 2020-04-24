@@ -31,7 +31,7 @@
 #define SIMON_ATTACK_TIME	350
 
 
-#define SIMON_BBOX_WIDTH				15
+#define SIMON_BBOX_WIDTH				18
 #define SIMON_BBOX_HEIGHT			30
 class CSimon : public CGameObject
 {
