@@ -9,6 +9,7 @@
 #include "TileMap.h"
 #include "Candle.h"
 #include "Whip.h"
+#include "Items.h"
 
 using namespace std;
 class CPlayScene: public CScene
@@ -43,11 +44,10 @@ class CPlayScenceKeyHandler : public CScenceKeyHandler
 	bool isNeedToWaitingAnimation = true;
 
 public: 
-	bool AnimationDelay();
+	// bool AnimationDelay();
 	void KeyState(BYTE *states);
 	void OnKeyDown(int KeyCode);
 	void OnKeyUp(int KeyCode);
-	bool CanProcessKeyboard();
 	CPlayScenceKeyHandler(CScene *s) :CScenceKeyHandler(s) {};
 };
 

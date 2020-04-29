@@ -32,6 +32,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_CANDLE	2
 #define OBJECT_TYPE_WHIP 3
+#define OBJECT_TYPE_ITEMS 4
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -158,6 +159,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_CANDLE: obj = new CCandle(); break;
 	case OBJECT_TYPE_WHIP: obj = new CWhip(); break;
+	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[4].c_str());
@@ -232,26 +234,26 @@ void CPlayScene::Load()
 	// Load map resource 
 	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 36, -4);
 	map->LoadMap("resources\\Scene1_map.csv");	
+
 	
 }
 
 
-void CPlayScene::Update(DWORD dt)
-{
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
-
-	// Whip_Update(dt);
+void CPlayScene::Update(DWORD dt){
 
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
+		if (objects[i]->visible == false)
+			continue;
 		coObjects.push_back(objects[i]);
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		if (objects[i]->visible == false)
+			continue;
+		objects[i]->Update(dt,&objects, &coObjects);
 	}
 
 	// Update camera to follow simon
@@ -272,12 +274,15 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	// Render map
-	 map->DrawMap();
+	map->DrawMap();
 
 	for (int i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->visible == false)
+			continue;
 		objects[i]->Render();
-
-	
+	}
+		
 
 }
 
@@ -293,43 +298,40 @@ void CPlayScene::Unload()
 	player = NULL;
 }
 
-bool CPlayScenceKeyHandler::AnimationDelay()
-{
-	CSimon* simon = ((CPlayScene*)scence)->player;
-	if (isNeedToWaitingAnimation == true)
-	{
-		if (simon->GetState() == SIMON_STATE_ATTACK
-			&& simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(300) == false)
-			return true;
-
-		if (simon->GetState() == SIMON_STATE_SIT_ATTACK
-			&& simon->animation_set->at(SIMON_ANI_SIT_ATTACK)->IsOver(300) == false)
-			return true;
-	}
-	else
-	{
-		// Đặt lại biến chờ render animation
-		isNeedToWaitingAnimation = true;
-	}
-	return false;
-}
-
-
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
-	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	DebugOut(L"KeyDown: %d\n", KeyCode);
 
 	CSimon *simon = ((CPlayScene*)scence)->player;
 	switch (KeyCode)
 	{	
-	case DIK_S:			
+	case DIK_SPACE:
 	{
-		simon->Simon_Attacking();
+		if (simon->GetState() == SIMON_STATE_JUMP||
+			simon->GetState() == SIMON_STATE_ATTACK || 
+			simon->GetState() == SIMON_STATE_SIT_ATTACK)
+			return;
+
+		simon->SetState(SIMON_STATE_JUMP);
 		break;
 	}		
-	case DIK_SPACE:
-		simon->Simon_Jumping();
+	case DIK_S:
+		// If Simon's state attack is not end, then continue
+		if ((simon->GetState() == SIMON_STATE_ATTACK || 
+			simon->GetState() == SIMON_STATE_SIT_ATTACK))
+			return;
+
+		if (simon->GetState() == SIMON_STATE_IDLE || 
+			simon->GetState() == SIMON_STATE_JUMP) // Đứng đánh
+		{
+			simon->SetState(SIMON_STATE_ATTACK);
+		}
+		else if (simon->GetState() == SIMON_STATE_SIT) // Ngồi đánh
+		{
+			simon->SetState(SIMON_STATE_SIT_ATTACK);
+		}
 		break;
+
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);
 		simon->SetPosition(50.0f, 0.0f);
@@ -341,27 +343,25 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {}
 
-bool CPlayScenceKeyHandler::CanProcessKeyboard()
-{
-	if (AnimationDelay() == true) return false;
-	else	
-	return true;
-}
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
 	CSimon *simon = ((CPlayScene*)scence)->player;
 
-	if (CanProcessKeyboard() == false)
+	// When Simon is not touched on the ground, continue rendering jump animation
+	if (simon->GetState() == SIMON_STATE_JUMP && simon->isOnGround() == false)		
 		return;
 
-	// nếu simon đang nhảy và chưa chạm đất
-	
-	if ((simon->GetState() == SIMON_STATE_IDLE ||	simon->GetState()==SIMON_STATE_JUMP)
-	 &&simon->isOnGround == false)
+	// Condition to stopping Simon's attacking loop
+	if (simon->GetState()== SIMON_STATE_ATTACK && 
+		simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false)
 		return;
-		
+
+	if (simon->GetState() == SIMON_STATE_SIT_ATTACK && 
+		simon->animation_set->at(SIMON_ANI_SIT_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false)
+		return;
+    			
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
 		simon->SetOrientation(1);

@@ -12,11 +12,12 @@ class CAnimationFrame
 {
 	LPSPRITE sprite;
 	DWORD time;
-
+	D3DXVECTOR2 position;
 public:
 	CAnimationFrame(LPSPRITE sprite, int time) { this->sprite = sprite; this->time = time; }
 	DWORD GetTime() { return time; }
 	LPSPRITE GetSprite() { return sprite; }
+	D3DXVECTOR2 GetPosition() { return this->position; }
 };
 
 typedef CAnimationFrame *LPANIMATION_FRAME;
@@ -31,6 +32,7 @@ class CAnimation
 
 	int currentFrame;
 	int defaultTime;
+	
 
 	vector<LPANIMATION_FRAME> frames;
 public:
@@ -41,7 +43,7 @@ public:
 	void RenderByFrame(int fameID, int nx, float x, float y, int alpha = 255); // Specific function for rendering whip
 	void Reset() { currentFrame = -1; }
 	void SetAniStartTime(DWORD t) { aniStartTime = t; }
-
+	D3DXVECTOR2 GetFramePosition() { return frames[currentFrame]->GetPosition(); }
 	bool IsOver(DWORD dt) { return GetTickCount() - aniStartTime >= dt; }
 };
 

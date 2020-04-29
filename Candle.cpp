@@ -10,7 +10,15 @@ void CCandle::Render()
 {
 	animation_set->at(state)->Render(x, y, nx);
 	//The order of the state is correctly defined as the push in order of the animaions.
-	RenderBoundingBox();
+	// RenderBoundingBox();
+}
+
+void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* Objects, vector<LPGAMEOBJECT>* coObject)
+{
+	if (state== CANDLE_DESTROYED&& animation_set->at(state)->IsOver(CANDLE_DESTROYED_EFFECT_TIME))
+	{
+		this->visible = false;
+	}
 }
 
 
