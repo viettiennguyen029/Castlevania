@@ -25,7 +25,7 @@
 #define SIMON_ANI_ATTACK			4
 #define SIMON_ANI_SIT_ATTACK		5
 
-#define SIMON_WALKING_SPEED			0.05f
+#define SIMON_WALKING_SPEED			0.06f
 #define SIMON_JUMP_SPEED_Y			0.18f
 #define SIMON_DIE_DEFLECT_SPEED	0.5
 #define SIMON_ATTACK_TIME	300
@@ -43,7 +43,7 @@ public:
 	
 	CSimon();
 
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* Objects = NULL, vector <LPGAMEOBJECT>* coObject = NULL);
+	virtual void Update(DWORD dt, vector <LPGAMEOBJECT>* coObject = NULL);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	void Render();

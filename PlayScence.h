@@ -9,7 +9,11 @@
 #include "TileMap.h"
 #include "Candle.h"
 #include "Whip.h"
+#include "Map.h"
 #include "Items.h"
+#include "ItemBigHeart.h"
+#include "ItemChain.h"
+#include "ItemDagger.h"
 
 using namespace std;
 class CPlayScene: public CScene
@@ -18,8 +22,7 @@ protected:
 	CSimon* player;	// A play scene has to have player, right? 
 	CWhip* whip;
 	CTileMap* map;
-	// CGame* game = CGame::GetInstance();
-
+	
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_TEXTURES(string line);
@@ -36,15 +39,13 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
+
 	friend class CPlayScenceKeyHandler;
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler
-{
-	bool isNeedToWaitingAnimation = true;
-
-public: 
-	// bool AnimationDelay();
+{	
+public: 	
 	void KeyState(BYTE *states);
 	void OnKeyDown(int KeyCode);
 	void OnKeyUp(int KeyCode);

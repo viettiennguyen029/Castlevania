@@ -69,8 +69,13 @@
 # ==== WHIP  =========
 300	30001	100	30002	100	30003	100
 
-# ==== ITEMS  =========
-400	40001	100	40002	100	40003	100
+# ==== ITEMS ====
+# Big Heart
+401	40001	100
+# Chain
+402	40002	100
+# Dagger
+403	40003	100
 
 # ==== CANDLE =========
 #big
@@ -90,15 +95,36 @@
 2	201	202
 #WHIP
 3	300
-#ITEMS
-4	400
+#ITEM_BigHeart
+41	401
+#ITEM_Chain
+42	402
+#ITEMS_Dagger
+43	403
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items
+# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger
 
 # SIMON
-0	46.0	0	0
+0	46	100	0
+
+# CANDLE
+#extra_settings = Item Object ID
+2	100	136	2	4
+2	210	136	2	5
+2	330	136	2	5
+2	450	136	2	4
+2	570	136	2	6
+
+# ITEMS
+#BigHeart
+4	100	136	41
+#Chain
+5	210	136	42
+5	330	136	42
+#Dagger
+6	570	136	43
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -146,19 +172,8 @@
 1	656	170	1
 1	672	170	1
 
-# CANDLE
-2	100.0	136	2
-2	210.0	136	2
-2	330.0	136	2
-2	450.0	136	2
-2	570.0	136	2
-
 # WHIP
-3	-46.0	0	3
-
-# ITEMS
-4	0.0	0	4
-
+3	0	0	3
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

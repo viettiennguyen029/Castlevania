@@ -1,6 +1,5 @@
 ﻿#include "Simon.h"
 #include "Candle.h"
-#include "Items.h"
 
 CSimon::CSimon() :CGameObject()
 {
@@ -8,8 +7,7 @@ CSimon::CSimon() :CGameObject()
 	whip = new CWhip();
 }
 
-
-void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* Objects, vector <LPGAMEOBJECT>* coObjects)
+void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 {
 
 	// Calculate x,y
@@ -19,7 +17,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* Objects, vector <LPGAMEOBJEC
 	// Simple fall down
 	vy += SIMON_GRAVITY * dt;
 	
-	// 
+	// Simple logic with screen edge
 	if (vx < 0 && x < 0) x = 0;
 
 	vector <LPCOLLISIONEVENT> coEvents;
@@ -65,28 +63,40 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* Objects, vector <LPGAMEOBJEC
 
 			}
 
-			// collision logic with Brick 
+			// Collision logic with Brick 
 			else if (dynamic_cast<CBrick*>(e->obj))
 			{
 				if (e->ny !=0) vy = 0;				
 			}
 
-			// Collision logic with items
-			else if (dynamic_cast<CItems*>(e->obj))
+			// Collision logic with tems
+			else if (dynamic_cast<ItemBigHeart*>(e->obj))
 			{
-				e->obj->visible = false;
-
-				// if (e->obj->GetState() == DAGGER)
-					// canThrow = true;
-
-				if (e->obj->GetState()==CHAIN)
+				DebugOut(L"[ITEMS] Collision with Heart\n");
+				if (e->nx != 0 || e->ny != 0)
 				{
-					// SetState(UPGRADE);
-					vx = 0;
-					whip->PowerUp();
-				}			
-
+					//this->whip->LvUp();
+					e->obj->SetVisible(false);
+				}
+				// if (e->ny != 0)	whip->LvUp();
 			}
+			else if (dynamic_cast<ItemChain*>(e->obj))
+			{
+				DebugOut(L"[ITEMS] Collision with Chain\n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+				}
+			}
+			else if (dynamic_cast<ItemDagger*>(e->obj))
+			{
+				DebugOut(L"[ITEMS] Collision with Dagger\n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+				}
+			}
+
 			// switching scene logic		
 			else if (dynamic_cast<CPortal*> (e->obj))
 			{
@@ -128,7 +138,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* Objects, vector <LPGAMEOBJEC
 
 					if (whip->isColliding(left, top, right, bottom) == true)
 					{
-						DebugOut(L"[INFO]Whip Collision with Torch %d %d\n", temp->dx, temp->dy);						
+						DebugOut(L"[INFO]Whip Collision with Torch \n");						
 						temp->SetState(CANDLE_DESTROYED);				
 						temp->animation_set->at(CANDLE_DESTROYED)->SetAniStartTime(GetTickCount());
 					}
@@ -231,11 +241,3 @@ void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	right = x + SIMON_BBOX_WIDTH;
 	bottom = y+ SIMON_BBOX_HEIGHT;
 }
-
-
-
-
-
-
-
-

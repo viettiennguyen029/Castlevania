@@ -9,7 +9,8 @@
 
 using namespace std;
 
-#define ID_TEX_BBOX -100		// special texture to draw object bounding box
+#define ID_TEX_BBOX		-100		// special texture to draw object bounding box
+#define ITEM_GRAVITY	0.004f
 
 class CGameObject; 
 typedef CGameObject * LPGAMEOBJECT;
@@ -57,7 +58,16 @@ public:
 	int state;
 
 	bool visible;
+
 	int itemId;
+
+	enum class ItemType
+	{
+		UNKNOWN =	-1,
+		BIG_HEART	=	4,
+		CHAIN			=	5,
+		DAGGER		=	6
+	}; 
 
 	DWORD dt; 
 
@@ -78,10 +88,14 @@ public:
 	void SetOrientation(int nx) { this->nx = nx; }
 	int GetOrientation() { return nx; }	
 
-	// Item
-	void SetItemId(int id) { this->itemId = id; }
+	// Visibility
 	void SetVisible(bool visible) { this->visible = visible; }
 	bool isVisible() { return this->visible; }	
+
+	// Item
+	//ItemType item;
+	int GetItemId() { return itemId; }
+	void SetItemId(int id) { this->itemId = id; }
 	
 	// Check collision between 2 static object
 	bool AABB(float left_a, float top_a, float right_a, float bottom_a,
@@ -101,7 +115,7 @@ public:
 		float &rdy);
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* Objects = NULL, vector<LPGAMEOBJECT>* coObject = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL);
 	virtual void Render() = 0;
 	virtual void ResetAnimation();
 	virtual void SetState(int state) { this->state = state; }

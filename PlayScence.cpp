@@ -6,33 +6,35 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
-
+#include "Map.h"
 
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 {
-	key_handler = new CPlayScenceKeyHandler(this);
-	
+	key_handler = new CPlayScenceKeyHandler(this);	
 }
+
 
 /*
 	Load scene resources from scene file (textures, sprites, animations and objects)
 	See scene1.txt, scene2.txt for detail format specification
 */
 
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
+#define SCENE_SECTION_UNKNOWN			-1
+#define SCENE_SECTION_TEXTURES				2
+#define SCENE_SECTION_SPRITES					3
+#define SCENE_SECTION_ANIMATIONS			4
 #define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
+#define SCENE_SECTION_OBJECTS					6
 
-#define OBJECT_TYPE_SIMON	 0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_CANDLE	2
-#define OBJECT_TYPE_WHIP 3
-#define OBJECT_TYPE_ITEMS 4
+#define OBJECT_TYPE_SIMON						0
+#define OBJECT_TYPE_BRICK						1
+#define OBJECT_TYPE_CANDLE					2
+#define OBJECT_TYPE_WHIP						3
+#define OBJECT_TYPE_ITEM_BIG_HEART		4
+#define OBJECT_TYPE_ITEM_CHAIN			5
+#define OBJECT_TYPE_ITEM_DAGGER			6
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -128,14 +130,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
-	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
-
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
 
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
-
 	int ani_set_id = atoi(tokens[3].c_str());
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
@@ -143,8 +142,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	CGameObject *obj = NULL;
 
 	switch (object_type)
-	{
-	
+	{	
 	case OBJECT_TYPE_SIMON:
 	{
 		if (player != NULL)
@@ -156,10 +154,41 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CSimon*)obj;
 		break;
 	}
+
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_CANDLE: obj = new CCandle(); break;
 	case OBJECT_TYPE_WHIP: obj = new CWhip(); break;
-	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
+
+	case OBJECT_TYPE_CANDLE: 
+	{
+		 int it = atoi(tokens[4].c_str());
+		obj = new CCandle();	
+		obj->SetItemId(it);		
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_BIG_HEART: 
+	{
+		obj = new ItemBigHeart();
+		CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BIG_HEART, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_CHAIN:
+	{
+		 obj = new ItemChain();
+
+		 CItems::GetInstance()->AddItem((int)CGameObject::ItemType::CHAIN, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_DAGGER:
+	{
+		obj = new ItemDagger();
+		CItems::GetInstance()->AddItem((int)CGameObject::ItemType::DAGGER, obj);
+		break;
+	}	
+
+	
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[4].c_str());
@@ -176,12 +205,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	// General object setup
 	obj->SetPosition(x, y);
-
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
-	int a = 1;
 }
 
 void CPlayScene::Load()
@@ -232,15 +258,17 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
 	// Load map resource 
-	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 36, -4);
+	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 36, 4);
 	map->LoadMap("resources\\Scene1_map.csv");	
 
-	
+	// CMaps::GetInstance()->Add(L"resources\\Scene1.png", L"resources\\scene1-map.txt", 1);
+	//tilemap->Add(L"textures\\scene1_map.txt", L"textures\\scene1.png", -12);
 }
 
 
 void CPlayScene::Update(DWORD dt){
 
+	
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
@@ -253,7 +281,7 @@ void CPlayScene::Update(DWORD dt){
 	{
 		if (objects[i]->visible == false)
 			continue;
-		objects[i]->Update(dt,&objects, &coObjects);
+		objects[i]->Update(dt, &coObjects);
 	}
 
 	// Update camera to follow simon
@@ -274,16 +302,15 @@ void CPlayScene::Update(DWORD dt){
 void CPlayScene::Render()
 {
 	// Render map
-	map->DrawMap();
+	 map->DrawMap();
 
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = objects.size()-1; i >=0;i--) // Simon is rendered at the last 
 	{
 		if (objects[i]->visible == false)
 			continue;
 		objects[i]->Render();
 	}
-		
-
+	
 }
 
 /*
