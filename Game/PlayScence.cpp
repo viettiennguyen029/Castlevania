@@ -33,6 +33,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_ITEM_BIG_HEART		4
 #define OBJECT_TYPE_ITEM_CHAIN			5
 #define OBJECT_TYPE_ITEM_DAGGER			6
+#define OBJECT_TYPE_DAGGER					7
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -50,8 +51,7 @@ void CPlayScene::_ParseSection_TEXTURES(string line)
 	int G = atoi(tokens[3].c_str());
 	int B = atoi(tokens[4].c_str());
 
-	CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
-	
+	CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));	
 }
 
 void CPlayScene::_ParseSection_SPRITES(string line)
@@ -148,13 +148,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] SIMON object was created before! ");
 			return;
 		}
-		obj = new CSimon();
+		obj = new CSimon(x,y);
 		player = (CSimon*)obj;
+		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	}
 
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_WHIP: obj = new CWhip(); break;
+	case OBJECT_TYPE_DAGGER: obj = new CDagger(); break;
 
 	case OBJECT_TYPE_CANDLE: 
 	{
@@ -253,7 +255,7 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
 	// Load map resource 
-	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 36, 4);
+	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 0, 22);
 	map->LoadMap("resources\\Scene1_map.csv");	
 }
 
@@ -318,7 +320,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	DebugOut(L"KeyDown: %d\n", KeyCode);
 
-	CSimon *simon = ((CPlayScene*)scence)->player;
+	CSimon *simon = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{	
 	case DIK_SPACE:
@@ -331,7 +333,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetState(SIMON_STATE_JUMP);
 		break;
 	}		
-	case DIK_S:
+	case DIK_S: // Attack
 		// If Simon's state attack is not end, then continue
 		if ((simon->GetState() == SIMON_STATE_ATTACK || 
 			simon->GetState() == SIMON_STATE_SIT_ATTACK))
@@ -348,10 +350,18 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		}
 		break;
 
+	case DIK_D: // Sub attack
+	{
+		break;
+	}
+	case DIK_Q: // Upgrade whip
+	{
+		simon->whip->PowerUp();
+		break;
+	}
+
 	case DIK_A: // reset
-		simon->SetState(SIMON_STATE_IDLE);
-		simon->SetPosition(50.0f, 0.0f);
-		simon->SetSpeed(0, 0);
+		simon->Reset(); 
 		break;
 	}
 }
@@ -363,7 +373,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
-	CSimon *simon = ((CPlayScene*)scence)->player;
+	CSimon *simon = ((CPlayScene*)scence)->GetPlayer();
 
 	// When Simon is not touched on the ground, continue rendering jump animation
 	if (simon->GetState() == SIMON_STATE_JUMP && simon->isOnGround() == false)		

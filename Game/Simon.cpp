@@ -1,15 +1,18 @@
 ﻿#include "Simon.h"
 #include "Candle.h"
 
-CSimon::CSimon() :CGameObject()
+CSimon::CSimon(float x, float y) :CGameObject()
 {
+	start_x = x;
+	start_y = y;
+	this->x = x;
+	this->y = y;
 	SetState(SIMON_STATE_IDLE);
 	whip = new CWhip();
 }
 
 void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 {
-
 	// Calculate x,y
 	CGameObject::Update(dt);
 	whip->Update(dt, coObjects);
@@ -60,7 +63,6 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				// Process normally
 				if (e->nx != 0) x += dx;
 				if (e->ny != 0) y += dy;
-
 			}
 
 			// Collision logic with Brick 
@@ -94,14 +96,15 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				if (e->nx != 0 || e->ny != 0)
 				{
 					e->obj->SetVisible(false);
+					//subWeapon = true;
 				}
 			}
 
 			// switching scene logic		
 			else if (dynamic_cast<CPortal*> (e->obj))
 			{
+				DebugOut(L"[INFO] Portal detection ! \n");
 				CPortal* p = dynamic_cast<CPortal*> (e->obj);
-				DebugOut(L"[INFO] Switching to scene %d", p->GetSceneId());
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
 
@@ -205,6 +208,13 @@ void CSimon::SetState(int state)
 	}
 }
 
+void CSimon::Reset()
+{
+	SetState(SIMON_STATE_IDLE);
+	SetPosition(start_x, start_y);
+	SetSpeed(0, 0);
+}
+
 void CSimon::Render()
 {
 	int ani = -1;
@@ -228,8 +238,10 @@ void CSimon::Render()
 	// RenderBoundingBox();	
 
 	// Whip rendering
-	if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_SIT_ATTACK)
+	// Need to update
+	if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_SIT_ATTACK) 
 	{
+		// if (subWeapon==false)
 		whip->Render(animation_set->at(ani)->GetCurrentFrame());
 	}
 }

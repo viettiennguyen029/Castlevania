@@ -13,6 +13,7 @@
 #include "ItemBigHeart.h"
 #include "ItemChain.h"
 #include "ItemDagger.h"
+#include "Dagger.h"
 
 using namespace std;
 class CPlayScene: public CScene
@@ -20,6 +21,7 @@ class CPlayScene: public CScene
 protected: 
 	CSimon* player;	// A play scene has to have player, right? 
 	CWhip* whip;
+	CDagger* dagger;
 	CTileMap* map;
 	
 	vector<LPGAMEOBJECT> objects;
@@ -31,15 +33,15 @@ protected:
 	void _ParseSection_OBJECTS(string line);
 
 public: 
-	
 	CPlayScene(int id, LPCWSTR filePath);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
 
+	CSimon* GetPlayer() { return player; }
+	// CDagger* GetDagger() { return this->dagger; }
 
-	friend class CPlayScenceKeyHandler;
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler
@@ -50,4 +52,3 @@ public:
 	void OnKeyUp(int KeyCode);
 	CPlayScenceKeyHandler(CScene *s) :CScenceKeyHandler(s) {};
 };
-

@@ -3,15 +3,13 @@
 #include <stdlib.h>
 #include <fstream>
 
-CTileMap::CTileMap(LPCWSTR picturePath, int id, int translate_y, int translate_x)
+CTileMap::CTileMap(LPCWSTR _picturePath, int _id, int _translate_x, int _translate_y)
 {
-	id = id;
+	this->ID = _id;
+	this->translate_x = _translate_x;
+	this->translate_y = _translate_y;
 
-	translate_y = translate_y;
-	translate_x = translate_x;
-
-	textures->Add(id, picturePath, D3DCOLOR_XRGB(0, 0, 0));
-
+	textures->Add(ID, _picturePath, D3DCOLOR_XRGB(0, 0, 0));
 }
 
 void CTileMap::LoadMap(const char *filePath)
@@ -30,10 +28,7 @@ void CTileMap::LoadMap(const char *filePath)
 			fscanf_s(pFile, "%d", &tiledMap[i][j]);
 		}
 	}
-
-
-	fclose(pFile);
-	
+	fclose(pFile);	
 }
 
 void CTileMap::DrawMap()
@@ -46,14 +41,14 @@ void CTileMap::DrawMap()
 	int colCamRight = colCamLeft + SCREEN_WIDTH / tileWidth+SCREEN_WIDTH/2;
 
 	int rowCamTop = y / tileHeight;
-	int rowCamBottom = rowCamTop + 180 / tileHeight;
+	int rowCamBottom = rowCamTop + SCREEN_HEIGHT / tileHeight;
 
 	for (int j = colCamLeft; j <= colCamRight; j++) 
 	{
 		for (int i = rowCamTop; i < rowCamBottom; i++)
 		{
 			float pos_x = (j - colCamLeft) * tileWidth+ translate_x;
-			float pos_y = (i - rowCamTop) * tileHeight+translate_y+22;
+			float pos_y = (i - rowCamTop) * tileHeight+translate_y;
 
 			RECT rectTile;
 			int index = tiledMap[i][j];
@@ -66,9 +61,7 @@ void CTileMap::DrawMap()
 			 CGame::GetInstance()->Draw(pos_x, pos_y, -1,CTextures::GetInstance()->Get(MAP_SCENCE_1), rectTile.left, rectTile.top, rectTile.right, rectTile.bottom);
 			
 		}
-	}
-
-	
+	}	
 }
 
 

@@ -97,6 +97,9 @@
 #destroyed
 202	22003	100	22004	100	22005	100
 
+# ==== DAGGER =========
+404	40003	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -115,13 +118,15 @@
 42	402
 #ITEMS_Dagger
 43	403
+#Dagger
+44	404
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger
+# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
 
 # SIMON
-0	46	100	0
+0	546	100	0
 
 # CANDLE
 #extra_settings = Item Object ID
@@ -139,6 +144,9 @@
 5	330	136	42
 #Dagger
 6	570	136	43
+
+#DAGGER
+7	46	100	44
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -191,5 +199,5 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	360	98	0	316	150	2
+50	680	120	0	700	180	2
 

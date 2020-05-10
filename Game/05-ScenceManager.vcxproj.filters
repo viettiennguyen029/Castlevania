@@ -1,171 +1,154 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Frameworks">
+      <UniqueIdentifier>{deb3dd52-a083-4c55-b72d-3117063a00ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{e9b94b9d-f7a6-4266-9d13-f92519d3a40f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Map">
+      <UniqueIdentifier>{42520ce2-5265-4ca2-9b25-6909adbd5b54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Items">
-      <UniqueIdentifier>{7781549b-43d4-4b1c-8faa-748f4587b86d}</UniqueIdentifier>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{ade01cec-59f4-4ef4-aa78-915e6eced053}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Items">
-      <UniqueIdentifier>{0e8d7829-59d4-4feb-8895-0823351fd00f}</UniqueIdentifier>
+    <Filter Include="Items">
+      <UniqueIdentifier>{99a2bd7f-4459-466c-bc9e-bfe953825048}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Scenes">
-      <UniqueIdentifier>{c92db914-9d1b-4d37-8c22-1a8a982e18ba}</UniqueIdentifier>
+    <Filter Include="Weapon">
+      <UniqueIdentifier>{4c4bdec0-da4f-438b-a6da-6e06d3d6cf7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Scenes">
-      <UniqueIdentifier>{a757f7a4-ce36-4a0e-8bd3-1ef63b7ebb5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Objects">
-      <UniqueIdentifier>{3f32959d-9dcf-4483-974c-ed208cbfd2f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects">
-      <UniqueIdentifier>{2236d4fb-070c-41ca-a442-df97b5e84e9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Map">
-      <UniqueIdentifier>{d18d4774-9e38-4dfd-abcb-6ce7e9585543}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Map">
-      <UniqueIdentifier>{944e5604-0596-47c1-a7af-f7d651dc066d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Framework">
-      <UniqueIdentifier>{9b610ad1-2c39-4214-91c6-849792926825}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Framework">
-      <UniqueIdentifier>{43d4fbc3-1fc7-4b0c-9994-917f2a906e1a}</UniqueIdentifier>
+    <Filter Include="Player">
+      <UniqueIdentifier>{f8f09e29-d6e3-4890-a79a-0e2a4dd22083}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemBigHeart.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemChain.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemDagger.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="Items.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
     <ClCompile Include="Animations.cpp">
-      <Filter>Source Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>Source Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClCompile>
     <ClCompile Include="Sprites.cpp">
-      <Filter>Source Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClCompile>
     <ClCompile Include="Textures.cpp">
-      <Filter>Source Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
-      <Filter>Source Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClCompile>
     <ClCompile Include="PlayScence.cpp">
-      <Filter>Source Files\Scenes</Filter>
+      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Scence.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Candle.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Koopas.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Portal.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Simon.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Whip.cpp">
-      <Filter>Source Files\Objects</Filter>
+      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="TileMap.cpp">
-      <Filter>Source Files\Map</Filter>
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopas.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemBigHeart.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemChain.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemDagger.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Items.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Dagger.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Whip.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Simon.cpp">
+      <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ItemBigHeart.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemChain.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemDagger.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Items.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
     <ClInclude Include="Animations.h">
-      <Filter>Header Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Header Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
-      <Filter>Header Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClInclude>
     <ClInclude Include="Sprites.h">
-      <Filter>Header Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClInclude>
     <ClInclude Include="Textures.h">
-      <Filter>Header Files\Framework</Filter>
+      <Filter>Frameworks</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
-      <Filter>Header Files\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Scence.h">
-      <Filter>Header Files\Scenes</Filter>
+      <Filter>Frameworks</Filter>
     </ClInclude>
     <ClInclude Include="PlayScence.h">
-      <Filter>Header Files\Scenes</Filter>
+      <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Candle.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Koopas.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Portal.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Simon.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Whip.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Objects</Filter>
+    <ClInclude Include="Scence.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="TileMap.h">
-      <Filter>Header Files\Map</Filter>
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopas.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBigHeart.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemChain.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemDagger.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Items.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Dagger.h">
+      <Filter>Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Whip.h">
+      <Filter>Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
