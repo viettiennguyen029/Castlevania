@@ -135,9 +135,9 @@
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Simon.cpp" />
-    <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -157,9 +157,9 @@
     <ClInclude Include="ItemDagger.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Simon.h" />
-    <ClInclude Include="TileMap.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

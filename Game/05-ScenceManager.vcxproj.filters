@@ -45,9 +45,6 @@
     <ClCompile Include="Scence.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="TileMap.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
     <ClCompile Include="Brick.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
@@ -85,6 +82,9 @@
     <ClCompile Include="Simon.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -110,9 +110,6 @@
     </ClInclude>
     <ClInclude Include="Scence.h">
       <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="TileMap.h">
-      <Filter>Map</Filter>
     </ClInclude>
     <ClInclude Include="Brick.h">
       <Filter>Objects</Filter>
@@ -149,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="Simon.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

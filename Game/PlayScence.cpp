@@ -185,19 +185,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new ItemDagger();
 		CItems::GetInstance()->AddItem((int)CGameObject::ItemType::DAGGER, obj);
 		break;
-	}	
-	
+	}
+
 	case OBJECT_TYPE_PORTAL:
-		{	
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
-			obj = new CPortal(x, y, r, b, scene_id);
-		}
-		break;
+	{
+		float r = atof(tokens[4].c_str());
+		float b = atof(tokens[5].c_str());
+		int scene_id = atoi(tokens[6].c_str());
+		obj = new CPortal(x, y, r, b, scene_id);
+	}
+	break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
-		return;	
+		return;
 	}
 
 	// General object setup
@@ -254,9 +254,8 @@ void CPlayScene::Load()
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
-	// Load map resource 
-	map = new CTileMap(L"resources\\Scene1.png", MAP_SCENCE_1, 0, 22);
-	map->LoadMap("resources\\Scene1_map.csv");	
+	// New map structure
+	tilemaps->Add(MAP_1, MAP_1_TEX_PATH, MAP_1_MATRIX_PATH, MAP_1_WIDTH, MAP_1_HEIGHT);
 }
 
 
@@ -280,21 +279,28 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow simon
 	float cx, cy;
 	player->GetPosition(cx, cy);
-	if ( cx>600)
+
+	int mapWidth = CMaps::GetInstance()->Get(MAP_1)->GetMapWidth();
+
+	if ( cx>mapWidth-SCREEN_WIDTH/2-32)
 	{
 		return;
 	}
+
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth()/2 ;
 	cy -= game->GetScreenHeight()/2;
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+
+	//UpdateCamPos();
+
 }
 
 void CPlayScene::Render()
 {
 	// Render map
-	 map->DrawMap();
+	 tilemaps->Get(MAP_1)->DrawMap(CGame::GetInstance()->GetCamPos());
 
 	for (int i = objects.size()-1; i >=0;i--) // Simon is rendered at the last 
 	{
@@ -315,6 +321,7 @@ void CPlayScene::Unload()
 	objects.clear();
 	player = NULL;
 }
+
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {

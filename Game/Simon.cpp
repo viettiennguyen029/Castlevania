@@ -105,7 +105,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			{
 				DebugOut(L"[INFO] Portal detection ! \n");
 				CPortal* p = dynamic_cast<CPortal*> (e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				//CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
 
 			else
