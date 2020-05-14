@@ -82,7 +82,10 @@
     <ClCompile Include="Simon.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
+    <ClCompile Include="Black_Knight.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
       <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
@@ -147,7 +150,10 @@
     <ClInclude Include="Simon.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
+    <ClInclude Include="Black_Knight.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
       <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,25 +5,40 @@
 #include "GameObject.h"
 #include "Brick.h"
 #include "Koopas.h"
-#include "Map.h"
+#include"Tile.h"
 #include "Simon.h"
 #include "Candle.h"
+#include "Portal.h"
 #include "Whip.h"
 #include "Items.h"
 #include "ItemBigHeart.h"
 #include "ItemChain.h"
 #include "ItemDagger.h"
 #include "Dagger.h"
+#include "Black_Knight.h"
 
-#define SCREEN_WIDTH	 280
+#define SCREEN_WIDTH	 250
 #define SCREEN_HEIGHT 230
 
 #define MAP_1					100
 #define MAP_1_WIDTH		768
 #define MAP_1_HEIGHT		192
+#define MAP_1_MARGIN		22
+
+#define MAP_2					200
+#define MAP_2_WIDTH		300
+#define MAP_2_HEIGHT		193
+#define MAP_2_MARGIN		-6
 
 #define MAP_1_TEX_PATH  L"resources\\tilesheet1.png"
 #define MAP_1_MATRIX_PATH  L"resources\\matrix1.txt"
+
+#define MAP_2_TEX_PATH  L"resources\\tilesheet2.png"
+#define MAP_2_MATRIX_PATH  L"resources\\matrix2.txt"
+
+#define TILE_WIDTH	32
+#define TILE_HEIGHT	32
+
 using namespace std;
 
 class CPlayScene: public CScene
@@ -33,7 +48,8 @@ protected:
 	CWhip* whip;
 	CDagger* dagger;
 	
-	CMaps* tilemaps = CMaps::GetInstance();
+	int mapWidth, offset_y;
+	vector<LPTILE> tiledMap;
 	
 	vector<LPGAMEOBJECT> objects;
 
@@ -42,6 +58,7 @@ protected:
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void  _ParseSection_TILE_MAP(string line);
 
 public: 
 	CPlayScene(int id, LPCWSTR filePath);

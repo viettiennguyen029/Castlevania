@@ -78,7 +78,7 @@ public:
 	// Position
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
-	D3DXVECTOR2 GetPosition() { return D3DXVECTOR2(x, y); }
+
 
 	// Speed
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }	

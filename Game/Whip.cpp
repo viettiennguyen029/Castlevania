@@ -4,7 +4,7 @@
 
 CWhip::CWhip():CGameObject()
 {
-	SetState(NORMAL_WHIP);
+	//SetState(NORMAL_WHIP);
 }
 
 void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
