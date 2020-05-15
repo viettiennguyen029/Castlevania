@@ -228,12 +228,12 @@ void CPlayScene::_ParseSection_TILE_MAP(string line)
 	//int nums_rowToRead = surfaceDesc.Height / TILE_HEIGHT;
 	int nums_colToRead = surfaceDesc.Width / TILE_WIDTH;
 	
-	vector<string> tokens = split(line);
-
-	for (int i = 0; i < tokens.size(); i++)
+	vector<string> map_tokens = split(line);
+	
+	for (int i = 0; i < map_tokens.size(); i++)
 	{
 		RECT rectTile;
-		int index = atoi(tokens[i].c_str());
+		int index = atoi(map_tokens[i].c_str());
 		rectTile.left = (index % nums_colToRead) * TILE_WIDTH;
 		rectTile.top = (index / nums_colToRead) * TILE_HEIGHT;
 		rectTile.right = rectTile.left + TILE_WIDTH;
@@ -415,6 +415,14 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 	case DIK_A: // reset
 		simon->Reset(); 
+		break;
+
+	case DIK_2:
+		CGame::GetInstance()->SwitchScene(2);
+		break;
+
+	case DIK_3:
+		CGame::GetInstance()->SwitchScene(3);
 		break;
 	}
 }

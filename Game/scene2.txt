@@ -194,7 +194,7 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	160	0	0	180	10	1
+50	160	0	0	180	10	3
 
 [TILE_MAP]
 0	1	2	2	3	4	1	5	6

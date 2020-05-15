@@ -15,5 +15,4 @@ void DebugOut(wchar_t *fmt, ...);
 
 vector<string> split(string line, string delimeter = "\t");
 wstring ToWSTR(string st);
-
 LPCWSTR ToLPCWSTR(string st);
