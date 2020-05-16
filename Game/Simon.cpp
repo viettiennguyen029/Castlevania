@@ -1,6 +1,14 @@
 ﻿#include "Simon.h"
 #include "Candle.h"
 
+CSimon* CSimon::__instance = NULL;
+CSimon* CSimon::GetInstance()
+{
+	if (__instance == NULL) __instance = new CSimon();
+	__instance->visible = true;
+	return __instance;
+}
+
 CSimon::CSimon(float x, float y) :CGameObject()
 {
 	start_x = x;

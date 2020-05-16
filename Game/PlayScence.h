@@ -4,7 +4,6 @@
 #include "Scence.h"
 #include "GameObject.h"
 #include "Brick.h"
-#include "Koopas.h"
 #include"Tile.h"
 #include "Simon.h"
 #include "Candle.h"
@@ -53,11 +52,8 @@ protected:
 	
 	vector<LPGAMEOBJECT> objects;
 
-	void _ParseSection_TEXTURES(string line);
-	void _ParseSection_SPRITES(string line);
-	void _ParseSection_ANIMATIONS(string line);
-	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_MAP_INFO(string line);
 	void  _ParseSection_TILE_MAP(string line);
 
 public: 

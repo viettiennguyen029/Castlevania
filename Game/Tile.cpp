@@ -12,7 +12,8 @@ CTile::CTile(int _x, int _y, int _left, int _top, int _right, int _bottom)
 
 void CTile::Render()
 {
-	LPDIRECT3DTEXTURE9 texture = CTextures::GetInstance()->Get(MAP_ID);
+	int currentMapId = CGame::GetInstance()->GetSceneId();
+	LPDIRECT3DTEXTURE9 texture = CTextures::GetInstance()->Get(currentMapId);
 	CGame* game = CGame::GetInstance();
 	game->Draw(x, y, -1, texture, left, top, right, bottom, 255);
 }

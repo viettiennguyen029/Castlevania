@@ -54,9 +54,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Koopas.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
@@ -121,9 +118,6 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Koopas.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Portal.h">

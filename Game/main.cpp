@@ -25,8 +25,6 @@
 #define MAIN_WINDOW_TITLE L"Castlevania NES"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0,0)
-//#define SCREEN_WIDTH	 280
-//#define SCREEN_HEIGHT 230
 
 #define MAX_FRAME_RATE 90
 
@@ -175,9 +173,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	game->Init(hWnd);
 	game->InitKeyboard();
 
-	game->Load(L"Castlevania.txt");
+	game->LoadResources();
+	game->LoadGameFile(L"Castlevania.txt");
 	
-
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH*2, SCREEN_HEIGHT*2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	Run();
