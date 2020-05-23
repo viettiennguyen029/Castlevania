@@ -126,6 +126,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Black_Knight.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Candle.cpp" />
@@ -137,6 +138,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Simon.cpp" />
+    <ClCompile Include="StairBottom.cpp" />
+    <ClCompile Include="StairTop.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -149,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="Black_Knight.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Candle.h" />
@@ -159,6 +163,8 @@
     <ClInclude Include="Items.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Simon.h" />
+    <ClInclude Include="StairBottom.h" />
+    <ClInclude Include="StairTop.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />

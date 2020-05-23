@@ -35,11 +35,13 @@ void CCandle::GetBoundingBox(float& left, float& top, float& right, float& botto
 	{
 		right = x + CANDLE_BIG_BBOX_WIDTH;
 		bottom = y + CANDLE_BIG_BBOX_HEIGHT;
+		break;
 	}
 	case CANDLE_STATE_SMALL:
 	{
 		right = x + CANDLE_SMALL_BBOX_WIDTH;
 		bottom = y + CANDLE_SMALL_BBOX_HEIGHT;
+		break;
 	}
 	}	
 }

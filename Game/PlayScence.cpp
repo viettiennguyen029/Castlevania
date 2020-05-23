@@ -34,6 +34,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_DAGGER					7
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 
+#define OBJECT_TYPE_STAIR_BOTTOM	-2
+#define OBJECT_TYPE_STAIR_TOP			-3
+
 #define OBJECT_TYPE_PORTAL	50
 
 #define MAX_SCENE_LINE 1024
@@ -65,14 +68,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] SIMON object was created before! ");
 			return;
 		}
+		
 		obj = new CSimon(x,y);
+		
 		player = (CSimon*)obj;
+		
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	}
 
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_WHIP: obj = new CWhip(); break;
+	// case OBJECT_TYPE_WHIP: {/*obj = new CWhip();*/} break;
 	case OBJECT_TYPE_DAGGER: obj = new CDagger(); break;
 	case OBJECT_TYPE_BLACK_KNIGHT: obj = new CBlack_Knight(); break;
 
@@ -107,6 +113,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_STAIR_BOTTOM:
+	{
+		float r = atof(tokens[3].c_str());
+		float b = atof(tokens[4].c_str());
+		obj = new CStairBottom(x,y,r,b);
+		break;
+	}
+
+	case OBJECT_TYPE_STAIR_TOP:
+	{
+		float r = atof(tokens[3].c_str());
+		float b = atof(tokens[4].c_str());
+		obj = new CStairTop(x, y, r, b);
+		break;
+	}
+
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -115,6 +137,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPortal(x, y, r, b, scene_id);
 	}
 	break;
+
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -234,6 +257,8 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow simon
 	float cx, cy;
 	player->GetPosition(cx, cy);
+	//int prevSceneState = CSimon::GetInstance()->whip->GetState();
+	
 
 	if ( cx> mapWidth -SCREEN_WIDTH/2)
 	{
@@ -320,6 +345,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_Q: // Upgrade whip
 	{
 		simon->whip->PowerUp();
+		// simon->nextSceneWhip->PowerUp();
 		break;
 	}
 
@@ -375,21 +401,39 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (simon->GetState() == SIMON_STATE_SIT_ATTACK && 
 		simon->animation_set->at(SIMON_ANI_SIT_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false)
 		return;
-    			
+
+	
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
-		simon->SetOrientation(1);
-		simon->SetState(SIMON_STATE_WALKING);		
-	}	
+		if (simon->onStairs == 0)
+		{
+			simon->SetOrientation(1);
+			simon->SetState(SIMON_STATE_WALKING);
+		}
+		else
+		{
+			simon->SetOrientation(1);
+			simon->SetState(SIMON_ANI_GO_UPSTAIR);
+		}
+		
+	}
 
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
 		simon->SetOrientation(-1);
 		simon->SetState(SIMON_STATE_WALKING);
-	}	
+
+	}
 
 	else if (game->IsKeyDown(DIK_DOWN))
-		simon->SetState(SIMON_STATE_SIT);
+	{
+		if (simon->onStairs != 0)
+		{
+			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
+		}
+		else  simon->SetState(SIMON_STATE_SIT);
+		
+	}		
 
 	else if (game->IsKeyDown(DIK_UP))
 		simon->SetState(SIMON_STATE_GO_UPSTAIR);

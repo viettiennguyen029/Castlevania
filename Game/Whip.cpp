@@ -7,6 +7,10 @@ CWhip::CWhip():CGameObject()
 	//SetState(NORMAL_WHIP);
 }
 
+void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+}
+
 void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {	 
 	top = y + OFFSET_TOP;
@@ -64,11 +68,20 @@ void CWhip::SetWhipPosition(D3DXVECTOR2 simonPos, bool isStanding)
 	
 	SetPosition(simonPos.x, simonPos.y);
 }
-	
+
 void CWhip::PowerUp()
 {
 	if (state == NORMAL_WHIP) SetState(SHORT_CHAIN) ;	
 	 else if (state == SHORT_CHAIN) SetState(LONG_CHAIN);
+
+	// DebugOut(L"Whip Level %d\n", GetState());
+}
+
+CWhip* CWhip::__instance = NULL;
+CWhip* CWhip::GetInstance()
+{
+	if (__instance == NULL) __instance = new CWhip();
+	return __instance;
 }
 
 void CWhip::Render(int currentFrame)

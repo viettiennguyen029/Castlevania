@@ -22,6 +22,9 @@
     <Filter Include="Player">
       <UniqueIdentifier>{f8f09e29-d6e3-4890-a79a-0e2a4dd22083}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Hidden Objects">
+      <UniqueIdentifier>{d6b43887-14c4-4199-a234-261ef22720a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp">
@@ -54,9 +57,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Portal.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="ItemBigHeart.cpp">
       <Filter>Items</Filter>
     </ClCompile>
@@ -84,6 +84,18 @@
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Hidden Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="StairBottom.cpp">
+      <Filter>Hidden Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="StairTop.cpp">
+      <Filter>Hidden Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,9 +132,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Portal.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="ItemBigHeart.h">
       <Filter>Items</Filter>
     </ClInclude>
@@ -149,6 +158,18 @@
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Hidden Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="StairBottom.h">
+      <Filter>Hidden Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="StairTop.h">
+      <Filter>Hidden Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

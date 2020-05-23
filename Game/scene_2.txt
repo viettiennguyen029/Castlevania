@@ -71,6 +71,14 @@
 # WHIP
 #3	0	0	3
 
+# STAIR bottom
+# type	l	t	r	b
+-2	110	138	126	170
+
+# STAIR top
+# type	l	t	r	b
+-3	163	74	179	104
+
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 50	160	0	0	180	10	1

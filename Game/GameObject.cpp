@@ -137,7 +137,29 @@ void CGameObject::RenderBoundingBox()
 	rect.right = (int)r - (int)l;
 	rect.bottom = (int)b - (int)t;
 
-	CGame::GetInstance()->Draw(l, t, 1, bbox, 0, 0, rect.right, rect.bottom, 100);
+	CGame::GetInstance()->Draw(l, t, 1, bbox, 0, 0, rect.right, rect.bottom, 156);
+}
+
+bool CGameObject::IsOverlapping(LPGAMEOBJECT obj)
+{
+	float left, top, right, bottom;
+	float leftObj, topObj, rightObj, bottomObj;
+
+	obj->GetBoundingBox(leftObj, topObj, rightObj, bottomObj);
+	GetBoundingBox(left, top, right, bottom);
+
+	if (left < rightObj && right > leftObj &&
+		top < bottomObj && bottom > topObj)
+		return true;
+
+	return false;
+}
+
+void CGameObject::ReDirect(float positionX)
+{
+	if (positionX - x == 0) { /* Do nothing. */ }
+	else if (positionX - x < 0) nx = -1;
+	else	nx = 1;
 }
 
 

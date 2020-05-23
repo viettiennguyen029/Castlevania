@@ -127,5 +127,7 @@ public:
 	~CGameObject();
 	
 	void RenderBoundingBox();
+	virtual bool IsOverlapping(LPGAMEOBJECT obj);
+	void ReDirect(float positionX);
 };
 

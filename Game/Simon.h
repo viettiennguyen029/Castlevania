@@ -7,6 +7,9 @@
 #include "Animations.h"
 #include "Whip.h"
 #include "Dagger.h"
+#include "StairBottom.h"
+#include "StairTop.h"
+
 
 #define SIMON_STATE_IDLE								0
 #define SIMON_STATE_WALKING						1
@@ -19,6 +22,8 @@
 #define SIMON_STATE_ATTACK_UPSTAIR			8
 #define SIMON_STATE_ATTACK_DOWNSTAIR		9
 #define SIMON_STATE_DEFLECT							10
+#define SIMON_STATE_IDLE_UPSTAIR					11
+#define SIMON_STATE_IDLE_DOWNSTAIR			12
 
 #define SIMON_STATE_DIE						400
 
@@ -26,38 +31,61 @@
 #define SIMON_ANI_WALKING	1
 #define SIMON_ANI_JUMP			2
 #define SIMON_ANI_SIT				3
-
 #define SIMON_ANI_ATTACK				4
 #define SIMON_ANI_SIT_ATTACK		5
-
 #define SIMON_ANI_GO_UPSTAIR						6
 #define SIMON_ANI_GO_DOWNSTAIR				7
-#define SIMON_STATE_ATTACK_UPSTAIR			8
-#define SIMON_STATE_ATTACK_DOWNSTAIR		9
+#define SIMON_ANI_ATTACK_UPSTAIR				8
+#define SIMON_ANI_ATTACK_DOWNSTAIR		9
 
-#define SIMON_STATE_DEFLECT							10
+#define SIMON_ANI_DEFLECT							10
+
+#define SIMON_ANI_IDLE_UPSTAIR	11
+#define SIMON_ANI_IDLE_DOWNSTAIR	12
 
 #define SIMON_GRAVITY						0.0005f	
 #define SIMON_WALKING_SPEED			0.06f
 #define SIMON_JUMP_SPEED_Y				0.18f
-#define SIMON_GO_UPSTAIR_SPEED		0.04f
+#define SIMON_GO_UPSTAIR_SPEED		0.03f
 #define SIMON_DIE_DEFLECT_SPEED		0.5
 #define SIMON_ATTACK_TIME				300
+#define SIMON_AUTO_STAIR_TIME			300
 
 #define SIMON_BBOX_WIDTH			15
 #define SIMON_BBOX_HEIGHT			30
+
+
+/*
+	Data struct for saving auto move event
+*/
+struct AutoMoveInfo
+{
+	float vx;
+	float vy;
+	float xDes;				// For auto moving till reach a point
+	float yDes;
+	DWORD autoTimeLast;		// For auto moving within a given time
+};
 
 class CSimon : public CGameObject
 {
 	static CSimon* __instance; // Singleton Patern
 	float start_x, start_y; // Initial position of simon at scene instead of (0,0)
-public:
 
-	CWhip* whip;	
+public:
+	// Assigned to -1 if going downstairs
+	// Assigned to 1 if going upstairs
+	// Assigned to 0 if not on stairs
+	int onStairs;
+
+	LPWHIP whip;	
+	LPWHIP nextSceneWhip;
 	CDagger* dagger;
 
 	bool isStanding;
-	bool subWeapon = false;
+	bool autoMove;
+
+	AutoMoveInfo autoMoveInfo;
 
 	CSimon(float x=0.0f, float y =0.0f);
 
@@ -70,4 +98,11 @@ public:
 	bool isOnGround() { return vy == 0; }	
 
 	static CSimon* GetInstance();
+
+	void GoUpStair();
+	void GoDownStair();
+	void ProceedOnStairs();
+	vector<LPGAMEOBJECT> ovObjects;		// overlapping objects
+
+	void StartAutoMove(float vx, float xDestination);
 };
