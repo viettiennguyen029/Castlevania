@@ -53,6 +53,9 @@ public:
 	float vx;
 	float vy;
 
+	int width;
+	int height;
+
 	int nx;	 // riight =1, lefft =-1
 
 	int state;
@@ -79,7 +82,6 @@ public:
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 
-
 	// Speed
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }	
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
@@ -92,7 +94,12 @@ public:
 	void SetVisible(bool visible) { this->visible = visible; }
 	bool isVisible() { return this->visible; }	
 
-	// Item
+	// Size
+	void SetWidth(int w) { this->width = w; }
+	int GetWidth() { return this->width; }
+	void SetHeight(int h) { this->height = h; }
+	int GetHeight() { return this->height; }
+
 	//ItemType item;
 	int GetItemId() { return itemId; }
 	void SetItemId(int id) { this->itemId = id; }

@@ -77,9 +77,24 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_BRICK:
+	{
+		int width = atoi(tokens[4].c_str());
+		int height = atoi(tokens[5].c_str());
+		obj = new CBrick();
+		obj->SetWidth(width);
+		obj->SetHeight(height);
+		break;
+
+	}
 	// case OBJECT_TYPE_WHIP: {/*obj = new CWhip();*/} break;
-	case OBJECT_TYPE_DAGGER: obj = new CDagger(); break;
+	case OBJECT_TYPE_DAGGER:
+	{
+	obj = new CDagger();
+	dagger = (CDagger*)obj;
+	obj->visible = false;
+	break;
+	}
 	case OBJECT_TYPE_BLACK_KNIGHT: obj = new CBlack_Knight(); break;
 
 	case OBJECT_TYPE_CANDLE: 
@@ -309,6 +324,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	DebugOut(L"KeyDown: %d\n", KeyCode);
 
 	CSimon *simon = ((CPlayScene*)scence)->GetPlayer();
+	CDagger *dagger = ((CPlayScene*)scence)->GetDagger();
 	switch (KeyCode)
 	{	
 	case DIK_SPACE:
@@ -322,12 +338,28 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	}		
 	case DIK_S: // Attack
+	{
+
+		if (CGame::GetInstance()->IsKeyDown(DIK_UP)) // Sub weapon attack 
+		{
+			if (simon->subWeapon == false)
+				return;
+			if (simon->GetState()== SIMON_STATE_THROW && dagger->visible == true) return;
+
+			float xS, yS;
+			simon->GetPosition(xS, yS);
+			dagger->SetPosition(xS, yS);
+			dagger->SetOrientation(simon->nx);
+			dagger->SetVisible(true);
+			simon->SetState(SIMON_STATE_THROW);
+		}
+
 		// If Simon's state attack is not end, then continue
-		if ((simon->GetState() == SIMON_STATE_ATTACK || 
+		if ((simon->GetState() == SIMON_STATE_ATTACK ||
 			simon->GetState() == SIMON_STATE_SIT_ATTACK))
 			return;
 
-		if (simon->GetState() == SIMON_STATE_IDLE || 
+		if (simon->GetState() == SIMON_STATE_IDLE ||
 			simon->GetState() == SIMON_STATE_JUMP) // Đứng đánh
 		{
 			simon->SetState(SIMON_STATE_ATTACK);
@@ -337,15 +369,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			simon->SetState(SIMON_STATE_SIT_ATTACK);
 		}
 		break;
-
-	case DIK_D: // Sub attack
-	{
-		break;
-	}
+	}	
+	
 	case DIK_Q: // Upgrade whip
 	{
 		simon->whip->PowerUp();
-		// simon->nextSceneWhip->PowerUp();
+		 simon->nextSceneWhip->PowerUp();
 		break;
 	}
 
@@ -402,6 +431,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		simon->animation_set->at(SIMON_ANI_SIT_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false)
 		return;
 
+	if (simon->GetState() == SIMON_STATE_THROW &&
+		simon->animation_set->at(SIMON_ANI_THROW)->IsOver(SIMON_ATTACK_TIME) == false)
+		return;
+	
 	
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
@@ -420,8 +453,17 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		simon->SetOrientation(-1);
-		simon->SetState(SIMON_STATE_WALKING);
+		if (simon->onStairs == 0)
+		{
+			simon->SetOrientation(-1);
+			simon->SetState(SIMON_STATE_WALKING);
+		}
+		else
+		{
+			simon->SetOrientation(-1);
+			simon->SetState(SIMON_ANI_GO_DOWNSTAIR);
+		}
+		
 
 	}
 

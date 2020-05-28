@@ -51,7 +51,7 @@ public:
 	virtual void Unload();
 
 	CSimon* GetPlayer() { return player; }
-	// CDagger* GetDagger() { return this->dagger; }
+	CDagger* GetDagger() { return dagger; }
 
 };
 

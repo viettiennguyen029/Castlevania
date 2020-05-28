@@ -14,7 +14,6 @@ CGameObject::CGameObject()
 	vx = vy = 0;
 	nx = 1;	
 	visible = true;
-
 }
 
 void CGameObject::Update(DWORD dt,vector<LPGAMEOBJECT>* coObjects)

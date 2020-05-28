@@ -18,6 +18,7 @@ using namespace std;
 #define KEYBOARD_BUFFER_SIZE 1024
 #define RESOURCE_FILE_PATH L"Resources.txt"
 
+
 class CGame
 {
 	static CGame * __instance;
@@ -59,7 +60,7 @@ public:
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }
 	void Init(HWND hWnd);
 	void Draw(float x, float y, int nx,LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha = 255);
-
+	
 	int IsKeyDown(int KeyCode);
 	void ProcessKeyboard();
 

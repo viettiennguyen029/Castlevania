@@ -24,6 +24,7 @@
 #define SIMON_STATE_DEFLECT							10
 #define SIMON_STATE_IDLE_UPSTAIR					11
 #define SIMON_STATE_IDLE_DOWNSTAIR			12
+#define SIMON_STATE_THROW							13
 
 #define SIMON_STATE_DIE						400
 
@@ -40,8 +41,9 @@
 
 #define SIMON_ANI_DEFLECT							10
 
-#define SIMON_ANI_IDLE_UPSTAIR	11
+#define SIMON_ANI_IDLE_UPSTAIR		11
 #define SIMON_ANI_IDLE_DOWNSTAIR	12
+#define SIMON_ANI_THROW					13
 
 #define SIMON_GRAVITY						0.0005f	
 #define SIMON_WALKING_SPEED			0.06f
@@ -73,15 +75,17 @@ class CSimon : public CGameObject
 	float start_x, start_y; // Initial position of simon at scene instead of (0,0)
 
 public:
-	// Assigned to -1 if going downstairs
-	// Assigned to 1 if going upstairs
-	// Assigned to 0 if not on stairs
+
+	/* Assigned to -1 if going downstairs
+	 Assigned to 1 if going upstairs
+	 Assigned to 0 if not on stairs*/
 	int onStairs;
 
 	LPWHIP whip;	
 	LPWHIP nextSceneWhip;
 	CDagger* dagger;
 
+	bool subWeapon = false;
 	bool isStanding;
 	bool autoMove;
 
@@ -103,6 +107,7 @@ public:
 	void GoDownStair();
 	void ProceedOnStairs();
 	vector<LPGAMEOBJECT> ovObjects;		// overlapping objects
-
 	void StartAutoMove(float vx, float xDestination);
+
+
 };
