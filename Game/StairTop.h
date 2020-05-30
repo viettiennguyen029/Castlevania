@@ -3,8 +3,6 @@
 
 class CStairTop : public CGameObject
 {
-	int width;
-	int height;
 
 public:
 	CStairTop(float l, float t, float r, float b);

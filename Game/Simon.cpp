@@ -4,8 +4,8 @@
 CSimon* CSimon::__instance = NULL;
 CSimon* CSimon::GetInstance()
 {
-	if (__instance == NULL) __instance = new CSimon();
-	__instance->visible = true;
+	if (__instance == NULL)
+		__instance = new CSimon();
 	return __instance;
 }
 
@@ -174,10 +174,9 @@ CSimon::CSimon(float x, float y) :CGameObject()
 	this->x = x;
 	this->y = y;
 	this->autoMove = false;
+	enemiesActived = false;
 	SetState(SIMON_STATE_IDLE);
-	nextSceneWhip  = CWhip::GetInstance();
-	whip = new CWhip();
-	whip->SetState(nextSceneWhip->GetState());
+    whip = new CWhip();
 	dagger = new CDagger();
 }
 
@@ -246,22 +245,22 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			{
 				// DebugOut(L"[INFO] Collision Simon and Candle %d %d\n", e->nx, e->ny);
 				// Process normally
-				x += dx;
-				y += dy;
+				if (e->nx != 0) x += dx;
+				if (e->ny != 0) y += dy;
 			}
 
 			// Collision logic with Brick 
 			else if (dynamic_cast<CBrick*>(e->obj))
 			{
-				if (onStairs == 0)//Turn off collision with brick when simon is on stairs
+				if (onStairs == 0)
 				{
 					if (e->ny != 0)
 					{
-						if (e->ny == -1) vy = 0;
-						else 	y += dy;
+						if (e->ny == -1) vy = 0; // simon standing on brick
+						else 	y += dy; //simon can jump through brick
 					}
 				}
-				else // Process normally
+				else  //Turn off collision with brick when simon is on stairs
 				{							
 					x += dx;
 					y += dy;
@@ -285,7 +284,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				{
 					e->obj->SetVisible(false);
 					this->whip->PowerUp();
-					this->nextSceneWhip->PowerUp();
+					//this->nextSceneWhip->PowerUp();
 					DebugOut(L"[INFO] WHIP UPGRADED \n");
 				}
 			}
@@ -317,6 +316,8 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			}
 
+		
+
 			// switching scene logic		
 			else if (dynamic_cast<CPortal*> (e->obj))
 			{
@@ -328,7 +329,9 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			else
 			{
 				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;				
+				if (ny != 0) vy = 0;			
+
+				
 			}
 		}
 	}

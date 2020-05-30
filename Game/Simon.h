@@ -45,7 +45,7 @@
 #define SIMON_ANI_IDLE_DOWNSTAIR	12
 #define SIMON_ANI_THROW					13
 
-#define SIMON_GRAVITY						0.0005f	
+#define SIMON_GRAVITY						0.0004f	
 #define SIMON_WALKING_SPEED			0.06f
 #define SIMON_JUMP_SPEED_Y				0.18f
 #define SIMON_GO_UPSTAIR_SPEED		0.03f
@@ -82,17 +82,18 @@ public:
 	int onStairs;
 
 	LPWHIP whip;	
-	LPWHIP nextSceneWhip;
+	//LPWHIP nextSceneWhip;
 	CDagger* dagger;
 
 	bool subWeapon = false;
 	bool isStanding;
 	bool autoMove;
+	bool enemiesActived=false;
 
 	AutoMoveInfo autoMoveInfo;
 
 	CSimon(float x=0.0f, float y =0.0f);
-
+	
 	virtual void Update(DWORD dt, vector <LPGAMEOBJECT>* coObject = NULL);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
@@ -109,5 +110,6 @@ public:
 	vector<LPGAMEOBJECT> ovObjects;		// overlapping objects
 	void StartAutoMove(float vx, float xDestination);
 
+	bool ActiveEnemies() { return enemiesActived; }
 
 };

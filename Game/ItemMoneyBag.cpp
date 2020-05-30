@@ -1,17 +1,17 @@
-#include "ItemDagger.h"
-#include "Brick.h"
+#include "ItemMoneyBag.h"
 
-ItemDagger::ItemDagger()
+
+ItemMoneyBag::ItemMoneyBag()
 {
 	this->visible = false;
 }
 
-void ItemDagger::Render()
+void ItemMoneyBag::Render()
 {
-	animation_set->at(0)->Render(x, y, nx);
+	animation_set->at(state)->Render(x, y, 1);
 }
 
-void ItemDagger::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void ItemMoneyBag::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
 	vy += ITEM_GRAVITY * dt;				// simple fall down
@@ -56,10 +56,10 @@ void ItemDagger::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void ItemDagger::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void ItemMoneyBag::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
-	right = x + ITEM_DAGGER_BBOX_WIDTH;
-	bottom = y + ITEM_DAGGER_BBOX_HEIGHT;
+	right = x + ITEM_MONEY_BAG_BBOX_WIDTH;
+	bottom = y + ITEM_MONEY_BAG_BBOX_HEIGHT;
 }

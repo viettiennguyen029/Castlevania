@@ -1,40 +1,58 @@
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
-# 8 = Black Knight
+# 8 = Black Knight, 9 = Bat
 
 # SIMON
 0	10	120	0
 
 # List brick
 1	0	170	1	265	16
-# vertical wall
-1	224	106	1	16	64
-# đặt qua 1 hàng ngang ở hàng 7
+# vertical wall right
+1	224	74	1	16	96
+# Stair 1
 1	172	106	1	50	16
+# Stair 2
+1	0	74	1	158	16
+# vertical wall left
+1	0	10	1	16	64
+1	16	58	1	16	16
 
 #Small candle	extra1: item, extra 2: state
-2	76	108	2	1	1
-2	206	108	2	1	1
-2	140	20	2	1	1
+2	76	108	2	61	1
+2	206	108	2	4	1
+2	150	10	2	10	1
+
+#ITEMS
+#Big heart
+4	206	108	41
+#Boomerang
+61	76	108	45
+#Money bag
+10	150	10	46
+#DAGGER
+7	46	100	43
 
 #Black Knight
 8	74	42	5
 
+#Bat
+9	36	15	6
+
 # WHIP
 #3	0	0	3
 
+# type	l	t	ani_set_id	r	b
 # STAIR bottom
-# type	l	t	r	b
--2	110	138	126	170
+-2	110	138	0	126	170
+-2	62	43	0	78	75
 
 # STAIR top
-# type	l	t	r	b
--3	163	74	179	104
+-3	163	74	0	179	106
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	160	0	0	180	10	1
+50	155	0	0	175	10	3
 
 #width	offset_y
 [MAP_INFO]

@@ -25,6 +25,9 @@
     <Filter Include="Hidden Objects">
       <UniqueIdentifier>{d6b43887-14c4-4199-a234-261ef22720a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemies">
+      <UniqueIdentifier>{c12dded8-ba63-4c14-8cf2-be85543fcc1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp">
@@ -79,14 +82,8 @@
     <ClCompile Include="Simon.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="Black_Knight.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Bat.cpp">
-      <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>Hidden Objects</Filter>
@@ -97,6 +94,16 @@
     <ClCompile Include="StairTop.cpp">
       <Filter>Hidden Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Black_Knight.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemBoomerang.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemMoneyBag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -153,14 +160,8 @@
     <ClInclude Include="Simon.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="Black_Knight.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>Hidden Objects</Filter>
@@ -171,5 +172,15 @@
     <ClInclude Include="StairTop.h">
       <Filter>Hidden Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Black_Knight.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBoomerang.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemMoneyBag.h" />
   </ItemGroup>
 </Project>

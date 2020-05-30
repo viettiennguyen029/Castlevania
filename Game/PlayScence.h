@@ -13,8 +13,11 @@
 #include "ItemBigHeart.h"
 #include "ItemChain.h"
 #include "ItemDagger.h"
+#include "ItemBoomerang.h"
+#include "ItemMoneyBag.h"
 #include "Dagger.h"
 #include "Black_Knight.h"
+#include "Bat.h"
 #include "StairTop.h"
 #include "StairBottom.h"
 #include<vector>

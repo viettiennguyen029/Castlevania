@@ -10,7 +10,7 @@
 using namespace std;
 
 #define ID_TEX_BBOX		-100		// special texture to draw object bounding box
-#define ITEM_GRAVITY	0.004f
+#define ITEM_GRAVITY	0.0018f
 
 class CGameObject; 
 typedef CGameObject * LPGAMEOBJECT;
@@ -69,7 +69,9 @@ public:
 		UNKNOWN =	-1,
 		BIG_HEART	=	4,
 		CHAIN			=	5,
-		DAGGER		=	6
+		DAGGER		=	6,
+		BOOMERANG =61,
+		MONEY_BAG =10
 	}; 
 
 	DWORD dt; 

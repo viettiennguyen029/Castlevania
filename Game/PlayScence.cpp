@@ -28,11 +28,18 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_BRICK						1
 #define OBJECT_TYPE_CANDLE					2
 #define OBJECT_TYPE_WHIP						3
+
 #define OBJECT_TYPE_ITEM_BIG_HEART		4
 #define OBJECT_TYPE_ITEM_CHAIN			5
+#define OBJECT_TYPE_ITEM_MONEY_BAG	10
+
 #define OBJECT_TYPE_ITEM_DAGGER			6
+#define OBJECT_TYPE_ITEM_BOOMERANG 61
+
 #define OBJECT_TYPE_DAGGER					7
+
 #define OBJECT_TYPE_BLACK_KNIGHT		8
+#define OBJECT_TYPE_BAT							9
 
 #define OBJECT_TYPE_STAIR_BOTTOM	-2
 #define OBJECT_TYPE_STAIR_TOP			-3
@@ -69,8 +76,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		
-		obj = new CSimon(x,y);
-		
+		//obj = new CSimon(x,y);
+		obj = CSimon::GetInstance();
 		player = (CSimon*)obj;
 		
 		DebugOut(L"[INFO] Player object created!\n");
@@ -95,7 +102,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	obj->visible = false;
 	break;
 	}
+
 	case OBJECT_TYPE_BLACK_KNIGHT: obj = new CBlack_Knight(); break;
+
+	case OBJECT_TYPE_BAT: obj = new CBat(); break;
 
 	case OBJECT_TYPE_CANDLE: 
 	{
@@ -128,21 +138,36 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_ITEM_MONEY_BAG:
+	{
+		obj = new ItemMoneyBag();
+		CItems::GetInstance()->AddItem((int)CGameObject::ItemType::MONEY_BAG, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_BOOMERANG:
+	{
+		obj = new ItemBoomerang();
+		CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BOOMERANG, obj);
+		break;
+	}
+
 	case OBJECT_TYPE_STAIR_BOTTOM:
 	{
-		float r = atof(tokens[3].c_str());
-		float b = atof(tokens[4].c_str());
+		float r = atof(tokens[4].c_str());
+		float b = atof(tokens[5].c_str());
 		obj = new CStairBottom(x,y,r,b);
 		break;
 	}
 
 	case OBJECT_TYPE_STAIR_TOP:
 	{
-		float r = atof(tokens[3].c_str());
-		float b = atof(tokens[4].c_str());
+		float r = atof(tokens[4].c_str());
+		float b = atof(tokens[5].c_str());
 		obj = new CStairTop(x, y, r, b);
 		break;
 	}
+
 
 	case OBJECT_TYPE_PORTAL:
 	{
@@ -271,20 +296,29 @@ void CPlayScene::Update(DWORD dt)
 
 	// Update camera to follow simon
 	float cx, cy;
-	player->GetPosition(cx, cy);
-	//int prevSceneState = CSimon::GetInstance()->whip->GetState();
+	player->GetPosition(cx, cy);	
 	
-
-	if ( cx> mapWidth -SCREEN_WIDTH/2)
+	if(CGame::GetInstance()->GetSceneId() == 3)
 	{
-		return;
+		CGame* game = CGame::GetInstance();
+		cx -= game->GetScreenWidth() / 2;
+		cy -= game->GetScreenHeight() / 2;
+
+		CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 	}
+	else
+	{
+		if (cx > mapWidth - SCREEN_WIDTH / 2)
+		{
+			return;
+		}
+		CGame* game = CGame::GetInstance();
+		cx -= game->GetScreenWidth() / 2;
+		cy -= game->GetScreenHeight() / 2;
 
-	CGame *game = CGame::GetInstance();
-	cx -= game->GetScreenWidth()/2 ;
-	cy -= game->GetScreenHeight()/2;
-
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+		CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	}
+	
 }
 
 void CPlayScene::Render()
@@ -307,8 +341,17 @@ void CPlayScene::Render()
 void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
-	{
-		delete objects[i];
+	{		
+		if (dynamic_cast<CSimon*>(objects[i]) || 
+			dynamic_cast<CWhip*>(objects[i])|| 
+			dynamic_cast<CDagger*>(objects[i]))
+		{
+			;
+		}
+		else
+		{
+			delete objects[i];
+		} 
 	}
 
 	objects.clear();
@@ -374,13 +417,13 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_Q: // Upgrade whip
 	{
 		simon->whip->PowerUp();
-		 simon->nextSceneWhip->PowerUp();
+		// simon->nextSceneWhip->PowerUp();
 		break;
 	}
 
-	case DIK_A: // reset
-		simon->Reset(); 
-		break;
+	//case DIK_A: // reset
+	//	simon->Reset(); 
+	//	break;
 
 	case DIK_1:
 		CGame::GetInstance()->SwitchScene(1);

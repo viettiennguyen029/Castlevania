@@ -132,8 +132,10 @@
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="ItemBigHeart.cpp" />
+    <ClCompile Include="ItemBoomerang.cpp" />
     <ClCompile Include="ItemChain.cpp" />
     <ClCompile Include="ItemDagger.cpp" />
+    <ClCompile Include="ItemMoneyBag.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -158,8 +160,10 @@
     <ClInclude Include="Candle.h" />
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="ItemBigHeart.h" />
+    <ClInclude Include="ItemBoomerang.h" />
     <ClInclude Include="ItemChain.h" />
     <ClInclude Include="ItemDagger.h" />
+    <ClInclude Include="ItemMoneyBag.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Simon.h" />
