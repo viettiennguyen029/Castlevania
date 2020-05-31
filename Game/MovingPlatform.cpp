@@ -48,7 +48,7 @@ void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					//DebugOut(L" Redirecting Moving Platform\n");
 					vx = -vx;
-				}
+				}				
 				
 
 			}

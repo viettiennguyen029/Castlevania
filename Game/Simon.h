@@ -90,6 +90,7 @@ public:
 	bool subWeapon = false;
 	bool isStanding = false;
 	bool powerUp = false;
+	bool onMovingPlatform = false;
 
 	DWORD discolorationTime = 0;
 	AutoMoveInfo autoMoveInfo;

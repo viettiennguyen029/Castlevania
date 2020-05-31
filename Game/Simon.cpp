@@ -223,7 +223,6 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		vy = 0;
 	}
 		
-
 	// turn off collision when simon is die
 	if (state != SIMON_STATE_DIE)
 	{
@@ -235,6 +234,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;			
+
 	}
 	else
 	{
@@ -266,6 +266,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			// Collision logic with Brick 
 			else if (dynamic_cast<CBrick*>(e->obj))
 			{
+				onMovingPlatform = false;
 				if (onStairs == 0)
 				{
 					if (e->ny != 0)
@@ -282,18 +283,34 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					
 			}
 
+			// Collision logic when Simon is on theMoving Platform
+			else if (dynamic_cast<CMovingPlatform*>(e->obj))
+			{
+				if (e->ny != 0)
+				{
+					CMovingPlatform* m = dynamic_cast<CMovingPlatform*> (e->obj);
+					onMovingPlatform = true;
+					this->vx = m->vx;
+					vy = 0;
+					DebugOut(L"On Moving Platform\n");
+				}
+				//else 
+				
+			}
+
 			// Collision logic with tems
+#pragma region Collision logic with items
 			else if (dynamic_cast<ItemBigHeart*>(e->obj))
 			{
 				DebugOut(L"[ITEMS] Heart Collected \n");
 				if (e->nx != 0 || e->ny != 0)
-				{					
+				{
 					e->obj->SetVisible(false);
-				}				
+				}
 			}
 			else if (dynamic_cast<ItemChain*>(e->obj))
 			{
-				
+
 				if (e->nx != 0 || e->ny != 0)
 				{
 					this->powerUp = true;
@@ -334,7 +351,8 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					e->obj->SetVisible(false);
 				}
 			}
-
+#pragma endregion
+			
 			else if (dynamic_cast<CStairBottom*> (e->obj))
 			{
 				DebugOut(L"[INFO] Stair bottom detection ! Direction: %d \n",this->nx);
@@ -353,8 +371,6 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			}
 
-		
-
 			// switching scene logic		
 			else if (dynamic_cast<CPortal*> (e->obj))
 			{
@@ -363,12 +379,11 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
 
+
 			else
 			{
 				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;			
-
-				
+				if (ny != 0) vy = 0;							
 			}
 		}
 	}
@@ -418,9 +433,10 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_IDLE:
 	{
 		isStanding = true;
-		vx = 0;
-		//vy = 0;
+		if (onMovingPlatform == true) {}
+		else vx = 0;
 		break;
+		
 	}
 
 	case SIMON_STATE_WALKING:
@@ -552,9 +568,12 @@ void CSimon::Render()
 		{
 			if (powerUp == true) ani = SIMON_ANI_POWER_UP;
 			else ani = SIMON_ANI_IDLE;
-		}			
-
-		else	ani = SIMON_ANI_WALKING;
+		}	
+		else 
+		{
+			if (onMovingPlatform == true ) ani = SIMON_ANI_IDLE;
+			else ani = SIMON_ANI_WALKING;
+		}
 	}
 	
 	int alpha = 255;
