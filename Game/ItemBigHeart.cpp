@@ -18,7 +18,6 @@ void ItemBigHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 	CalcPotentialCollisions(coObjects, coEvents);
 
-
 	if (coEvents.size() == 0)
 	{
 		y += dy;

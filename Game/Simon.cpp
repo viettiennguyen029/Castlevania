@@ -153,18 +153,18 @@ void CSimon::GoDownStair()
 }
 
 
-void CSimon::StartAutoMove(float vx, float xDestination)
-{
-	if (!autoMove)
-	{
-		autoMoveInfo.xDes = xDestination;
-		autoMoveInfo.vx = vx;
-
-		autoMove = true;
-	}
-	// Proceed Auto Move
-
-}
+//void CSimon::StartAutoMove(float vx, float xDestination)
+//{
+//	if (!autoMove)
+//	{
+//		autoMoveInfo.xDes = xDestination;
+//		autoMoveInfo.vx = vx;
+//
+//		autoMove = true;
+//	}
+//	// Proceed Auto Move
+//
+//}
 
 
 CSimon::CSimon(float x, float y) :CGameObject()
@@ -173,8 +173,7 @@ CSimon::CSimon(float x, float y) :CGameObject()
 	start_y = y;
 	this->x = x;
 	this->y = y;
-	this->autoMove = false;
-	enemiesActived = false;
+	// this->autoMove = false;
 	SetState(SIMON_STATE_IDLE);
     whip = new CWhip();
 	dagger = new CDagger();
@@ -192,6 +191,21 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	
 	// Simple logic with screen edge
 	if (vx < 0 && x < 0) x = 0;
+
+	// Discoloration time logic
+	if (powerUp)
+	{
+		if (discolorationTime < SIMON_DISCOLOR_TIME)
+		{
+			vx = 0;
+			discolorationTime += dt;
+		}			
+		else
+		{
+			powerUp = false;
+			discolorationTime = 0;
+		}
+	}
 
 	vector <LPCOLLISIONEVENT> coEvents;
 	vector <LPCOLLISIONEVENT> coEventsResult;
@@ -282,22 +296,45 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				
 				if (e->nx != 0 || e->ny != 0)
 				{
+					this->powerUp = true;
+					this->SetState(SIMON_STATE_IDLE);
 					e->obj->SetVisible(false);
 					this->whip->PowerUp();
-					//this->nextSceneWhip->PowerUp();
 					DebugOut(L"[INFO] WHIP UPGRADED \n");
 				}
 			}
+
 			else if (dynamic_cast<ItemDagger*>(e->obj))
 			{
 				DebugOut(L"[ITEMS] Dagger Collected \n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+					//this->powerUp = true;
+					//this->SetState(SIMON_STATE_IDLE);
+					e->obj->SetVisible(false);
+					subWeapon = true;
+				}
+			}
+
+			else if (dynamic_cast<ItemBoomerang*>(e->obj))
+			{
+				DebugOut(L"[ITEMS] Boomerang Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
 					e->obj->SetVisible(false);
 					subWeapon = true;
 				}
 			}
-						
+
+			else if (dynamic_cast<ItemMoneyBag*>(e->obj))
+			{
+				DebugOut(L"[ITEMS] Money Bag Collected \n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+				}
+			}
+
 			else if (dynamic_cast<CStairBottom*> (e->obj))
 			{
 				DebugOut(L"[INFO] Stair bottom detection ! Direction: %d \n",this->nx);
@@ -415,8 +452,18 @@ void CSimon::SetState(int state)
 	}
 	case SIMON_STATE_ATTACK:
 	{
-		animation_set->at(SIMON_ANI_ATTACK)->Reset();
-		animation_set->at(SIMON_ANI_ATTACK)->SetAniStartTime(GetTickCount());
+		if (onStairs == 0)
+		{
+			animation_set->at(SIMON_ANI_ATTACK)->Reset();
+			animation_set->at(SIMON_ANI_ATTACK)->SetAniStartTime(GetTickCount());
+			
+		}
+		else
+		{
+			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->Reset();
+			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->SetAniStartTime(GetTickCount());
+			//break;
+		}
 		break;
 	}
 
@@ -501,7 +548,12 @@ void CSimon::Render()
 	
 	else
 	{
-		if (vx == 0) ani = SIMON_ANI_IDLE;
+		if (vx == 0)
+		{
+			if (powerUp == true) ani = SIMON_ANI_POWER_UP;
+			else ani = SIMON_ANI_IDLE;
+		}			
+
 		else	ani = SIMON_ANI_WALKING;
 	}
 	

@@ -19,9 +19,9 @@
 1	16	58	1	16	16
 
 #Small candle	extra1: item, extra 2: state
-2	76	108	2	61	1
-2	206	108	2	4	1
-2	150	10	2	10	1
+2	96	108	2	61	1
+2	196	108	2	4	1
+2	150	12	2	10	1
 
 #ITEMS
 #Big heart
@@ -34,7 +34,7 @@
 7	46	100	43
 
 #Black Knight
-8	74	42	5
+#8	74	42	5
 
 #Bat
 9	36	15	6
@@ -52,7 +52,7 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	155	0	0	175	10	3
+50	150	3	0	170	5	3
 
 #width	offset_y
 [MAP_INFO]

@@ -6,7 +6,7 @@
 
 class ItemBigHeart:public CGameObject
 {
-	DWORD timeAppear = -1;
+	// DWORD timeAppear = -1;
 public:
 	ItemBigHeart();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

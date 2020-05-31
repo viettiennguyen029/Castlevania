@@ -26,7 +26,7 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
 {
 	CGameObject::Update(dt);
 	
-	if (CSimon::GetInstance()->ActiveEnemies() == true)
+	/*if (CSimon::GetInstance()->ActiveEnemies() == true)
 	{
 		vy = 0.06f;
 		vx = 0.06f;
@@ -44,7 +44,7 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
 	}
 
 	x += dx;
-	y += dy;
+	y += dy;*/
 
 
 }

@@ -138,6 +138,7 @@
     <ClCompile Include="ItemMoneyBag.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="StairBottom.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="ItemDagger.h" />
     <ClInclude Include="ItemMoneyBag.h" />
     <ClInclude Include="Items.h" />
+    <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="StairBottom.h" />

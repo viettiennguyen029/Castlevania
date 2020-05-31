@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#define DAGGER_SPEED				0.17f
+#define DAGGER_SPEED				0.12f
 
 #define DAGGER_BBOX_WIDTH		16
 #define DAGGER_BBOX_HEIGHT		10

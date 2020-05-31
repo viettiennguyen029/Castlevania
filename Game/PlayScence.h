@@ -20,6 +20,7 @@
 #include "Bat.h"
 #include "StairTop.h"
 #include "StairBottom.h"
+#include "MovingPlatform.h"
 #include<vector>
 
 #define SCREEN_WIDTH	 250

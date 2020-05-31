@@ -44,7 +44,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_STAIR_BOTTOM	-2
 #define OBJECT_TYPE_STAIR_TOP			-3
 
-#define OBJECT_TYPE_PORTAL	50
+#define OBJECT_TYPE_MOVING_PLATFORM	30
+#define OBJECT_TYPE_PORTAL						50
 
 #define MAX_SCENE_LINE 1024
 
@@ -104,6 +105,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 
 	case OBJECT_TYPE_BLACK_KNIGHT: obj = new CBlack_Knight(); break;
+
+	case OBJECT_TYPE_MOVING_PLATFORM: obj = new CMovingPlatform(); break;
 
 	case OBJECT_TYPE_BAT: obj = new CBat(); break;
 
@@ -298,27 +301,15 @@ void CPlayScene::Update(DWORD dt)
 	float cx, cy;
 	player->GetPosition(cx, cy);	
 	
-	if(CGame::GetInstance()->GetSceneId() == 3)
+	if (cx > mapWidth - SCREEN_WIDTH / 2)
 	{
-		CGame* game = CGame::GetInstance();
-		cx -= game->GetScreenWidth() / 2;
-		cy -= game->GetScreenHeight() / 2;
-
-		CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+		return;
 	}
-	else
-	{
-		if (cx > mapWidth - SCREEN_WIDTH / 2)
-		{
-			return;
-		}
-		CGame* game = CGame::GetInstance();
-		cx -= game->GetScreenWidth() / 2;
-		cy -= game->GetScreenHeight() / 2;
+	CGame* game = CGame::GetInstance();
+	cx -= game->GetScreenWidth() / 2;
+	cy -= game->GetScreenHeight() / 2;
 
-		CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
-	}
-	
+	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }
 
 void CPlayScene::Render()
@@ -477,7 +468,12 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (simon->GetState() == SIMON_STATE_THROW &&
 		simon->animation_set->at(SIMON_ANI_THROW)->IsOver(SIMON_ATTACK_TIME) == false)
 		return;
+
+	if (simon->GetState() == SIMON_STATE_ATTACK &&
+		simon->animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->IsOver(SIMON_ATTACK_TIME) == false)
+		return;
 	
+	if (simon->powerUp == true) return;
 	
 	if (game->IsKeyDown(DIK_RIGHT))
 	{

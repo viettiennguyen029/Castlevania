@@ -4,6 +4,7 @@
 
 #define ITEM_MONEY_BAG_BBOX_WIDTH		12
 #define ITEM_MONEY_BAG_BBOX_HEIGHT	12
+
 class ItemMoneyBag:public CGameObject
 {
 public:

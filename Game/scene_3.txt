@@ -4,8 +4,8 @@
 # 8 = Black Knight
 
 # SIMON
-0	370	170	0
-
+#0	370	170	0
+0	100	50	0
 # top wall
 1	1	82	1	32	16
 1	97	82	1	64	16
@@ -19,6 +19,8 @@
 1	321	145	1	32	16
 # Vertical 
 
+# Moving Platform
+30	35	82	33
 # WHIP
 #3	0	0	3
 

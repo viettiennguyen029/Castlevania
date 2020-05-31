@@ -18,7 +18,7 @@ void CDagger::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy = 0;
 
 	CGameObject::Update(dt);
-	x += dx;
+	//x += dx;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;

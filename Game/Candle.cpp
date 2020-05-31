@@ -43,5 +43,9 @@ void CCandle::GetBoundingBox(float& left, float& top, float& right, float& botto
 		bottom = y + CANDLE_SMALL_BBOX_HEIGHT;
 		break;
 	}
+	case CANDLE_DESTROYED:
+	{
+		break;
+	}
 	}	
 }
