@@ -106,7 +106,9 @@
     <ClCompile Include="ItemMoneyBag.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-    <ClCompile Include="MovingPlatform.cpp" />
+    <ClCompile Include="MovingPlatform.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -187,6 +189,8 @@
     <ClInclude Include="ItemMoneyBag.h">
       <Filter>Items</Filter>
     </ClInclude>
-    <ClInclude Include="MovingPlatform.h" />
+    <ClInclude Include="MovingPlatform.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -309,7 +309,8 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	// CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	game ->SetCamPos(cx, 0.0f /*cy*/);
 }
 
 void CPlayScene::Render()
@@ -365,7 +366,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	{
 		if (simon->GetState() == SIMON_STATE_JUMP||
 			simon->GetState() == SIMON_STATE_ATTACK || 
-			simon->GetState() == SIMON_STATE_SIT_ATTACK)
+			simon->GetState() == SIMON_STATE_SIT_ATTACK ||
+			simon->onStairs !=0)
 			return;
 
 		simon->SetState(SIMON_STATE_JUMP);
@@ -394,11 +396,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			return;
 
 		if (simon->GetState() == SIMON_STATE_IDLE ||
-			simon->GetState() == SIMON_STATE_JUMP) // Đứng đánh
+			simon->GetState() == SIMON_STATE_JUMP) 
 		{
 			simon->SetState(SIMON_STATE_ATTACK);
 		}
-		else if (simon->GetState() == SIMON_STATE_SIT) // Ngồi đánh
+		else if (simon->GetState() == SIMON_STATE_SIT)
 		{
 			simon->SetState(SIMON_STATE_SIT_ATTACK);
 		}

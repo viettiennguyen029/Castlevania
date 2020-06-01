@@ -1,9 +1,11 @@
 #include "Bat.h"
 #include "Simon.h"
-CBat::CBat() : CGameObject()
+CBat::CBat(float x, float y) : CGameObject()
 {
-	flyingDownTime = 0;
+	start_x = x;
+	start_y = y;
 	vx = vy = 0;
+	SetState(BAT_STATE_IDLE);
 }
 
 void CBat::Render()
@@ -19,33 +21,70 @@ void CBat::Render()
 void CBat::SetState(int state)
 {
 	CGameObject::SetState(state);	
-	
+	switch (state)
+	{
+	case BAT_STATE_IDLE:
+	{
+		vx = vy = 0;
+		break;
+	}
+	case BAT_STATE_FLYING_DOWN:
+	{
+		vx = 0.08f;
+		vy = 0.08f;
+		break;
+	}
+	case BAT_STATE_FLYING_HORIZONTAL:
+	{
+		vx = 0.1f;
+		vy = 0.0f;
+		break;
+	}
+	}
 }
 
-void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt);
-	
-	/*if (CSimon::GetInstance()->ActiveEnemies() == true)
-	{
-		vy = 0.06f;
-		vx = 0.06f;
+	// Activating Bat logic
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
 
-		if (y > 40)
-		{
-			vx = 0.08f;
-			vy = 0;
-		}
+	float xB, yB;
+	this->GetPosition(xB, yB);
+
+	if (xS - xB <= POINT_ACTIVE_BAT_X && yS - yB <= POINT_ACTIVE_BAT_Y) // Active Point 
+		SetState(BAT_STATE_FLYING_DOWN);
 		
+	if (y - start_y>= BAT_FLYING_DOWN_DY)	// Redirecting point
+		SetState(BAT_STATE_FLYING_HORIZONTAL);	
+
+	CGameObject::Update(dt);
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+	CalcPotentialCollisions(coObjects, coEvents);
+
+	if (coEvents.size() == 0)
+	{
+		y += dy;
+		x += dx;		
 	}
 	else
 	{
-		vx = vy = 0;
+		float min_tx, min_ty, nx , ny;
+		float rdx, rdy;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+		x += min_tx * dx;
+		y += min_ty * dy;
+				
 	}
 
-	x += dx;
-	y += dy;*/
-
+	
+	// clean up collision events
+	for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
 }
 

@@ -56,8 +56,8 @@
 #define SIMON_AUTO_STAIR_TIME			300
 #define SIMON_DISCOLOR_TIME			700
 
-#define SIMON_BBOX_WIDTH			15
-#define SIMON_BBOX_HEIGHT			30
+#define SIMON_BBOX_WIDTH			16
+#define SIMON_BBOX_HEIGHT			32
 
 
 /*
