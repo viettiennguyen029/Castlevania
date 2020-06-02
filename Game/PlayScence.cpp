@@ -37,6 +37,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_ITEM_BOOMERANG 61
 
 #define OBJECT_TYPE_DAGGER					7
+#define OBJECT_TYPE_BOOMERANG			71
 
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 #define OBJECT_TYPE_BAT							9
@@ -98,10 +99,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	// case OBJECT_TYPE_WHIP: {/*obj = new CWhip();*/} break;
 	case OBJECT_TYPE_DAGGER:
 	{
-	obj = new CDagger();
-	dagger = (CDagger*)obj;
-	obj->visible = false;
-	break;
+		obj = new CDagger();
+		dagger = (CDagger*)obj;
+		obj->SetVisible(false);
+		break;
+	}
+
+	case OBJECT_TYPE_BOOMERANG:
+	{
+		obj = new CBoomerang();
+		boomerang = (CBoomerang*)obj;
+		obj->SetVisible(false);
+		break;
 	}
 
 	case OBJECT_TYPE_BLACK_KNIGHT: obj = new CBlack_Knight(); break;
@@ -123,35 +132,40 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_BIG_HEART: 
 	{
 		obj = new ItemBigHeart();
-		CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BIG_HEART, obj);
+		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BIG_HEART, obj);
+		CItems::GetInstance()->AddItem((int)ItemType::BIG_HEART, obj);
 		break;
 	}
 
 	case OBJECT_TYPE_ITEM_CHAIN:
 	{
 		 obj = new ItemChain();
-		 CItems::GetInstance()->AddItem((int)CGameObject::ItemType::CHAIN, obj);
+		 //CItems::GetInstance()->AddItem((int)CGameObject::ItemType::CHAIN, obj);
+		 CItems::GetInstance()->AddItem((int)ItemType::CHAIN, obj);
 		break;
 	}
 
 	case OBJECT_TYPE_ITEM_DAGGER:
 	{
 		obj = new ItemDagger();
-		CItems::GetInstance()->AddItem((int)CGameObject::ItemType::DAGGER, obj);
+		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::DAGGER, obj);
+		CItems::GetInstance()->AddItem((int)ItemType::DAGGER, obj);
 		break;
 	}
 
 	case OBJECT_TYPE_ITEM_MONEY_BAG:
 	{
 		obj = new ItemMoneyBag();
-		CItems::GetInstance()->AddItem((int)CGameObject::ItemType::MONEY_BAG, obj);
+		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::MONEY_BAG, obj);
+		CItems::GetInstance()->AddItem((int)ItemType::MONEY_BAG, obj);
 		break;
 	}
 
 	case OBJECT_TYPE_ITEM_BOOMERANG:
 	{
 		obj = new ItemBoomerang();
-		CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BOOMERANG, obj);
+		// CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BOOMERANG, obj);
+		CItems::GetInstance()->AddItem((int)ItemType::BOOMERANG, obj);
 		break;
 	}
 
@@ -353,13 +367,14 @@ void CPlayScene::Unload()
 	tiledMap.clear();
 }
 
-
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	DebugOut(L"KeyDown: %d\n", KeyCode);
 
 	CSimon *simon = ((CPlayScene*)scence)->GetPlayer();
 	CDagger *dagger = ((CPlayScene*)scence)->GetDagger();
+	CBoomerang *boomerang = ((CPlayScene*)scence)->GetBoomerang();
+
 	switch (KeyCode)
 	{	
 	case DIK_SPACE:
@@ -382,6 +397,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 				return;
 			if (simon->GetState()== SIMON_STATE_THROW && dagger->visible == true) return;
 
+			// UseDagger();
 			float xS, yS;
 			simon->GetPosition(xS, yS);
 			dagger->SetPosition(xS, yS);
@@ -406,6 +422,24 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		}
 		break;
 	}	
+
+	// Testing Boomerang function
+	case DIK_D:
+	{
+		if (simon->subWeapon == false)
+			return;
+		if (simon->GetState() == SIMON_STATE_THROW && boomerang->visible == true) return;
+
+		// UseBoomerang();
+		float xS, yS;
+		simon->GetPosition(xS, yS);
+		boomerang->SetPosition(xS, yS);
+		boomerang->SetOrientation(simon->nx);
+		boomerang->SetVisible(true);
+		simon->SetState(SIMON_STATE_THROW);
+		break;
+		
+	}
 	
 	case DIK_Q: // Upgrade whip
 	{
@@ -510,11 +544,12 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	else if (game->IsKeyDown(DIK_DOWN))
 	{
-		if (simon->onStairs != 0)
-		{
+		//if (simon->onStairs ==0)
+		//
+			//->SetState(SIMON_STATE_SIT);
+		//}
+		//else 
 			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
-		}
-		else  simon->SetState(SIMON_STATE_SIT);
 		
 	}		
 

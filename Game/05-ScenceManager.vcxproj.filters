@@ -13,12 +13,6 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{ade01cec-59f4-4ef4-aa78-915e6eced053}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Items">
-      <UniqueIdentifier>{99a2bd7f-4459-466c-bc9e-bfe953825048}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Weapon">
-      <UniqueIdentifier>{4c4bdec0-da4f-438b-a6da-6e06d3d6cf7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Player">
       <UniqueIdentifier>{f8f09e29-d6e3-4890-a79a-0e2a4dd22083}</UniqueIdentifier>
     </Filter>
@@ -27,6 +21,12 @@
     </Filter>
     <Filter Include="Enemies">
       <UniqueIdentifier>{c12dded8-ba63-4c14-8cf2-be85543fcc1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Items">
+      <UniqueIdentifier>{99a2bd7f-4459-466c-bc9e-bfe953825048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapons">
+      <UniqueIdentifier>{4c4bdec0-da4f-438b-a6da-6e06d3d6cf7a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,12 +73,11 @@
       <Filter>Items</Filter>
     </ClCompile>
     <ClCompile Include="Dagger.cpp">
-      <Filter>Weapon</Filter>
+      <Filter>Weapons</Filter>
     </ClCompile>
     <ClCompile Include="Whip.cpp">
-      <Filter>Weapon</Filter>
+      <Filter>Weapons</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Simon.cpp">
       <Filter>Player</Filter>
     </ClCompile>
@@ -108,6 +107,13 @@
     </ClCompile>
     <ClCompile Include="MovingPlatform.cpp">
       <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Subweapons.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Boomerang.cpp">
+      <Filter>Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -157,10 +163,10 @@
       <Filter>Items</Filter>
     </ClInclude>
     <ClInclude Include="Dagger.h">
-      <Filter>Weapon</Filter>
+      <Filter>Weapons</Filter>
     </ClInclude>
     <ClInclude Include="Whip.h">
-      <Filter>Weapon</Filter>
+      <Filter>Weapons</Filter>
     </ClInclude>
     <ClInclude Include="Simon.h">
       <Filter>Player</Filter>
@@ -191,6 +197,12 @@
     </ClInclude>
     <ClInclude Include="MovingPlatform.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Subweapons.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Boomerang.h">
+      <Filter>Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

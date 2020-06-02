@@ -3,6 +3,7 @@
 
 CDagger::CDagger() : CGameObject()
 {
+	//this->visible = false;
 	vx = DAGGER_SPEED;
 }
 

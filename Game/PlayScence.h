@@ -22,8 +22,9 @@
 #include "StairBottom.h"
 #include "MovingPlatform.h"
 #include<vector>
+#include "Boomerang.h"
 
-#define SCREEN_WIDTH	 250
+#define SCREEN_WIDTH	 270
 #define SCREEN_HEIGHT 230
 
 #define TILE_WIDTH	32
@@ -37,6 +38,7 @@ protected:
 	CSimon* player;	// A play scene has to have player, right? 
 	CWhip* whip;
 	CDagger* dagger;
+	CBoomerang* boomerang;
 	
 	int mapWidth, offset_y;
 	vector<LPTILE> tiledMap;
@@ -56,7 +58,9 @@ public:
 
 	CSimon* GetPlayer() { return player; }
 	CDagger* GetDagger() { return dagger; }
+	CBoomerang* GetBoomerang() { return boomerang; }
 
+	//void UseDagger();
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler

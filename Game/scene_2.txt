@@ -1,7 +1,7 @@
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
-# 8 = Black Knight, 9 = Bat
+# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 
+# 7 = Dagger,71 = Boomerang, 8 = Black Knight, 9 = Bat
 
 # SIMON
 0	10	120	0
@@ -30,11 +30,14 @@
 61	76	108	45
 #Money bag
 10	150	10	46
-#DAGGER
+
+# DAGGER
 7	46	100	43
+# BOOMERANG
+71	40	108	71
 
 #Black Knight
-#8	74	42	5
+8	74	42	5
 
 #Bat
 9	36	15	6
@@ -52,7 +55,7 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	150	3	0	170	5	3
+50	140	3	0	155	5	3
 
 #width	offset_y
 [MAP_INFO]

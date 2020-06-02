@@ -13,7 +13,7 @@ class CBlack_Knight : public CGameObject
 {
 public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects= NULL);
 	virtual void Render();
 
 	CBlack_Knight();

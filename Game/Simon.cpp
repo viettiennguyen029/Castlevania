@@ -107,6 +107,16 @@ void CSimon::ProceedOnStairs()
 
 }
 
+//void CSimon::UseDagger()
+//{
+//	float xS, yS;
+//	this->GetPosition(xS, yS);
+//	dagger->SetPosition(xS, yS);
+//	dagger->SetOrientation(this->nx);
+//	dagger->SetVisible(true);
+//	this->SetState(SIMON_STATE_THROW);
+//}
+
 void CSimon::GoDownStair()
 {
 	// Check if Simon is on stairs and want to go down
@@ -134,7 +144,7 @@ void CSimon::GoDownStair()
 		// Enable go down stair
 		float xS, yS;
 		stairs->GetPosition(xS, yS);
-		nx = stairs->GetOrientation();
+		nx =- stairs->GetOrientation();
 		this->vx = nx * SIMON_GO_UPSTAIR_SPEED;
 		this->vy = SIMON_GO_UPSTAIR_SPEED;
 		onStairs = -1;
@@ -285,17 +295,14 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			// Collision logic when Simon is on theMoving Platform
 			else if (dynamic_cast<CMovingPlatform*>(e->obj))
-			{
-				if (e->ny != 0)
-				{
-					CMovingPlatform* m = dynamic_cast<CMovingPlatform*> (e->obj);
-					onMovingPlatform = true;
-					this->vx = m->vx;
-					vy = 0;
-					DebugOut(L"On Moving Platform\n");
-				}
-				//else 
-				
+			{			
+				if (e->nx != 0) x += dx;
+
+				CMovingPlatform* m = dynamic_cast<CMovingPlatform*> (e->obj);
+				onMovingPlatform = true;
+				this->vx = m->vx;
+				vy = 0;
+				DebugOut(L"On Moving Platform\n");
 			}
 
 			// Collision logic with tems
@@ -454,6 +461,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_JUMP:
 	{
+		if (onMovingPlatform==true) vx = 0;
 		isStanding = true;
 		vy = -SIMON_JUMP_SPEED_Y;			
 		break;

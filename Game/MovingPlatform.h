@@ -3,7 +3,7 @@
 #define MOVING_PLATFORM_BBOX_WIDTH  32
 #define MOVING_PLATFORM_BBOX_HEIGHT 8
 
-#define MOVING_PLATFORM_SPEED       0.03f
+#define MOVING_PLATFORM_SPEED       0.02f
 class CMovingPlatform: public CGameObject
 {
 public:

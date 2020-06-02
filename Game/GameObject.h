@@ -40,6 +40,22 @@ struct CCollisionEvent
 	}
 };
 
+enum class ItemType
+{
+	UNKNOWN = -1,
+	BIG_HEART = 4,
+	CHAIN = 5,
+	DAGGER = 6,
+	BOOMERANG = 61,
+	MONEY_BAG = 10
+};
+
+enum class SubWeapon
+{
+	UNKNOWN =-1,
+	DAGGER =7,
+	BOOMERANG = 71
+};
 
 class CGameObject
 {
@@ -63,16 +79,6 @@ public:
 	bool visible;
 
 	int itemId;
-
-	enum class ItemType
-	{
-		UNKNOWN =	-1,
-		BIG_HEART	=	4,
-		CHAIN			=	5,
-		DAGGER		=	6,
-		BOOMERANG =61,
-		MONEY_BAG =10
-	}; 
 
 	DWORD dt; 
 

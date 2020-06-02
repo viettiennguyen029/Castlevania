@@ -5,7 +5,7 @@
 CMovingPlatform::CMovingPlatform(): CGameObject()
 {
 	vx = MOVING_PLATFORM_SPEED;
-	vy = 0;
+	//vy = 0;
 }
 
 void CMovingPlatform::Render()
@@ -35,8 +35,8 @@ void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdy = 0;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x += min_tx * dx;
-		y += min_ty * dy + ny * 0.4f;
+		x += min_tx * dx+nx*0.2f;
+		y += min_ty * dy ;
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
