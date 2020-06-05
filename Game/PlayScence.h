@@ -25,7 +25,7 @@
 #include "Boomerang.h"
 
 #define SCREEN_WIDTH	 270
-#define SCREEN_HEIGHT 230
+#define SCREEN_HEIGHT 250
 
 #define TILE_WIDTH	32
 #define TILE_HEIGHT	32

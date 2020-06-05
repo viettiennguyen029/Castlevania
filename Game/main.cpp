@@ -24,7 +24,7 @@
 #define WINDOW_CLASS_NAME L"SampleWindow"
 #define MAIN_WINDOW_TITLE L"Castlevania NES"
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0,0)
+#define BACKGROUND_COLOR D3DCOLOR_XRGB(5, 5,5)
 
 #define MAX_FRAME_RATE 90
 

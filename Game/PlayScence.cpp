@@ -173,7 +173,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		float r = atof(tokens[4].c_str());
 		float b = atof(tokens[5].c_str());
+		int nx = atoi(tokens[6].c_str());		
 		obj = new CStairBottom(x,y,r,b);
+		obj->SetOrientation(nx);
 		break;
 	}
 
@@ -181,7 +183,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		float r = atof(tokens[4].c_str());
 		float b = atof(tokens[5].c_str());
-		obj = new CStairTop(x, y, r, b);
+		int nx = atoi(tokens[6].c_str());
+		obj = new CStairTop(x, y, r, b);	
+		obj->SetOrientation(nx);
 		break;
 	}
 
@@ -521,7 +525,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		else
 		{
 			simon->SetOrientation(1);
-			simon->SetState(SIMON_ANI_GO_UPSTAIR);
+			simon->SetState(SIMON_STATE_GO_UPSTAIR);
 		}
 		
 	}
@@ -535,8 +539,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		}
 		else
 		{
-			simon->SetOrientation(-1);
-			simon->SetState(SIMON_ANI_GO_DOWNSTAIR);
+			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
+						
 		}
 		
 
@@ -544,14 +548,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	else if (game->IsKeyDown(DIK_DOWN))
 	{
-		//if (simon->onStairs ==0)
-		//
-			//->SetState(SIMON_STATE_SIT);
-		//}
-		//else 
+		//if (simon->onStairs == 0)
+			//simon->SetState(SIMON_STATE_SIT);
+		//else
 			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
-		
-	}		
+	}
 
 	else if (game->IsKeyDown(DIK_UP))
 		simon->SetState(SIMON_STATE_GO_UPSTAIR);

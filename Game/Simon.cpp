@@ -59,17 +59,18 @@ void CSimon::ProceedOnStairs()
 	// Try getting out the stairs
 	LPGAMEOBJECT stairs = NULL;
 	if (onStairs ==1)
-	{
+	{		
 		for (UINT i = 0; i < ovObjects.size(); ++i)
 			if (dynamic_cast<CStairTop*>(ovObjects[i]))
 			{
 				stairs = ovObjects[i];
 				break;
 			}
-
+		
 		if (stairs == NULL) return;
 
 		float xS, yS;
+		this->nx = stairs->GetOrientation();
 		stairs->GetPosition(xS, yS);
 
 		// Check if simon has reached the stairs exit
@@ -281,6 +282,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				{
 					if (e->ny != 0)
 					{
+						//vy = 0;
 						if (e->ny == -1) vy = 0; // simon standing on brick
 						else 	y += dy; //simon can jump through brick
 					}

@@ -11,9 +11,9 @@
 # vertical wall right
 1	224	74	1	16	96
 # Stair 1
-1	172	106	1	50	16
+1	170	108	1	48	16
 # Stair 2
-1	0	74	1	158	16
+1	0	76	1	162	16
 # vertical wall left
 1	0	10	1	16	64
 1	16	58	1	16	16
@@ -37,7 +37,7 @@
 71	40	108	71
 
 #Black Knight
-8	74	42	5
+#8	74	42	5
 
 #Bat
 9	36	15	6
@@ -47,11 +47,11 @@
 
 # type	l	t	ani_set_id	r	b
 # STAIR bottom
--2	110	138	0	126	170
--2	62	43	0	78	75
+-2	110	138	0	126	170	1
+-2	62	43	0	78	75	1
 
 # STAIR top
--3	163	74	0	179	106
+-3	162	78	0	176	104	1
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

@@ -9,7 +9,7 @@ CStairTop::CStairTop(float l, float t, float r, float b)
 }
 void CStairTop::Render()
 {
-	// RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CStairTop::GetBoundingBox(float& l, float& t, float& r, float& b)
