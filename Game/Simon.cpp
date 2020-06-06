@@ -245,7 +245,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;			
-
+		//DebugOut(L"No Collision!\n");
 	}
 	else
 	{

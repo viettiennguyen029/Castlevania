@@ -115,8 +115,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
-	case OBJECT_TYPE_BLACK_KNIGHT: obj = new CBlack_Knight(); break;
-
 	case OBJECT_TYPE_MOVING_PLATFORM: obj = new CMovingPlatform(); break;
 
 	case OBJECT_TYPE_BREAK_WALL: obj = new CBreakWall(x,y); break;
@@ -135,6 +133,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBat(x,y);
 		break;
 	}	
+	case OBJECT_TYPE_BLACK_KNIGHT: 
+	{
+		obj = new CBlack_Knight(x,y); 
+		break;
+	}
 
 	case OBJECT_TYPE_CANDLE: 
 	{

@@ -7,16 +7,18 @@
 #define BLACK_KNIGHT_BBOX_WIDTH	16
 #define BLACK_KNIGHT_BBOX_HEIGHT	32
 
-#define BLACK_KNIGHT_WALKING_SPEED	0.04f
+#define BLACK_KNIGHT_WALKING_SPEED	0.03f
 
 class CBlack_Knight : public CGameObject	
 {
+	float start_x;
+	float start_y;
 public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects= NULL);
 	virtual void Render();
 
-	CBlack_Knight();
+	CBlack_Knight(float x=0.0f, float y=0.0f);
 	virtual void SetState(int state);
 };
 

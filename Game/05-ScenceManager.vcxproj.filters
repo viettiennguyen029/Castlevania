@@ -118,7 +118,9 @@
     <ClCompile Include="BreakWall.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="WallPieces.cpp" />
+    <ClCompile Include="WallPieces.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -211,6 +213,8 @@
     <ClInclude Include="BreakWall.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="WallPieces.h" />
+    <ClInclude Include="WallPieces.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

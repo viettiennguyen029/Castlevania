@@ -12,7 +12,7 @@ public:
 
 
 /*
-Manage WallPices database
+Manage WallPices group
 */
 class CWallPieces
 {
