@@ -21,11 +21,13 @@
 #include "StairTop.h"
 #include "StairBottom.h"
 #include "MovingPlatform.h"
-#include<vector>
 #include "Boomerang.h"
+#include "BreakWall.h"
+#include "WallPieces.h"
+#include<vector>
 
 #define SCREEN_WIDTH	 270
-#define SCREEN_HEIGHT 250
+#define SCREEN_HEIGHT 270
 
 #define TILE_WIDTH	32
 #define TILE_HEIGHT	32

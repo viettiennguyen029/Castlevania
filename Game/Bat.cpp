@@ -54,7 +54,7 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (xS - xB <= POINT_ACTIVE_BAT_X && yS - yB <= POINT_ACTIVE_BAT_Y) // Active Point 
 		SetState(BAT_STATE_FLYING_DOWN);
-		
+	
 	if (y - start_y>= BAT_FLYING_DOWN_DY)	// Redirecting point
 		SetState(BAT_STATE_FLYING_HORIZONTAL);	
 

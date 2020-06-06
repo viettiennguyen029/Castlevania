@@ -9,7 +9,7 @@
 #include "Dagger.h"
 #include "StairBottom.h"
 #include "StairTop.h"
-
+#include "BreakWall.h"
 
 #define SIMON_STATE_IDLE								0
 #define SIMON_STATE_WALKING						1

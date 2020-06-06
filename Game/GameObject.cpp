@@ -136,7 +136,7 @@ void CGameObject::RenderBoundingBox()
 	rect.right = (int)r - (int)l;
 	rect.bottom = (int)b - (int)t;
 
-	CGame::GetInstance()->Draw(l, t, 1, bbox, 0, 0, rect.right, rect.bottom, 156);
+	CGame::GetInstance()->Draw(l, t, 1, bbox, 0, 0, rect.right, rect.bottom, 190);
 }
 
 bool CGameObject::IsOverlapping(LPGAMEOBJECT obj)

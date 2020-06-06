@@ -6,6 +6,7 @@
 30	resources\whip.png	255	0	255
 61	resources\BlackKnight.png	116	116	116
 62	resources\Bat.png	116	116	116
+-4	resources\BreakWall.png	116	116	116
 #map_id	file_path	r	g	b	
 1	resources\tilesheet1.png	5	5	5
 2	resources\tilesheet2.png	5	5	5
@@ -124,6 +125,11 @@
 40016	62	1	77	16	10
 #Yellow
 40026	79	1	94	16	10
+#============= Break wall ================
+44400	0	0	16	16	-4
+44401	16	0	32	16	-4
+#============= Wall pieces ===============
+44402	56	69	63	77	10
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -210,6 +216,11 @@
 416	40016	100
 # Money bag yellow
 426	40026	100
+#============= Break wall ================
+440	44400	100
+441	44401	100
+#============= Wall pieces ===============
+442	44402	100
 
 # id	ani1	ani2	ani3
 [ANIMATIONS_SETS]
@@ -246,3 +257,7 @@
 6	661	662
 #Boomerang
 71	710
+#Break walll
+90	440	441	
+#Wall pieces
+91	442

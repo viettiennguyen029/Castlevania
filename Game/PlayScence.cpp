@@ -47,6 +47,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 
 #define OBJECT_TYPE_MOVING_PLATFORM	30
 #define OBJECT_TYPE_PORTAL						50
+#define OBJECT_TYPE_BREAK_WALL				90
+#define OBJECT_TYPE_WALL_PIECES				91
 
 #define MAX_SCENE_LINE 1024
 
@@ -117,7 +119,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_MOVING_PLATFORM: obj = new CMovingPlatform(); break;
 
-	case OBJECT_TYPE_BAT: obj = new CBat(); break;
+	case OBJECT_TYPE_BREAK_WALL: obj = new CBreakWall(x,y); break;
+
+	case OBJECT_TYPE_WALL_PIECES: 
+	{
+		CWallPiece* piece;
+		obj = new CWallPiece();		
+		piece=(CWallPiece*)obj;
+		CWallPieces::GetInstance()->AddPiece(piece);
+		obj->SetVisible(false);		
+		break;
+	}
+	case OBJECT_TYPE_BAT:
+	{
+		obj = new CBat(x,y);
+		break;
+	}	
 
 	case OBJECT_TYPE_CANDLE: 
 	{
@@ -548,9 +565,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	else if (game->IsKeyDown(DIK_DOWN))
 	{
-		//if (simon->onStairs == 0)
-			//simon->SetState(SIMON_STATE_SIT);
-		//else
+		if (simon->onStairs == 0)
+			simon->SetState(SIMON_STATE_SIT);
+		else
 			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
 	}
 

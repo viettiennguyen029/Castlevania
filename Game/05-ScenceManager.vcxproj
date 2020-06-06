@@ -129,6 +129,7 @@
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Black_Knight.cpp" />
     <ClCompile Include="Boomerang.cpp" />
+    <ClCompile Include="BreakWall.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="Dagger.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="WallPieces.cpp" />
     <ClCompile Include="Whip.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +162,7 @@
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Black_Knight.h" />
     <ClInclude Include="Boomerang.h" />
+    <ClInclude Include="BreakWall.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Candle.h" />
     <ClInclude Include="Dagger.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="WallPieces.h" />
     <ClInclude Include="Whip.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

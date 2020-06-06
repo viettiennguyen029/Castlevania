@@ -427,6 +427,20 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 						temp->animation_set->at(CANDLE_DESTROYED)->SetAniStartTime(GetTickCount());
 					}
 				}
+				else if (dynamic_cast<CBreakWall*>(temp))
+				{
+					CBreakWall* breakwall = dynamic_cast<CBreakWall*>(temp);
+					float left, top, right, bottom;
+					temp->GetBoundingBox(left, top, right, bottom);
+					if (whip->isColliding(left, top, right, bottom) == true)
+					{
+						DebugOut(L"[INFO] Whip Collision with BreakWall \n");
+						temp->SetState(1);
+						
+					}
+					
+							
+				}
 			}
 		}
 	}

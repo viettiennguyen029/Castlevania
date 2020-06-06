@@ -115,6 +115,10 @@
     <ClCompile Include="Boomerang.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="BreakWall.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="WallPieces.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -204,5 +208,9 @@
     <ClInclude Include="Boomerang.h">
       <Filter>Weapons</Filter>
     </ClInclude>
+    <ClInclude Include="BreakWall.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="WallPieces.h" />
   </ItemGroup>
 </Project>
