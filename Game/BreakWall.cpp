@@ -6,27 +6,26 @@ CBreakWall::CBreakWall(float x, float y) : CGameObject()
 	this->y = y;
 }
 
-void CBreakWall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
-{
-	if (state == WALL_STATE_BREAK)
-	{
-		isBreakedToPieces = true;
-		//pieces = new CWallPieces(x, y);
-		//CWallPieces::GetInstance()->DropWall();
-	}
-
-	/*if (pieces != NULL)
-		pieces->Update(dt);*/
-}
+//void CBreakWall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+//{
+//	if (state == WALL_STATE_BREAK)
+//	{
+//		CWallPieces::GetInstance()->DropPiece(this->x, this->y);
+//		//CItems::GetInstance()->CheckAndDrop(this);
+//		this->visible = false;
+//	}
+//
+//}
 
 void CBreakWall::Render()
+{	
+	animation_set->at(state)->Render(x, y, -1);
+}
+
+void CBreakWall::Destroy()
 {
-	if (state == WALL_STATE_NORMAL)
-		return;
-
-	animation_set->at(state)->Render(x, y,-1);
-	//RenderBoundingBox();
-
+	CWallPieces::GetInstance()->DropPiece(this->x, this->y);
+	this->visible = false;
 }
 
 void CBreakWall::SetState(int state)

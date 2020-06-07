@@ -97,6 +97,7 @@ public:
 	// Orientation
 	void SetOrientation(int nx) { this->nx = nx; }
 	int GetOrientation() { return nx; }	
+	void ReDirection() { nx = -nx, vx = -vx; }
 
 	// Visibility
 	void SetVisible(bool visible) { this->visible = visible; }

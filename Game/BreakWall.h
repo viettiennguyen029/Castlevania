@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 #include "WallPieces.h"
+#include "Items.h"
+
 #define BREAK_WALL_WIDTH	16
 #define BREAK_WALL_HEIGHT 16
 
@@ -12,12 +14,9 @@
 class CBreakWall: public CGameObject
 {
 public:
-	bool isBreakedToPieces = false;
-	//CWallPieces* pieces = NULL;
-	CWallPiece* piece = NULL;
-
 	CBreakWall(float x, float y);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL) {};
+	void Destroy();
 	void SetState(int state);
 	void Render();
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

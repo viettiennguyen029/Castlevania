@@ -29,18 +29,16 @@ void CBoomerang::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	CSimon::GetInstance()->GetPosition(xS, yS);
 	float xBm, yBm;
 	this->GetPosition(xBm, yBm);
-	if (xBm - xS > 150)
+	if (abs(xBm - xS) > 150)
 	{
 		if (turnoverDelayTime < 150)
 		{
 			vx = 0;
-			turnoverDelayTime += dt;
-			
+			turnoverDelayTime += dt;			
 		}
 		else
 		{
-			nx = -nx;
-			vx = -vx;
+			ReDirection();
 			turnoverDelayTime = 0;
 		}
 	}

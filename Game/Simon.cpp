@@ -224,8 +224,11 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	// Overlapping
 	ovObjects.clear();
 	for (UINT i = 0; i < coObjects->size(); ++i)
-		if (this->IsOverlapping(coObjects->at(i)))
-			ovObjects.push_back(coObjects->at(i));
+	{
+		if (this->IsOverlapping(coObjects->at(i)))		
+			ovObjects.push_back(coObjects->at(i));			
+	}
+		
 	
 	// Being On Stairs
 	if (onStairs != 0)
@@ -435,7 +438,8 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					if (whip->isColliding(left, top, right, bottom) == true)
 					{
 						DebugOut(L"[INFO] Whip Collision with BreakWall \n");
-						temp->SetState(1);
+						//temp->SetState(1);
+						breakwall->Destroy();
 						
 					}
 					
@@ -553,7 +557,7 @@ void CSimon::Render()
 	{
 		ani = SIMON_ANI_IDLE;
 	}
-	else if (state == SIMON_STATE_ATTACK)
+	else if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_THROW)
 	{
 		if (onStairs == 1)
 		{

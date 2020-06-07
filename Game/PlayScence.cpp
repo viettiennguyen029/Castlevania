@@ -121,11 +121,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_WALL_PIECES: 
 	{
-		CWallPiece* piece;
 		obj = new CWallPiece();		
-		piece=(CWallPiece*)obj;
-		CWallPieces::GetInstance()->AddPiece(piece);
-		obj->SetVisible(false);		
+		CWallPieces::GetInstance()->AddPiece((CWallPiece*)obj);
 		break;
 	}
 	case OBJECT_TYPE_BAT:
@@ -512,6 +509,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	CGame *game = CGame::GetInstance();
 	CSimon *simon = ((CPlayScene*)scence)->GetPlayer();
 
+
 	// When Simon is not touched on the ground, continue rendering jump animation
 	if (simon->GetState() == SIMON_STATE_JUMP && simon->isOnGround() == false)		
 		return;
@@ -568,7 +566,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	else if (game->IsKeyDown(DIK_DOWN))
 	{
-		if (simon->onStairs == 0)
+		if (simon->onStairs == 0&& simon->ovObjects.size()==0 )
 			simon->SetState(SIMON_STATE_SIT);
 		else
 			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);

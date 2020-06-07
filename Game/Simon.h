@@ -26,7 +26,6 @@
 #define SIMON_STATE_IDLE_DOWNSTAIR			12
 #define SIMON_STATE_THROW							13
 
-
 #define SIMON_STATE_DIE						400
 
 #define SIMON_ANI_IDLE			0

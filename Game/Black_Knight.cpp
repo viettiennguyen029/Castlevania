@@ -24,11 +24,6 @@ void CBlack_Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{		
 		y += dy;
 		x += dx;
-		/*if (x>150)
-		{
-			vx = -vx;
-			nx = -nx;
-		}*/
 	}
 	else
 	{
@@ -46,8 +41,10 @@ void CBlack_Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
+				// 
 				CBrick* b = dynamic_cast<CBrick*>(e->obj);
-				this->start_x = b->x;
+
+				this->start_x = b->x+1;
 				float end_x = start_x + b->width- BLACK_KNIGHT_BBOX_WIDTH;
 
 				if (e->ny!=0)
@@ -56,12 +53,10 @@ void CBlack_Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					y += ny * 0.4f;
 				}
 
-				if (x >end_x || x <start_x)
+				if (x >= end_x || x <= start_x)
 				{
-					vx = -vx;
-					this->nx = -this->nx;
+					ReDirection();
 				}
-
 			}
 			
 		}
