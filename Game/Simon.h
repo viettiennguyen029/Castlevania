@@ -10,6 +10,7 @@
 #include "StairBottom.h"
 #include "StairTop.h"
 #include "BreakWall.h"
+#include "Bat.h"
 
 #define SIMON_STATE_IDLE								0
 #define SIMON_STATE_WALKING						1
@@ -55,6 +56,11 @@
 #define SIMON_AUTO_STAIR_TIME			300
 #define SIMON_DISCOLOR_TIME			700
 
+#define SIMON_DEFLECT_TIME				600
+#define SIMON_DEFLECT_SPEED_X			0.06f
+#define SIMON_DEFLECT_SPEED_Y			0.14f
+#define SIMON_UNTOUCHABLE_TIME	3000
+
 #define SIMON_BBOX_WIDTH			15
 #define SIMON_BBOX_HEIGHT			30
 
@@ -73,9 +79,11 @@ struct AutoMoveInfo
 
 class CSimon : public CGameObject
 {
-	static CSimon* __instance; // Singleton Patern
+	static CSimon* __instance; 
 	float start_x, start_y; // Initial position of simon at scene instead of (0,0)
 
+	int untouchable;
+	DWORD untouchable_start;
 public:
 
 	/* Assigned to -1 if going downstairs
@@ -83,7 +91,7 @@ public:
 	 Assigned to 0 if not on stairs*/
 	int onStairs;
 
-	LPWHIP whip;	
+	CWhip* whip;
 	CDagger* dagger;
 
 	bool subWeapon = false;
@@ -98,6 +106,7 @@ public:
 	
 	virtual void Update(DWORD dt, vector <LPGAMEOBJECT>* coObject = NULL);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 
 	void Render();
 	void SetState(int state);	
@@ -110,7 +119,5 @@ public:
 	void GoDownStair();
 	void ProceedOnStairs();
 	vector<LPGAMEOBJECT> ovObjects;		// overlapping objects
-	//void StartAutoMove(float vx, float xDestination);
-
-	//void UseDagger();
+	
 };

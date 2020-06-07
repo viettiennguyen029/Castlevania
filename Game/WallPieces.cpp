@@ -50,8 +50,7 @@ void CWallPieces::DropPiece(float x, float y)
 			piece->SetVisible(true);
 			float vx = (float)(-100 + rand() % 200) / 1000;
 			float vy = (float)(-100 + rand() % 200) / 1000;
-			piece->SetSpeed(vx, -vy);
-			
+			piece->SetSpeed(vx, -vy);			
 		}
 	}
 	

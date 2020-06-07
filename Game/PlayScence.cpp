@@ -530,6 +530,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (simon->GetState() == SIMON_STATE_ATTACK &&
 		simon->animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->IsOver(SIMON_ATTACK_TIME) == false)
 		return;
+
+	if (simon->GetState() == SIMON_STATE_DEFLECT && 
+		simon->animation_set->at(SIMON_ANI_DEFLECT)->IsOver(SIMON_DEFLECT_TIME) == false)
+		return ;
 	
 	if (simon->powerUp == true) return;
 	
@@ -557,11 +561,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		}
 		else
 		{
-			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
-						
+			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);						
 		}
-		
-
 	}
 
 	else if (game->IsKeyDown(DIK_DOWN))

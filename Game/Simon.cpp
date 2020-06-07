@@ -218,29 +218,38 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	vector <LPCOLLISIONEVENT> coEvents;
-	vector <LPCOLLISIONEVENT> coEventsResult;
-
 	// Overlapping
 	ovObjects.clear();
 	for (UINT i = 0; i < coObjects->size(); ++i)
 	{
-		if (this->IsOverlapping(coObjects->at(i)))		
-			ovObjects.push_back(coObjects->at(i));			
+		if (this->IsOverlapping(coObjects->at(i)))
+			ovObjects.push_back(coObjects->at(i));
 	}
-		
-	
+
+
 	// Being On Stairs
 	if (onStairs != 0)
 	{
-		ProceedOnStairs();	
+		ProceedOnStairs();
 		vy = 0;
 	}
+
+	vector <LPCOLLISIONEVENT> coEvents;
+	vector <LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
 		
 	// turn off collision when simon is die
 	if (state != SIMON_STATE_DIE)
 	{
 		CalcPotentialCollisions(coObjects, coEvents);
+	}
+
+	// reset untouchable timer if untouchable time has passed
+	if (GetTickCount() - untouchable_start > SIMON_DEFLECT_TIME)
+	{
+		untouchable_start = 0;
+		untouchable = 0;
 	}
 
 	// No collision, process normally
@@ -386,10 +395,30 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			// switching scene logic		
 			else if (dynamic_cast<CPortal*> (e->obj))
 			{
-				DebugOut(L"[INFO] Portal detection ! %d \n");
-				CPortal* p = dynamic_cast<CPortal*> (e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+			DebugOut(L"[INFO] Portal detection ! %d \n");
+			CPortal* p = dynamic_cast<CPortal*> (e->obj);
+			CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
+
+			else if (dynamic_cast<CBat*>(e->obj) ||
+			dynamic_cast<CBlack_Knight*>(e->obj))
+			{
+			if (e->nx != 0)
+			{
+				if (untouchable == 0)
+				{
+					StartUntouchable();
+					DebugOut(L"[INFO] Enemies collision, Simon is Damaged \n");
+
+					if (e->nx == 1 && this->nx == 1) 	this->nx = 1;
+					else if (e->nx == -1 && this->nx == -1) this->nx = -1;
+
+					SetState(SIMON_STATE_DEFLECT);
+				}
+					
+			}
+
+		}
 
 
 			else
@@ -438,9 +467,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					if (whip->isColliding(left, top, right, bottom) == true)
 					{
 						DebugOut(L"[INFO] Whip Collision with BreakWall \n");
-						//temp->SetState(1);
-						breakwall->Destroy();
-						
+						breakwall->Destroy();						
 					}
 					
 							
@@ -537,6 +564,15 @@ void CSimon::SetState(int state)
 		GoDownStair();
 		break;
 	}
+
+	case SIMON_STATE_DEFLECT:
+	{
+		vy = -SIMON_DEFLECT_SPEED_Y;
+		if (nx > 0) vx = -SIMON_DEFLECT_SPEED_X;
+		else vx = SIMON_DEFLECT_SPEED_X;
+		animation_set->at(SIMON_ANI_DEFLECT)->Reset();
+		animation_set->at(SIMON_ANI_DEFLECT)->SetAniStartTime(GetTickCount());
+	}
 	
 	}
 }
@@ -574,7 +610,7 @@ void CSimon::Render()
 	else if (state == SIMON_STATE_THROW) ani = SIMON_ANI_THROW;
 	else if (state == SIMON_STATE_JUMP) ani = SIMON_ANI_JUMP;
 	else if (state == SIMON_STATE_SIT) ani = SIMON_ANI_SIT;
-	// else if (state == SIMON_STATE_GO_UPSTAIR) ani = SIMON_ANI_GO_UPSTAIR;
+	else if (state == SIMON_STATE_DEFLECT) ani = SIMON_ANI_DEFLECT;
 	else if (onStairs !=0)
 	{
 		if (vx != 0)
@@ -605,14 +641,15 @@ void CSimon::Render()
 	}
 	
 	int alpha = 255;
+	
+	if (untouchable) alpha = 128;
+
 	animation_set->at(ani)->Render(x, y, nx, alpha);
 	// RenderBoundingBox();	
 
 	// Whip rendering
-	// Need to update
 	if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_SIT_ATTACK) 
 	{
-		// if (subWeapon==false)
 		whip->Render(animation_set->at(ani)->GetCurrentFrame());
 	}
 }

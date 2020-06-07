@@ -33,4 +33,4 @@ public:
 	void PowerUp();
 	static CWhip* GetInstance();
 };
-typedef CWhip* LPWHIP;
+
