@@ -2,11 +2,12 @@
 [TEXTURES]
 0	resources\simon.png	116	116	116
 10	resources\Objects.png	116	116	116
-20	resources\Brick2.png	0	0	0
+20	resources\Brick.png	0	0	0
 30	resources\whip.png	255	0	255
-61	resources\BlackKnight.png	116	116	116
+61	resources\Knight.png	116	116	116
 62	resources\Bat.png	116	116	116
 -4	resources\BreakWall.png	116	116	116
+-1	resources\Board.png	5	5	5
 #map_id	file_path	r	g	b	
 1	resources\tilesheet1.png	5	5	5
 2	resources\tilesheet2.png	5	5	5
@@ -130,6 +131,25 @@
 44401	16	0	32	16	-4
 #============= Wall pieces ===============
 44402	56	69	63	77	10
+#================ BOARD ==================
+# HUD
+80000	0	0	275	35	-1
+# Number
+88000	6	81	12	87	-1
+88001	14	81	20	87	-1
+88002	21	81	27	87	-1
+88003	28	81	35	87	-1
+88004	36	81	42	87	-1
+88005	43	81	50	87	-1
+88006	51	81	57	87	-1
+88007	58	81	65	87	-1
+88008	66	81	72	87	-1
+88009	73	81	80	87	-1
+88010	77	81	83	87	-1
+# Health point
+88101	123	69	127	77	-1
+88102	132	69	137	77	-1
+88103	142	69	146	77	-1
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

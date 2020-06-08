@@ -108,16 +108,6 @@ void CSimon::ProceedOnStairs()
 
 }
 
-//void CSimon::UseDagger()
-//{
-//	float xS, yS;
-//	this->GetPosition(xS, yS);
-//	dagger->SetPosition(xS, yS);
-//	dagger->SetOrientation(this->nx);
-//	dagger->SetVisible(true);
-//	this->SetState(SIMON_STATE_THROW);
-//}
-
 void CSimon::GoDownStair()
 {
 	// Check if Simon is on stairs and want to go down
@@ -240,8 +230,9 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 		
 	// turn off collision when simon is die
-	if (state != SIMON_STATE_DIE)
+	if (state != SIMON_STATE_DIE )
 	{
+		
 		CalcPotentialCollisions(coObjects, coEvents);
 	}
 
@@ -374,22 +365,14 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			}
 #pragma endregion
 			
-			else if (dynamic_cast<CStairBottom*> (e->obj))
+			else if (dynamic_cast<CStairBottom*> (e->obj) ||
+				dynamic_cast<CStairTop*> (e->obj))
 			{
-				DebugOut(L"[INFO] Stair bottom detection ! Direction: %d \n",this->nx);
+				DebugOut(L"[INFO] Stair detection ! Direction: %d \n",this->nx);
 				// Process normally
 				if (e->nx != 0) x += dx;
 				if (e->ny != 0) y += dy;
 	
-			}
-
-			else if (dynamic_cast<CStairTop*> (e->obj))
-			{
-				DebugOut(L"[INFO] Stair top detection ! Direction: %d \n", this->nx);
-				// Process normally
-				if (e->nx != 0) x += dx;
-				if (e->ny != 0) y += dy;
-
 			}
 
 			// switching scene logic		
@@ -400,12 +383,12 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
 
-			else if (dynamic_cast<CBat*>(e->obj) ||
-			dynamic_cast<CBlack_Knight*>(e->obj))
+			else if (dynamic_cast<CBat*>(e->obj) ||	dynamic_cast<CBlack_Knight*>(e->obj))
 			{
-			if (e->nx != 0)
+			if (e->nx != 0 && untouchable==0)
 			{
-				if (untouchable == 0)
+			
+				if (onStairs == 0)
 				{
 					StartUntouchable();
 					DebugOut(L"[INFO] Enemies collision, Simon is Damaged \n");
@@ -415,11 +398,14 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 					SetState(SIMON_STATE_DEFLECT);
 				}
-					
-			}
-
-		}
-
+				else
+				{
+					StartUntouchable();
+					if (e->nx != 0) x += dx;
+					if (e->ny != 0) y += dy;
+				}
+			 }
+			 }
 
 			else
 			{
@@ -568,10 +554,14 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_DEFLECT:
 	{
 		vy = -SIMON_DEFLECT_SPEED_Y;
+
 		if (nx > 0) vx = -SIMON_DEFLECT_SPEED_X;
 		else vx = SIMON_DEFLECT_SPEED_X;
+
 		animation_set->at(SIMON_ANI_DEFLECT)->Reset();
 		animation_set->at(SIMON_ANI_DEFLECT)->SetAniStartTime(GetTickCount());
+		
+		break;		
 	}
 	
 	}

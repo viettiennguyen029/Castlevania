@@ -106,14 +106,14 @@ void CGame::SetCamPos(float x, float y)
 {
 	cam_x = x;
 	cam_y = y;
-	if (cam_x <0) cam_x = 0;		
-	
+	if (cam_x <0) cam_x = 0;			
 	if (cam_y < 0) cam_y = 0;	
 }
 
-D3DXVECTOR3 CGame::GetCamPos()
+void CGame::GetCamPos(float&x, float &y)
 {
-	return D3DXVECTOR3(cam_x, cam_y,0);
+	x = cam_x;
+	y = cam_y;	
 }
 
 int CGame::IsKeyDown(int KeyCode)

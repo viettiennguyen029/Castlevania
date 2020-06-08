@@ -24,6 +24,7 @@
 #include "Boomerang.h"
 #include "BreakWall.h"
 #include "WallPieces.h"
+#include "Board.h"
 #include<vector>
 
 #define SCREEN_WIDTH	 270
@@ -41,6 +42,8 @@ protected:
 	CWhip* whip;
 	CDagger* dagger;
 	CBoomerang* boomerang;
+
+	Board* HUD;
 	
 	int mapWidth, offset_y;
 	vector<LPTILE> tiledMap;

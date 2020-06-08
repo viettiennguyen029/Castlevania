@@ -28,6 +28,9 @@
     <Filter Include="Weapons">
       <UniqueIdentifier>{4c4bdec0-da4f-438b-a6da-6e06d3d6cf7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HUD">
+      <UniqueIdentifier>{2a858247-a5fa-4ea8-a2f6-6287effd3168}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp">
@@ -120,6 +123,12 @@
     </ClCompile>
     <ClCompile Include="WallPieces.cpp">
       <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Code.cpp">
+      <Filter>HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +224,12 @@
     </ClInclude>
     <ClInclude Include="WallPieces.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Code.h">
+      <Filter>HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

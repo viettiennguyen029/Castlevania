@@ -270,6 +270,8 @@ void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 
+	HUD = Board::GetInstance();
+
 	ifstream f;
 	f.open(sceneFilePath);
 	
@@ -346,6 +348,8 @@ void CPlayScene::Update(DWORD dt)
 
 	// CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 	game ->SetCamPos(cx, 0.0f /*cy*/);
+
+	HUD->Update(dt);
 }
 
 void CPlayScene::Render()
@@ -360,6 +364,8 @@ void CPlayScene::Render()
 			continue;
 		objects[i]->Render();
 	}	
+
+	HUD->Render();
 }
 
 /*
