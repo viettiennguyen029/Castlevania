@@ -14,8 +14,8 @@ void Board::Render()
 	code->DrawNumber(6, cx + 55, cy + 8, 123456);
 	code->DrawNumber(2, cx + 234, cy + 8, game->GetSceneId());
 
-	code->DrawHP(cx + 60, cy + 18, 0, 0);
-	code->DrawHP(cx + 60, cy + 28, 1, 6);
+	code->DrawHP(cx + 60, cy + 18, 0, 14);
+	code->DrawHP(cx + 60, cy + 28, 1, 13);
 }
 Board::Board()
 { 

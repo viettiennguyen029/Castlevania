@@ -9,6 +9,7 @@
 #include "Dagger.h"
 #include "StairBottom.h"
 #include "StairTop.h"
+#include "VariousStair.h"
 #include "BreakWall.h"
 #include "Bat.h"
 

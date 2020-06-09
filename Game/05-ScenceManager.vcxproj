@@ -156,6 +156,7 @@
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="VariousStair.cpp" />
     <ClCompile Include="WallPieces.cpp" />
     <ClCompile Include="Whip.cpp" />
   </ItemGroup>
@@ -178,6 +179,7 @@
     <ClInclude Include="Items.h" />
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="StairBottom.h" />
     <ClInclude Include="StairTop.h" />
@@ -191,8 +193,12 @@
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="VariousStair.h" />
     <ClInclude Include="WallPieces.h" />
     <ClInclude Include="Whip.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Castlevania NES.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

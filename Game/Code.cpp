@@ -21,24 +21,25 @@ void Code::DrawNumber(int max, float x, float y, int s)
 void Code::DrawHP(float x, float y, int type, int s)
 {
 	CSprites* sprites = CSprites::GetInstance();
-	CSprite* sprite1 = sprites->Get(88101);
+	CSprite* sprite1 = sprites->Get(88102);
 	CSprite* sprite2 = NULL;
 
 	if (type == 0) // simon health point
-		sprite2 = sprites->Get(88102);
+		sprite2 = sprites->Get(88101);
 	else // Enemy
 		sprite2 = sprites->Get(88103);
 
 	for (int i = 0; i < s; i++)
 	{
 		sprite2->Draw(x, y,-1);
-		x += 6;
+		x += 5;
 	}
 
-	for (int i = 0; i < 6 - s; i++)
+	
+	for (int i = 0; i <16 - s; i++)
 	{
 		sprite1->Draw(x, y,-1);
-		x += 6;
+		x += 5;
 	}
 	sprites = NULL;
 	sprite1 = NULL;

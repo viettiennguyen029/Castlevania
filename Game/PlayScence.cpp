@@ -42,6 +42,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 #define OBJECT_TYPE_BAT							9
 
+#define OBJECT_TYPE_VARIOUS_STAIR	-1
 #define OBJECT_TYPE_STAIR_BOTTOM	-2
 #define OBJECT_TYPE_STAIR_TOP			-3
 
@@ -183,6 +184,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new ItemBoomerang();
 		// CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BOOMERANG, obj);
 		CItems::GetInstance()->AddItem((int)ItemType::BOOMERANG, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_VARIOUS_STAIR:
+	{
+		float r = atof(tokens[4].c_str());
+		float b = atof(tokens[5].c_str());
+		int nx = atoi(tokens[6].c_str());
+		obj = new CVariousStair(x, y, r, b);		
+		obj->SetOrientation(nx);
 		break;
 	}
 

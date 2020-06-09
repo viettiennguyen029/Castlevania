@@ -130,6 +130,9 @@
     <ClCompile Include="Code.cpp">
       <Filter>HUD</Filter>
     </ClCompile>
+    <ClCompile Include="VariousStair.cpp">
+      <Filter>Hidden Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -231,5 +234,12 @@
     <ClInclude Include="Code.h">
       <Filter>HUD</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="VariousStair.h">
+      <Filter>Hidden Objects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Castlevania NES.rc" />
   </ItemGroup>
 </Project>

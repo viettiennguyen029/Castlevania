@@ -20,6 +20,7 @@
 #include "Bat.h"
 #include "StairTop.h"
 #include "StairBottom.h"
+#include "VariousStair.h"
 #include "MovingPlatform.h"
 #include "Boomerang.h"
 #include "BreakWall.h"

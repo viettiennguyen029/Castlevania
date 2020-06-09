@@ -19,9 +19,13 @@ void CSimon::GoUpStair()
 		// Check if Simon is on a stairs-start
 		for (UINT i = 0; i < ovObjects.size(); ++i)
 		{
-			if (dynamic_cast<CStairBottom*>(ovObjects[i]))
+			if (dynamic_cast<CStairBottom*>(ovObjects[i]) || dynamic_cast<CVariousStair*>(ovObjects[i]))
 			{				
 				stairs = ovObjects[i];
+				if (dynamic_cast<CVariousStair*>(ovObjects[i]))
+				{
+					stairs->SetOrientation(-nx);
+				}
 				break;
 			}		
 		}
@@ -57,16 +61,23 @@ void CSimon::GoUpStair()
 void CSimon::ProceedOnStairs()
 {
 	// Try getting out the stairs
+
 	LPGAMEOBJECT stairs = NULL;
-	if (onStairs ==1)
-	{		
+	if (onStairs ==1 )
+	{
+		// Condition to check if simon is Overlapping with various stair or not?? 
+
 		for (UINT i = 0; i < ovObjects.size(); ++i)
-			if (dynamic_cast<CStairTop*>(ovObjects[i]))
-			{
-				stairs = ovObjects[i];
-				break;
-			}
+		{
+			LPGAMEOBJECT temp = ovObjects[i];
 		
+			if (dynamic_cast<CStairTop*>(ovObjects[i]) || ((dynamic_cast<CVariousStair*>(ovObjects[i]))&& this->nx ==-1))
+				{					
+					stairs = ovObjects[i];
+					break;
+				}
+						
+		}
 		if (stairs == NULL) return;
 
 		float xS, yS;
@@ -74,7 +85,7 @@ void CSimon::ProceedOnStairs()
 		stairs->GetPosition(xS, yS);
 
 		// Check if simon has reached the stairs exit
-		if (y < yS)
+		if (y < yS && stairs->GetOrientation()==nx)
 		{
 			y = yS - 0.2f;
 			onStairs = 0;
@@ -85,7 +96,7 @@ void CSimon::ProceedOnStairs()
 	else if (onStairs == -1)
 	{
 		for (UINT i = 0; i < ovObjects.size(); ++i)
-			if (dynamic_cast<CStairBottom*>(ovObjects[i]))
+			if (dynamic_cast<CStairBottom*>(ovObjects[i]) || ( dynamic_cast<CVariousStair*>(ovObjects[i])&& this ->nx ==-1))
 			{
 				stairs = ovObjects[i];
 				break;
@@ -118,9 +129,11 @@ void CSimon::GoDownStair()
 		// Check if Simon is on a stairs-start 
 		for (UINT i = 0; i < ovObjects.size(); ++i)
 		{
-			if (dynamic_cast<CStairTop*>(ovObjects[i]))
-			{
+			if (dynamic_cast<CStairTop*>(ovObjects[i]) || 
+				dynamic_cast<CVariousStair*>(ovObjects[i]))
+			{				
 				stairs = ovObjects[i];
+				if (dynamic_cast<CVariousStair*>(ovObjects[i])) stairs->nx = -nx;				
 				break;
 			}
 		}
@@ -365,10 +378,11 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			}
 #pragma endregion
 			
-			else if (dynamic_cast<CStairBottom*> (e->obj) ||
-				dynamic_cast<CStairTop*> (e->obj))
+			else if (dynamic_cast<CStairBottom*> (e->obj) || 
+				dynamic_cast<CStairTop*> (e->obj) || 
+				dynamic_cast<CVariousStair*>(e->obj))				
 			{
-				DebugOut(L"[INFO] Stair detection ! Direction: %d \n",this->nx);
+				DebugOut(L"[INFO] Stair detection ! Direction: %d \n",e->nx);
 				// Process normally
 				if (e->nx != 0) x += dx;
 				if (e->ny != 0) y += dy;
@@ -393,8 +407,9 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					StartUntouchable();
 					DebugOut(L"[INFO] Enemies collision, Simon is Damaged \n");
 
-					if (e->nx == 1 && this->nx == 1) 	this->nx = 1;
-					else if (e->nx == -1 && this->nx == -1) this->nx = -1;
+					this->nx = (e->nx != 0) ?
+						-(e->nx) :
+						-(e->obj->GetOrientation());
 
 					SetState(SIMON_STATE_DEFLECT);
 				}
@@ -548,15 +563,15 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_GO_DOWNSTAIR:
 	{
 		GoDownStair();
-		break;
+		break; 
 	}
 
 	case SIMON_STATE_DEFLECT:
 	{
-		vy = -SIMON_DEFLECT_SPEED_Y;
+		vx = vy = dx = dy = 0;
 
-		if (nx > 0) vx = -SIMON_DEFLECT_SPEED_X;
-		else vx = SIMON_DEFLECT_SPEED_X;
+		this->vx = (-this->nx) * SIMON_DEFLECT_SPEED_X;
+		vy = -SIMON_DEFLECT_SPEED_Y;
 
 		animation_set->at(SIMON_ANI_DEFLECT)->Reset();
 		animation_set->at(SIMON_ANI_DEFLECT)->SetAniStartTime(GetTickCount());

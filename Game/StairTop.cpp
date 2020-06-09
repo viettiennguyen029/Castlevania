@@ -19,5 +19,3 @@ void CStairTop::GetBoundingBox(float& l, float& t, float& r, float& b)
 	r = x + width;
 	b = y + height;
 }
-
-
