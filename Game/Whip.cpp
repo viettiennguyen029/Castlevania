@@ -74,7 +74,7 @@ void CWhip::PowerUp()
 	if (state == NORMAL_WHIP) SetState(SHORT_CHAIN) ;	
 	 else if (state == SHORT_CHAIN) SetState(LONG_CHAIN);
 
-	// DebugOut(L"Whip Level %d\n", GetState());
+	DebugOut(L"Whip Level %d\n", GetState());
 }
 
 CWhip* CWhip::__instance = NULL;

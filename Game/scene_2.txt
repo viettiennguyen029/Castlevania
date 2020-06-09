@@ -66,7 +66,7 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	140	47	0	155	50	3
+50	140	42	0	155	45	3
 
 #width	offset_y
 [MAP_INFO]

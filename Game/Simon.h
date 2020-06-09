@@ -49,7 +49,7 @@
 #define SIMON_ANI_POWER_UP			14
 
 #define SIMON_GRAVITY						0.0005f	
-#define SIMON_WALKING_SPEED			0.06f
+#define SIMON_WALKING_SPEED			0.09f
 #define SIMON_JUMP_SPEED_Y				0.18f
 #define SIMON_GO_UPSTAIR_SPEED		0.03f
 #define SIMON_DIE_DEFLECT_SPEED		0.5
@@ -57,14 +57,13 @@
 #define SIMON_AUTO_STAIR_TIME			300
 #define SIMON_DISCOLOR_TIME			700
 
-#define SIMON_DEFLECT_TIME				600
+#define SIMON_DEFLECT_TIME				800
 #define SIMON_DEFLECT_SPEED_X			0.06f
 #define SIMON_DEFLECT_SPEED_Y			0.14f
 #define SIMON_UNTOUCHABLE_TIME	3000
 
 #define SIMON_BBOX_WIDTH			15
 #define SIMON_BBOX_HEIGHT			30
-
 
 /*
 	Data struct for saving auto move event

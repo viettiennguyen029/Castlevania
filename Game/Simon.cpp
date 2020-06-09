@@ -96,7 +96,8 @@ void CSimon::ProceedOnStairs()
 	else if (onStairs == -1)
 	{
 		for (UINT i = 0; i < ovObjects.size(); ++i)
-			if (dynamic_cast<CStairBottom*>(ovObjects[i]) || ( dynamic_cast<CVariousStair*>(ovObjects[i])&& this ->nx ==-1))
+			if (dynamic_cast<CStairBottom*>(ovObjects[i]) || 
+				( dynamic_cast<CVariousStair*>(ovObjects[i])&& this ->nx ==-1))
 			{
 				stairs = ovObjects[i];
 				break;
@@ -442,7 +443,9 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		whip->SetOrientation(nx);
 		whip->SetWhipPosition(D3DXVECTOR2(x, y), isStanding);
 
-		if (animation_set->at(state)->GetCurrentFrame() == 2) // Only check collsion at the last frame of the whip
+		if (animation_set->at(state)->GetCurrentFrame() == 2 || 
+			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->GetCurrentFrame()==2||
+			animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->GetCurrentFrame() == 2 ) // Only check collsion at the last frame of the whip
 		{
 			for (UINT i = 0; i < coObjects->size(); i++)
 			{
@@ -450,10 +453,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				if (dynamic_cast<CCandle*>(temp))
 				{
 					CCandle* candle = dynamic_cast<CCandle*> (temp);
-					float left, top, right, bottom;
-					temp->GetBoundingBox(left, top, right, bottom);
-
-					if (whip->isColliding(left, top, right, bottom) == true)
+					if (whip->IsOverlapping(temp))
 					{
 						DebugOut(L"[INFO]Whip Collision with Torch \n");						
 						temp->SetState(CANDLE_DESTROYED);				
@@ -463,9 +463,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				else if (dynamic_cast<CBreakWall*>(temp))
 				{
 					CBreakWall* breakwall = dynamic_cast<CBreakWall*>(temp);
-					float left, top, right, bottom;
-					temp->GetBoundingBox(left, top, right, bottom);
-					if (whip->isColliding(left, top, right, bottom) == true)
+					if (whip->IsOverlapping(temp))
 					{
 						DebugOut(L"[INFO] Whip Collision with BreakWall \n");
 						breakwall->Destroy();						
@@ -488,7 +486,7 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_IDLE:
 	{
 		isStanding = true;
-		if (onMovingPlatform == true) {}
+		if (onMovingPlatform == true) { ; }
 		else vx = 0;
 		break;
 		
@@ -497,7 +495,7 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_WALKING:
 	{
 		if (nx > 0) vx = SIMON_WALKING_SPEED;
-		else vx = -SIMON_WALKING_SPEED;
+ 		else vx = -SIMON_WALKING_SPEED;
 		break;
 	}	
 
@@ -524,17 +522,20 @@ void CSimon::SetState(int state)
 	}
 	case SIMON_STATE_ATTACK:
 	{
-		if (onStairs == 0)
-		{
-			animation_set->at(SIMON_ANI_ATTACK)->Reset();
+		animation_set->at(SIMON_ANI_ATTACK)->Reset();
+		animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->Reset();
+		animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->Reset();
+
+		if (onStairs == 0) 
 			animation_set->at(SIMON_ANI_ATTACK)->SetAniStartTime(GetTickCount());
-			
-		}
+		
 		else
 		{
-			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->Reset();
-			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->SetAniStartTime(GetTickCount());
-			//break;
+			if (onStairs ==1) 
+				animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->SetAniStartTime(GetTickCount());
+			
+			else 
+				animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->SetAniStartTime(GetTickCount());			
 		}
 		break;
 	}
@@ -602,6 +603,7 @@ void CSimon::Render()
 	{
 		if (onStairs == 1)
 		{
+			animation_set->at(SIMON_ANI_ATTACK)->Reset();
 			ani = SIMON_ANI_ATTACK_UPSTAIR;
 		}
 		else if (onStairs == -1)

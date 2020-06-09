@@ -348,15 +348,24 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow simon
 	float cx, cy;
 	player->GetPosition(cx, cy);	
-	
-	if (cx > mapWidth - SCREEN_WIDTH / 2)
-	{
-		return;
-	}
 	CGame* game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
-	cy -= game->GetScreenHeight() / 2;
 
+	if (cx >= SCREEN_WIDTH/ 2)
+	{
+		cx -= game->GetScreenWidth() / 2;
+		cy -= game->GetScreenHeight() / 2;
+
+		if (cx > mapWidth - SCREEN_WIDTH )
+		{
+			cx = mapWidth - SCREEN_WIDTH;
+		}
+	}
+
+	else if (cx < SCREEN_WIDTH / 2)
+	{
+		cx = 0.0f;
+	}
+	
 	// CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 	game ->SetCamPos(cx, 0.0f /*cy*/);
 
@@ -399,10 +408,11 @@ void CPlayScene::Unload()
 	}
 
 	objects.clear();
+	tiledMap.clear();
+	CItems::GetInstance()->Clear();
 	player = NULL;
 
-	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
-	tiledMap.clear();
+	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);	
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
@@ -450,7 +460,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			return;
 
 		if (simon->GetState() == SIMON_STATE_IDLE ||
-			simon->GetState() == SIMON_STATE_JUMP) 
+			simon->GetState() == SIMON_STATE_JUMP ||
+			simon->GetState() == SIMON_STATE_GO_UPSTAIR||
+			simon->GetState()== SIMON_ANI_GO_DOWNSTAIR) 
 		{
 			simon->SetState(SIMON_STATE_ATTACK);
 		}
@@ -532,9 +544,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		return;
 
 	// Condition to stopping Simon's attacking loop
-	if (simon->GetState()== SIMON_STATE_ATTACK && 
-		simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false)
-		return;
+	if (simon->GetState() == SIMON_STATE_ATTACK &&
+		simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false) return;
+	
+		//simon->animation_set->at(SIMON_ANI_ATTACK)->Reset();
+		
 
 	if (simon->GetState() == SIMON_STATE_SIT_ATTACK && 
 		simon->animation_set->at(SIMON_ANI_SIT_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false)
@@ -546,6 +560,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	if (simon->GetState() == SIMON_STATE_ATTACK &&
 		simon->animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->IsOver(SIMON_ATTACK_TIME) == false)
+		return;
+
+	if (simon->GetState() == SIMON_STATE_ATTACK &&
+		simon->animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->IsOver(SIMON_ATTACK_TIME) == false)
 		return;
 
 	if (simon->GetState() == SIMON_STATE_DEFLECT && 

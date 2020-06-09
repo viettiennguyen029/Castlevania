@@ -10,11 +10,12 @@ class CItems
 {
 	unordered_map<int, vector<LPGAMEOBJECT>> items;
 	static CItems* __instance;
-
+	CItems() = default;
 public:
 	void AddItem(int itemType, LPGAMEOBJECT item);
 	void CheckAndDrop(LPGAMEOBJECT Object);			// Check if the given object is holding item, drop it if yes
 	void Drop(int itemType, float x, float y);
-	CItems() { };
+	void Clear();
+	//CItems() { };
 	static CItems* GetInstance();
 };
