@@ -26,6 +26,7 @@
 #include "Boomerang.h"
 #include "BreakWall.h"
 #include "WallPieces.h"
+#include "FlameEffect.h"
 #include "Board.h"
 #include<vector>
 

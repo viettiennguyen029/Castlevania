@@ -48,7 +48,7 @@ void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				// Block brick
 				if (e->ny != 0 || e->nx!=0)
 				{
-					y += 0.4f * e->ny;
+					//y += 0.4f * e->ny;
 					vy = 0;
 				}
 				vx = vx_variability = 0;

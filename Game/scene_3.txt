@@ -1,11 +1,11 @@
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
+# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Flame, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
 # 8 = Black Knight,
 
 # SIMON
-#0	370	205	0
-0	390	50	0
+#0	390	205	0
+0	450	80	0
 # top wall
 1	1	122	1	32	16
 1	97	122	1	64	16
@@ -14,7 +14,7 @@
 # middle wall
 1	65	153	1	32	16
 1	289	153	1	32	16
-1	394	153	1	51	16
+1	458	153	1	47	16
 # Balck Knight wall
 1	321	185	1	32	16
 # Vertical wall
@@ -29,6 +29,9 @@
 2	138	55	2	44	1
 2	74	55	2	44	1
 
+# Hit effect
+3	458	55	3
+
 #Items
 #Small heart
 44	458	55	44
@@ -40,8 +43,18 @@
 
 # Moving Platform
 30	32	122	33
-# WHIP
-#3	0	0	3
+
+#Break wall
+90	352	121	90
+
+#Wall pieces
+91	352	121	91
+91	352	121	91
+91	352	121	91
+91	352	121	91
+
+#Bat
+9	300	62	6
 
 #DAGGER
 7	46	105	43

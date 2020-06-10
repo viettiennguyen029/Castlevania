@@ -1,6 +1,6 @@
 ﻿#include "Whip.h"
 #include "Candle.h"
-#define WHIP_ANI_SET 3
+#define WHIP_ANI_SET 36
 
 CWhip::CWhip():CGameObject()
 {

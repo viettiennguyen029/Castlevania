@@ -27,7 +27,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_SIMON						0
 #define OBJECT_TYPE_BRICK						1
 #define OBJECT_TYPE_CANDLE					2
-#define OBJECT_TYPE_WHIP						3
+#define OBJECT_TYPE_HIT_EFFECT				3
 
 #define OBJECT_TYPE_ITEM_BIG_HEART			4
 #define OBJECT_TYPE_ITEM_SMALL_HEART	44
@@ -71,6 +71,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
+	CItems* items = CItems::GetInstance();
 
 	switch (object_type)
 	{	
@@ -98,9 +99,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetWidth(width);
 		obj->SetHeight(height);
 		break;
-
 	}
-	// case OBJECT_TYPE_WHIP: {/*obj = new CWhip();*/} break;
+
+	 case OBJECT_TYPE_HIT_EFFECT:
+	 {
+		 obj = new HitEffect();
+		 FlameEffect::GetInstance()->Add((HitEffect*)obj);
+		 obj->SetVisible(false);
+		 break;
+	 }
+	
 	case OBJECT_TYPE_DAGGER:
 	{
 		obj = new CDagger();
@@ -152,23 +160,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		obj = new ItemBigHeart();
 		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BIG_HEART, obj);
-		CItems::GetInstance()->AddItem((int)ItemType::BIG_HEART, obj);
+		//CItems::GetInstance()->AddItem((int)ItemType::BIG_HEART, obj);
+		items->AddItem((int)ItemType::BIG_HEART, obj);
 		break;
 	}
 
 	case OBJECT_TYPE_ITEM_SMALL_HEART:
 	{
 		obj = new ItemSmallHeart ();
-		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BIG_HEART, obj);
-		CItems::GetInstance()->AddItem((int)ItemType::SMALL_HEART, obj);
+		items->AddItem((int)ItemType::SMALL_HEART, obj);
 		break;
 	}
 
 	case OBJECT_TYPE_ITEM_CHAIN:
 	{
 		 obj = new ItemChain();
-		 //CItems::GetInstance()->AddItem((int)CGameObject::ItemType::CHAIN, obj);
-		 CItems::GetInstance()->AddItem((int)ItemType::CHAIN, obj);
+		 items->AddItem((int)ItemType::CHAIN, obj);
 		break;
 	}
 
@@ -176,23 +183,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		obj = new ItemDagger();
 		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::DAGGER, obj);
-		CItems::GetInstance()->AddItem((int)ItemType::DAGGER, obj);
+		//CItems::GetInstance()->AddItem((int)ItemType::DAGGER, obj);
+		items->AddItem((int)ItemType::DAGGER, obj);
 		break;
 	}
 
 	case OBJECT_TYPE_ITEM_MONEY_BAG:
 	{
 		obj = new ItemMoneyBag();
-		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::MONEY_BAG, obj);
-		CItems::GetInstance()->AddItem((int)ItemType::MONEY_BAG, obj);
+		items->AddItem((int)ItemType::MONEY_BAG, obj);
 		break;
 	}
 
 	case OBJECT_TYPE_ITEM_BOOMERANG:
 	{
 		obj = new ItemBoomerang();
-		// CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BOOMERANG, obj);
-		CItems::GetInstance()->AddItem((int)ItemType::BOOMERANG, obj);
+		items->AddItem((int)ItemType::BOOMERANG, obj);
 		break;
 	}
 

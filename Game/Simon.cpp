@@ -468,9 +468,19 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 						DebugOut(L"[INFO] Whip Collision with BreakWall \n");
 						breakwall->Destroy();						
 					}
-					
-							
 				}
+
+				else if (dynamic_cast<CBlack_Knight*>(temp))
+				{
+					//CBreakWall* breakwall = dynamic_cast<CBreakWall*>(temp);
+					if (whip->IsOverlapping(temp))
+					{
+						DebugOut(L"[INFO] Whip Collision with Knight \n");
+						temp->TakeDamage(1);
+					}
+				}
+
+
 			}
 		}
 	}

@@ -6,7 +6,9 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Sprites.h"
+#include "FlameEffect.h"
 
+#define  UNTOUCHABLE_TIME	300
 CGameObject::CGameObject()
 {
 	state = 0;
@@ -14,6 +16,9 @@ CGameObject::CGameObject()
 	vx = vy = 0;
 	nx = 1;	
 	visible = true;
+	healthPoint = 0;
+	damage = 0;
+	score = 0;
 }
 
 void CGameObject::Update(DWORD dt,vector<LPGAMEOBJECT>* coObjects)
@@ -112,6 +117,37 @@ void CGameObject::FilterCollision(
 
 	if (min_ix>=0) coEventsResult.push_back(coEvents[min_ix]);
 	if (min_iy>=0) coEventsResult.push_back(coEvents[min_iy]);
+}
+
+void CGameObject::Untouchable()
+{
+	if (GetTickCount() - start_untouchable > UNTOUCHABLE_TIME)
+		start_untouchable = 0;
+	else 
+		vx = vy = 0;
+}
+
+void CGameObject::TakeDamage(int damage)
+{
+	if (start_untouchable == 0)
+	{
+		if (healthPoint > 0)
+			healthPoint -= damage;
+
+		if (healthPoint <= 0)
+		{
+			this->Die();
+		}
+
+		else
+			start_untouchable = GetTickCount();
+	}
+}
+
+void CGameObject::Die()
+{	
+	FlameEffect::GetInstance()->Show(this);
+	this->SetVisible(false);
 }
 
 bool CGameObject::AABB(float left_a, float top_a, float right_a, float bottom_a, float left_b, float top_b, float right_b, float bottom_b)

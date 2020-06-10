@@ -81,7 +81,12 @@ public:
 
 	int itemId;
 
+	int score = 0;
+	int healthPoint = 0;
+	int damage = 0;
+
 	DWORD dt; 
+	DWORD start_untouchable = 0;
 
 	CAnimationSet animations;
 	LPANIMATION_SET animation_set;
@@ -113,6 +118,13 @@ public:
 	//ItemType item;
 	int GetItemId() { return itemId; }
 	void SetItemId(int id) { this->itemId = id; }
+
+	// When the enemies is hitted, start untouchable state
+	void Untouchable();
+
+	// Enemies section, wil have a specific class later
+	void TakeDamage(int damage);
+	void Die();
 	
 	// Check collision between 2 static object
 	bool AABB(float left_a, float top_a, float right_a, float bottom_a,

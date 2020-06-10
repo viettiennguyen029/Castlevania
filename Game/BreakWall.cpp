@@ -25,7 +25,7 @@ void CBreakWall::SetState(int state)
 void CBreakWall::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
-	t = y;
+	t = y+1;
 	r = l + BREAK_WALL_WIDTH;
 	b = t + BREAK_WALL_HEIGHT;
 }
