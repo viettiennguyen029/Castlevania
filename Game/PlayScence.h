@@ -11,6 +11,7 @@
 #include "Whip.h"
 #include "Items.h"
 #include "ItemBigHeart.h"
+#include "ItemSmallHeart.h"
 #include "ItemChain.h"
 #include "ItemDagger.h"
 #include "ItemBoomerang.h"

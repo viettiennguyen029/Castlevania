@@ -54,7 +54,7 @@ void ItemBigHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void ItemBigHeart::Render()
 {
-	animation_set->at(0)->Render(x,y,nx);
+	animation_set->at(0)->Render(x,y,1);
 }
 
 void ItemBigHeart::GetBoundingBox(float& left, float& top, float& right, float& bottom)

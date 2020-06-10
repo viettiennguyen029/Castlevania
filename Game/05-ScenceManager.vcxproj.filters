@@ -133,6 +133,7 @@
     <ClCompile Include="VariousStair.cpp">
       <Filter>Hidden Objects</Filter>
     </ClCompile>
+    <ClCompile Include="ItemSmallHeart.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -238,8 +239,6 @@
     <ClInclude Include="VariousStair.h">
       <Filter>Hidden Objects</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Castlevania NES.rc" />
+    <ClInclude Include="ItemSmallHeart.h" />
   </ItemGroup>
 </Project>

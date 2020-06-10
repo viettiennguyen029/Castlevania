@@ -29,9 +29,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_CANDLE					2
 #define OBJECT_TYPE_WHIP						3
 
-#define OBJECT_TYPE_ITEM_BIG_HEART		4
-#define OBJECT_TYPE_ITEM_CHAIN			5
-#define OBJECT_TYPE_ITEM_MONEY_BAG	10
+#define OBJECT_TYPE_ITEM_BIG_HEART			4
+#define OBJECT_TYPE_ITEM_SMALL_HEART	44
+#define OBJECT_TYPE_ITEM_CHAIN				5
+#define OBJECT_TYPE_ITEM_MONEY_BAG		10
 
 #define OBJECT_TYPE_ITEM_DAGGER			6
 #define OBJECT_TYPE_ITEM_BOOMERANG 61
@@ -152,6 +153,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new ItemBigHeart();
 		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BIG_HEART, obj);
 		CItems::GetInstance()->AddItem((int)ItemType::BIG_HEART, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_SMALL_HEART:
+	{
+		obj = new ItemSmallHeart ();
+		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BIG_HEART, obj);
+		CItems::GetInstance()->AddItem((int)ItemType::SMALL_HEART, obj);
 		break;
 	}
 

@@ -141,6 +141,7 @@
     <ClCompile Include="ItemDagger.cpp" />
     <ClCompile Include="ItemMoneyBag.cpp" />
     <ClCompile Include="Items.cpp" />
+    <ClCompile Include="ItemSmallHeart.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="ItemDagger.h" />
     <ClInclude Include="ItemMoneyBag.h" />
     <ClInclude Include="Items.h" />
+    <ClInclude Include="ItemSmallHeart.h" />
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="resource.h" />
@@ -196,9 +198,6 @@
     <ClInclude Include="VariousStair.h" />
     <ClInclude Include="WallPieces.h" />
     <ClInclude Include="Whip.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Castlevania NES.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -44,6 +44,7 @@ enum class ItemType
 {
 	UNKNOWN = -1,
 	BIG_HEART = 4,
+	SMALL_HEART = 44,
 	CHAIN = 5,
 	DAGGER = 6,
 	BOOMERANG = 61,
