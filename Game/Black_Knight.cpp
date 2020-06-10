@@ -13,7 +13,14 @@ void CBlack_Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
 	vy += 0.0018f * dt;
+	vx = (nx > 0) ? BLACK_KNIGHT_WALKING_SPEED : -BLACK_KNIGHT_WALKING_SPEED;
+	//vx = BLACK_KNIGHT_WALKING_SPEED*nx;
 	
+	if (start_untouchable != 0)
+	{
+		Untouchable();
+	}
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -76,6 +83,7 @@ CBlack_Knight::CBlack_Knight(float x, float y)
 {
 	this->start_x = x;
 	this->start_y = y;
+	this->healthPoint = 3;
 	SetState(BLACK_KNIGHT_STATE_WALKING);
 }
 

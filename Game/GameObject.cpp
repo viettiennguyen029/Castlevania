@@ -8,7 +8,7 @@
 #include "Sprites.h"
 #include "FlameEffect.h"
 
-#define  UNTOUCHABLE_TIME	300
+#define  UNTOUCHABLE_TIME	200
 CGameObject::CGameObject()
 {
 	state = 0;

@@ -9,6 +9,42 @@ CWhip::CWhip():CGameObject()
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	SetDamage();
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT temp = coObjects->at(i);
+		if (dynamic_cast<CCandle*>(temp))
+		{
+			CCandle* candle = dynamic_cast<CCandle*> (temp);
+			if (this->IsOverlapping(temp))
+			{
+				DebugOut(L"[INFO]Whip Collision with Torch \n");
+				temp->SetState(CANDLE_DESTROYED);
+				temp->animation_set->at(CANDLE_DESTROYED)->SetAniStartTime(GetTickCount());
+			}
+		}
+
+		else  if (dynamic_cast<CBreakWall*>(temp))
+		{
+			CBreakWall* breakwall = dynamic_cast<CBreakWall*>(temp);
+			if (this->IsOverlapping(temp))
+			{
+				DebugOut(L"[INFO] Whip Collision with BreakWall \n");
+				breakwall->Destroy();
+			}
+		}
+
+		else if (dynamic_cast<CBlack_Knight*>(temp))
+		{
+
+			if (this->IsOverlapping(temp))
+			{
+				DebugOut(L"[INFO] Whip Collision with Knight \n");
+				temp->TakeDamage(this->damage);
+			}
+		}
+	}
 }
 
 void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -94,3 +130,13 @@ void CWhip::SetState(int state)
 {
 	this->state = state;
 }
+
+void CWhip::SetDamage()
+{
+	if (state == NORMAL_WHIP)
+	{
+		damage = 1;
+	}
+	else damage = 3;
+}
+

@@ -7,7 +7,7 @@
 #define BLACK_KNIGHT_BBOX_WIDTH	16
 #define BLACK_KNIGHT_BBOX_HEIGHT	32
 
-#define BLACK_KNIGHT_WALKING_SPEED	0.02f
+#define BLACK_KNIGHT_WALKING_SPEED	0.01f
 
 class CBlack_Knight : public CGameObject	
 {

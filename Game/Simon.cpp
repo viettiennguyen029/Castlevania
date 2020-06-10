@@ -198,7 +198,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 {
 	// Calculate x,y
 	CGameObject::Update(dt);
-	whip->Update(dt, coObjects);
+	// whip->Update(dt, coObjects);
 	dagger->Update(dt, coObjects);
 
 	// Simple fall down
@@ -447,41 +447,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->GetCurrentFrame()==2||
 			animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->GetCurrentFrame() == 2 ) // Only check collsion at the last frame of the whip
 		{
-			for (UINT i = 0; i < coObjects->size(); i++)
-			{
-				LPGAMEOBJECT temp = coObjects->at(i);
-				if (dynamic_cast<CCandle*>(temp))
-				{
-					CCandle* candle = dynamic_cast<CCandle*> (temp);
-					if (whip->IsOverlapping(temp))
-					{
-						DebugOut(L"[INFO]Whip Collision with Torch \n");						
-						temp->SetState(CANDLE_DESTROYED);				
-						temp->animation_set->at(CANDLE_DESTROYED)->SetAniStartTime(GetTickCount());
-					}
-				}
-				else if (dynamic_cast<CBreakWall*>(temp))
-				{
-					CBreakWall* breakwall = dynamic_cast<CBreakWall*>(temp);
-					if (whip->IsOverlapping(temp))
-					{
-						DebugOut(L"[INFO] Whip Collision with BreakWall \n");
-						breakwall->Destroy();						
-					}
-				}
-
-				else if (dynamic_cast<CBlack_Knight*>(temp))
-				{
-					//CBreakWall* breakwall = dynamic_cast<CBreakWall*>(temp);
-					if (whip->IsOverlapping(temp))
-					{
-						DebugOut(L"[INFO] Whip Collision with Knight \n");
-						temp->TakeDamage(1);
-					}
-				}
-
-
-			}
+			whip->Update(dt, coObjects);
 		}
 	}
 	
