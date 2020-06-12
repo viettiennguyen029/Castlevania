@@ -5,6 +5,7 @@
 
 #include "Sprites.h"
 
+#define HIT_EFFECT_ANIMATION	299
 /*
 Sprite animation
 */

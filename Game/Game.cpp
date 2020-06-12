@@ -238,6 +238,14 @@ void CGame::ProcessKeyboard()
 	}
 }
 
+void CGame::GetCameraBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	left = this->cam_x;
+	top = this->cam_y;
+	right = left + GetScreenWidth();
+	bottom = top + GetScreenHeight();
+}
+
 CGame::~CGame()
 {
 	if (spriteHandler != NULL) spriteHandler->Release();

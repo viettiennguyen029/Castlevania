@@ -6,8 +6,6 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Sprites.h"
-#include "FlameEffect.h"
-
 #define  UNTOUCHABLE_TIME	200
 CGameObject::CGameObject()
 {
@@ -146,7 +144,7 @@ void CGameObject::TakeDamage(int damage)
 
 void CGameObject::Die()
 {	
-	FlameEffect::GetInstance()->Show(this);
+	
 	this->SetVisible(false);
 }
 

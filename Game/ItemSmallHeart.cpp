@@ -1,5 +1,8 @@
 #include "ItemSmallHeart.h"
 #include "Brick.h"
+#include "StairTop.h"
+#include "Simon.h"
+
 ItemSmallHeart::ItemSmallHeart()
 {	
 	this->visible = false;	
@@ -8,19 +11,34 @@ ItemSmallHeart::ItemSmallHeart()
 
 void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {	
+
+	CGameObject::Update(dt);
+
 	vy += ITEM_GRAVITY * dt;				// simple fall down	
 
 	if (vy != 0)
 	{
-		vx += vx_variability * dt;		
+		vx += vx_variability * dt;
 		vy = 0.06f;
 
 		if (vx >= 0.15f || vx <= -0.15f)
 			vx_variability *= -1;
 	}
-	else vy = 0;	
+	else vy = 0;
 
-	CGameObject::Update(dt);	
+	if (visible)
+	{	
+		if (start_visible < ITEM_LIFESPAN)
+		{
+			start_visible += dt;
+		}
+		else
+		{
+			SetVisible(false);
+			start_visible = 0;
+		}
+	}
+	
 	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -45,14 +63,23 @@ void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
-				// Block brick
+				// Block brick,stop moving in horizontal 
 				if (e->ny != 0 || e->nx!=0)
 				{
 					//y += 0.4f * e->ny;
-					vy = 0;
+					vx=vy = 0;
 				}
-				vx = vx_variability = 0;
+				//vx = vx_variability = 0;
 			}
+
+			else if (dynamic_cast<CStairTop*>(e->obj))
+			{
+				// Process normally
+				if (e->nx != 0) x += dx;
+				if (e->ny != 0) y += dy;
+			}
+
+		
 		}
 	}
 

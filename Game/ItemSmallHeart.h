@@ -7,6 +7,7 @@
 class ItemSmallHeart: public CGameObject
 {
 	float   vx_variability; // The variability of small heart vx during delta time
+	DWORD start_visible = 0;
 public:
 	ItemSmallHeart();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

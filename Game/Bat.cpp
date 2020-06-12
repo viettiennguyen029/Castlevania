@@ -1,5 +1,7 @@
 #include "Bat.h"
 #include "Simon.h"
+#include "Black_Knight.h"
+
 CBat::CBat(float x, float y) : CGameObject()
 {
 	start_x = x;
@@ -79,7 +81,19 @@ void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		x += min_tx * dx;
 		y += min_ty * dy;
-				
+		
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT  e = coEventsResult[i];
+
+			if (dynamic_cast<CBlack_Knight*>(e->obj))
+			{
+				// Process normally	
+				if (e->nx != 0) x += dx;
+				if (e->ny != 0) y += dy;
+			}
+		}
+
 	}
 
 	

@@ -27,7 +27,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_SIMON						0
 #define OBJECT_TYPE_BRICK						1
 #define OBJECT_TYPE_CANDLE					2
-#define OBJECT_TYPE_HIT_EFFECT				3
 
 #define OBJECT_TYPE_ITEM_BIG_HEART			4
 #define OBJECT_TYPE_ITEM_SMALL_HEART	44
@@ -100,14 +99,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetHeight(height);
 		break;
 	}
-
-	 case OBJECT_TYPE_HIT_EFFECT:
-	 {
-		 obj = new HitEffect();
-		 FlameEffect::GetInstance()->Add((HitEffect*)obj);
-		 obj->SetVisible(false);
-		 break;
-	 }
 	
 	case OBJECT_TYPE_DAGGER:
 	{

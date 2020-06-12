@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include <unordered_map>
+#define ITEM_LIFESPAN	5000
 
 using namespace std;
 /*

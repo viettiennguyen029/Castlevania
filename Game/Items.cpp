@@ -25,6 +25,7 @@ void CItems::Drop(int itemType, float x, float y)
 			(*it)->SetVisible(true);
 			break;
 		}
+
 	}
 }
 

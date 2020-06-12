@@ -1,9 +1,11 @@
 #include "Boomerang.h"
 #include "Simon.h"
+#define BOOMERANG_VX	0.12f
+#define BOOMERANG_MAX_DISTANCE	150
 
 CBoomerang::CBoomerang(): CGameObject()
 {
-	vx = 0.12f;
+	vx = BOOMERANG_VX;
 }
 
 void CBoomerang::Render()
@@ -22,27 +24,40 @@ void CBoomerang::GetBoundingBox(float& left, float& top, float& right, float& bo
 void CBoomerang::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 {
 
-	// Boomerang moving logic
-	vx = 0.12f*nx;
+	float left, top, right, bottom;
+	CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
 
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	float xBm, yBm;
-	this->GetPosition(xBm, yBm);
-	if (abs(xBm - xS) > 150)
+
+	// Boomerang moving logic
+	if (!turnOver)
 	{
-		if (turnoverDelayTime < 150)
+		if (x > (right - BOOMERANG_BBOX_WIDTH) || x <= left) // Collision logic with screen edge
 		{
-			vx = 0;
-			turnoverDelayTime += dt;			
+			this->nx = -nx;
+			turnOver = true;
 		}
-		else
+
+		// The limitation of boomerang 
+		else if (abs(x - xS) > BOOMERANG_MAX_DISTANCE)
 		{
-			ReDirection();
-			turnoverDelayTime = 0;
+			this->nx = -nx;
+			turnOver = true;
 		}
 	}
 
+	else
+	{
+		if ((x > right) || (x <= left)) 
+		{
+			SetVisible(false);
+			turnOver = false;
+		}
+	}
+
+	
+	vx = BOOMERANG_VX * nx;
 
 	CGameObject::Update(dt);
 

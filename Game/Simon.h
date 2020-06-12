@@ -12,6 +12,7 @@
 #include "VariousStair.h"
 #include "BreakWall.h"
 #include "Bat.h"
+#include "Boomerang.h"
 
 #define SIMON_STATE_IDLE								0
 #define SIMON_STATE_WALKING						1

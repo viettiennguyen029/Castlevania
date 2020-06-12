@@ -9,41 +9,37 @@ CWhip::CWhip():CGameObject()
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	SetDamage();
+	SetDamage(state);
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
 		LPGAMEOBJECT temp = coObjects->at(i);
-		if (dynamic_cast<CCandle*>(temp))
+		if (this->IsOverlapping(temp))
 		{
-			CCandle* candle = dynamic_cast<CCandle*> (temp);
-			if (this->IsOverlapping(temp))
+			if (dynamic_cast<CCandle*>(temp))
 			{
 				DebugOut(L"[INFO]Whip Collision with Torch \n");
 				temp->SetState(CANDLE_DESTROYED);
 				temp->animation_set->at(CANDLE_DESTROYED)->SetAniStartTime(GetTickCount());
 			}
-		}
 
-		else  if (dynamic_cast<CBreakWall*>(temp))
-		{
-			CBreakWall* breakwall = dynamic_cast<CBreakWall*>(temp);
-			if (this->IsOverlapping(temp))
+			else if (dynamic_cast<CBreakWall*>(temp))
 			{
 				DebugOut(L"[INFO] Whip Collision with BreakWall \n");
+				CBreakWall* breakwall = dynamic_cast<CBreakWall*>(temp);
 				breakwall->Destroy();
 			}
-		}
 
-		else if (dynamic_cast<CBlack_Knight*>(temp))
-		{
-
-			if (this->IsOverlapping(temp))
+			else if (dynamic_cast<CBlack_Knight*>(temp))
 			{
 				DebugOut(L"[INFO] Whip Collision with Knight \n");
 				temp->TakeDamage(this->damage);
+				float l, t, r, b;
+				temp->GetBoundingBox(l, t, r, b);
+				hitEffects.push_back({ (l + r) / 2, (t + b) / 2 });				
 			}
 		}
+		
 	}
 }
 
@@ -79,13 +75,6 @@ void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	}
 }
 
-bool CWhip::isColliding(float obj_left, float obj_top, float obj_right, float obj_bottom)
-{
-	float whip_left, whip_top, whip_right, whip_bottom;
-	GetBoundingBox(whip_left, whip_top, whip_right, whip_bottom);
-	
-	return CGameObject::AABB(whip_left, whip_top, whip_right, whip_bottom, obj_left, obj_top, obj_right, obj_bottom);
-}
 
 void CWhip::SetWhipPosition(D3DXVECTOR2 simonPos, bool isStanding)
 {	
@@ -113,6 +102,27 @@ void CWhip::PowerUp()
 	DebugOut(L"Whip Level %d\n", GetState());
 }
 
+void CWhip::ShowHitEffect()
+{
+	if (hitEffects.size() > 0)
+	{
+		if (startShow == 0)
+		{
+			startShow = GetTickCount();
+		}
+
+		else if (GetTickCount() - startShow > HIT_EFFECT_LIFE_SPAN)
+		{
+			startShow = 0;
+			hitEffects.clear();
+		}
+
+		// rendering hit effect based on the coordinate vector
+		for (auto effect : hitEffects)
+			hitEffect->Render( effect[0], effect[1], -1);
+	}
+}
+
 CWhip* CWhip::__instance = NULL;
 CWhip* CWhip::GetInstance()
 {
@@ -123,7 +133,7 @@ CWhip* CWhip::GetInstance()
 void CWhip::Render(int currentFrame)
 {
 	CAnimationSets::GetInstance()->Get(WHIP_ANI_SET)->at(state)->RenderByFrame(currentFrame, nx, x, y);
-	// RenderBoundingBox();
+	ShowHitEffect();
 }
 
 void CWhip::SetState(int state)
@@ -131,12 +141,12 @@ void CWhip::SetState(int state)
 	this->state = state;
 }
 
-void CWhip::SetDamage()
+void CWhip::SetDamage(int state)
 {
 	if (state == NORMAL_WHIP)
 	{
 		damage = 1;
 	}
-	else damage = 3;
+	else damage = 2;
 }
 

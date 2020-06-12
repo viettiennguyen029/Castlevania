@@ -226,8 +226,9 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	ovObjects.clear();
 	for (UINT i = 0; i < coObjects->size(); ++i)
 	{
-		if (this->IsOverlapping(coObjects->at(i)))
-			ovObjects.push_back(coObjects->at(i));
+		if (this->IsOverlapping(coObjects->at(i)))		
+			ovObjects.push_back(coObjects->at(i));		
+			
 	}
 
 
@@ -312,6 +313,16 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					
 			}
 
+			else if (dynamic_cast<CBoomerang*>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+					CBoomerang* bm = dynamic_cast<CBoomerang*> (e->obj);
+					bm->SetTurnOver(false);
+				}
+			}
+
 			// Collision logic when Simon is on theMoving Platform
 			else if (dynamic_cast<CMovingPlatform*>(e->obj))
 			{			
@@ -334,6 +345,17 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					e->obj->SetVisible(false);
 				}
 			}
+
+			else if (dynamic_cast<ItemSmallHeart*>(e->obj))
+			{
+				DebugOut(L"[ITEMS] Heart Collected \n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+					y = y - 0.2f;
+					e->obj->SetVisible(false);
+				}
+			}
+
 			else if (dynamic_cast<ItemChain*>(e->obj))
 			{
 
@@ -364,6 +386,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] Boomerang Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
+					y = y -0.4f;
 					e->obj->SetVisible(false);
 					subWeapon = true;
 				}
@@ -425,13 +448,13 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			else
 			{
-				if (nx != 0) vx = 0;
+ 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;							
 			}
 		}
 	}
 
-	// Clear up collision events
+	// Clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
 		delete coEvents[i];
