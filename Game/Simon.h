@@ -49,9 +49,9 @@
 #define SIMON_ANI_THROW					13
 #define SIMON_ANI_POWER_UP			14
 
-#define SIMON_GRAVITY						0.0005f	
+#define SIMON_GRAVITY						0.0006f	
 #define SIMON_WALKING_SPEED			0.09f
-#define SIMON_JUMP_SPEED_Y				0.18f
+#define SIMON_JUMP_SPEED_Y				0.2f
 #define SIMON_GO_UPSTAIR_SPEED		0.03f
 #define SIMON_DIE_DEFLECT_SPEED		0.5
 #define SIMON_ATTACK_TIME				300

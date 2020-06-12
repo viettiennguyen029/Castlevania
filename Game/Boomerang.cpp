@@ -1,15 +1,39 @@
 #include "Boomerang.h"
 #include "Simon.h"
+#include "Candle.h"
 #define BOOMERANG_VX	0.12f
 #define BOOMERANG_MAX_DISTANCE	150
 
 CBoomerang::CBoomerang(): CGameObject()
 {
 	vx = BOOMERANG_VX;
+	this->damage = 2;
+}
+
+void CBoomerang::ShowHitEffect()
+{
+	if (hitEffects.size() > 0)
+	{
+		if (startShow == 0)
+		{
+			startShow = GetTickCount();
+		}
+
+		else if (GetTickCount() - startShow > HIT_EFFECT_LIFE_SPAN)
+		{
+			startShow = 0;
+			hitEffects.clear();
+		}
+
+		// rendering hit effect based on the coordinate vector
+		for (auto coord : hitEffects)
+			hitEffect->Render(coord[0], coord[1], -1);
+	}
 }
 
 void CBoomerang::Render()
 {
+	ShowHitEffect();
 	animation_set->at(0)->Render(x, y, nx);
 }
 
@@ -80,6 +104,35 @@ void CBoomerang::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 		x += min_tx * dx;
 		y += min_ty * dy;
+
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if ( dynamic_cast<CBat*>(e->obj) || 
+				dynamic_cast<CBlack_Knight*>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					vx = 0;
+					e->obj->TakeDamage(this->damage);
+					float l, t, r, b;
+					e->obj->GetBoundingBox(l, t, r, b);
+					hitEffects.push_back({ (l + r) / 2, (t + b) / 2 });
+				}
+			}
+
+			else if (dynamic_cast<CCandle*>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetState(CANDLE_DESTROYED);
+					e->obj->animation_set->at(CANDLE_DESTROYED)->SetAniStartTime(GetTickCount());
+				}
+
+
+			}
+		}
 	}
 
 	// clean up collision events

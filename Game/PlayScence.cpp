@@ -405,8 +405,9 @@ void CPlayScene::Unload()
 	for (int i = 0; i < objects.size(); i++)
 	{		
 		if (dynamic_cast<CSimon*>(objects[i]) || 
-			dynamic_cast<CWhip*>(objects[i])|| 
-			dynamic_cast<CDagger*>(objects[i]))
+			dynamic_cast<CWhip*>(objects[i]) || 
+			dynamic_cast<CDagger*>(objects[i]) ||
+			dynamic_cast<CBoomerang*>(objects[i]))
 		{
 			;
 		}

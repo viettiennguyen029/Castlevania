@@ -4,7 +4,8 @@
 
 CWhip::CWhip():CGameObject()
 {
-	//SetState(NORMAL_WHIP);
+	
+	SetState(NORMAL_WHIP);
 }
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -30,9 +31,10 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				breakwall->Destroy();
 			}
 
-			else if (dynamic_cast<CBlack_Knight*>(temp))
+			else if (dynamic_cast<CBlack_Knight*>(temp)||
+				dynamic_cast<CBat*>(temp))
 			{
-				DebugOut(L"[INFO] Whip Collision with Knight \n");
+				DebugOut(L"[INFO] Enemy take damaged \n");
 				temp->TakeDamage(this->damage);
 				float l, t, r, b;
 				temp->GetBoundingBox(l, t, r, b);
