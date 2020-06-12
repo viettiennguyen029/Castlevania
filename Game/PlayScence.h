@@ -16,6 +16,7 @@
 #include "ItemDagger.h"
 #include "ItemBoomerang.h"
 #include "ItemMoneyBag.h"
+#include "ItemCrown.h"
 #include "Dagger.h"
 #include "Black_Knight.h"
 #include "Bat.h"

@@ -47,6 +47,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_STAIR_TOP			-3
 
 #define OBJECT_TYPE_MOVING_PLATFORM	30
+#define OBJECT_TYPE_CROWN_ITEM				40
 #define OBJECT_TYPE_PORTAL						50
 #define OBJECT_TYPE_BREAK_WALL				90
 #define OBJECT_TYPE_WALL_PIECES				91
@@ -117,6 +118,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 
 	case OBJECT_TYPE_MOVING_PLATFORM: obj = new CMovingPlatform(); break;
+
+	case OBJECT_TYPE_CROWN_ITEM: obj = new ItemCrown(); break;
 
 	case OBJECT_TYPE_BREAK_WALL: obj = new CBreakWall(x,y); break;
 

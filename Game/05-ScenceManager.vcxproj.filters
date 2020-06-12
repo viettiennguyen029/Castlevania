@@ -139,6 +139,7 @@
     <ClCompile Include="WallPieces.cpp">
       <Filter>Effects</Filter>
     </ClCompile>
+    <ClCompile Include="ItemCrown.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -247,5 +248,6 @@
     <ClInclude Include="WallPieces.h">
       <Filter>Effects</Filter>
     </ClInclude>
+    <ClInclude Include="ItemCrown.h" />
   </ItemGroup>
 </Project>

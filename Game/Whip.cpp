@@ -118,8 +118,8 @@ void CWhip::ShowHitEffect()
 		}
 
 		// rendering hit effect based on the coordinate vector
-		for (auto effect : hitEffects)
-			hitEffect->Render( effect[0], effect[1], -1);
+		for (auto coord : hitEffects)
+			hitEffect->Render(coord[0], coord[1], -1);
 	}
 }
 
