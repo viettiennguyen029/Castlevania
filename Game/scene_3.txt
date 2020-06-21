@@ -72,9 +72,9 @@
 # type	l	t	ani_set_id	r	b	scene_id
 50	5	80	0	10	100	4
 
-#Width	#offset_y
+#Width	height	offset_y
 [MAP_INFO]
-525	40
+525	96	40
 
 [TILE_MAP]
 0	1	2	3	4	2	1	4	3	4	1	3	4	4	1	5	6

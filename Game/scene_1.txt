@@ -37,9 +37,9 @@
 # type	l	t	ani_set_id	r	b	scene_id
 50	680	150	0	700	210	2
 
-#map_width	#offset_y
 [MAP_INFO]
-758	52
+#width	#height	#offset_y
+758	96	52
 
 [TILE_MAP]
 0	1	1	1	1	1	2	2	0	1	1	1	3	4	5	2	2	2	2	2	6	7	8	9

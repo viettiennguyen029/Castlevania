@@ -158,5 +158,6 @@ public:
 	void RenderBoundingBox();
 	virtual bool IsOverlapping(LPGAMEOBJECT obj);
 	void ReDirect(float positionX);
+	bool IsInViewport();
 };
 

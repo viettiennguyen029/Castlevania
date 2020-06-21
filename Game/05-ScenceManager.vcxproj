@@ -133,8 +133,10 @@
     <ClCompile Include="BreakWall.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Candle.cpp" />
+    <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Code.cpp" />
     <ClCompile Include="Dagger.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="ItemBigHeart.cpp" />
     <ClCompile Include="ItemBoomerang.cpp" />
     <ClCompile Include="ItemChain.cpp" />
@@ -161,6 +163,7 @@
     <ClCompile Include="VariousStair.cpp" />
     <ClCompile Include="WallPieces.cpp" />
     <ClCompile Include="Whip.cpp" />
+    <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -171,8 +174,10 @@
     <ClInclude Include="BreakWall.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Candle.h" />
+    <ClInclude Include="Cell.h" />
     <ClInclude Include="Code.h" />
     <ClInclude Include="Dagger.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="ItemBigHeart.h" />
     <ClInclude Include="ItemBoomerang.h" />
     <ClInclude Include="ItemChain.h" />
@@ -200,6 +205,7 @@
     <ClInclude Include="VariousStair.h" />
     <ClInclude Include="WallPieces.h" />
     <ClInclude Include="Whip.h" />
+    <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

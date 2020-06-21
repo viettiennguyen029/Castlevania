@@ -34,6 +34,9 @@
     <Filter Include="Effects">
       <UniqueIdentifier>{b5313d41-2544-4e19-a2d0-081472484dcc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Spatial Partition">
+      <UniqueIdentifier>{f9141028-17b2-4439-88bc-3054fb1237e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp">
@@ -139,7 +142,18 @@
     <ClCompile Include="WallPieces.cpp">
       <Filter>Effects</Filter>
     </ClCompile>
-    <ClCompile Include="ItemCrown.cpp" />
+    <ClCompile Include="ItemCrown.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Cell.cpp">
+      <Filter>Spatial Partition</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Spatial Partition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -248,6 +262,17 @@
     <ClInclude Include="WallPieces.h">
       <Filter>Effects</Filter>
     </ClInclude>
-    <ClInclude Include="ItemCrown.h" />
+    <ClInclude Include="ItemCrown.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>Spatial Partition</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Spatial Partition</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

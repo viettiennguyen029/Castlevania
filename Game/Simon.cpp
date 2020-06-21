@@ -431,9 +431,12 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					StartUntouchable();
 					DebugOut(L"[INFO] Enemies collision, Simon is Damaged \n");
 
-					this->nx = (e->nx != 0) ?
-						-(e->nx) :
-						-(e->obj->GetOrientation());
+					//this->nx = (e->nx != 0) ?	-(e->nx) :	-(e->obj->GetOrientation());
+
+					if (e->nx != 0)
+						this->nx = -(e->nx);
+					else
+						this->nx = -(e->obj->GetOrientation());
 
 					SetState(SIMON_STATE_DEFLECT);
 				}
@@ -585,6 +588,7 @@ void CSimon::SetState(int state)
 void CSimon::Reset()
 {
 	onStairs = 0;
+	onMovingPlatform = 0;
 	SetState(SIMON_STATE_IDLE);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);

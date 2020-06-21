@@ -39,6 +39,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_DAGGER					7
 #define OBJECT_TYPE_BOOMERANG			71
 
+#define OBJECT_TYPE_ZOMBIE					63
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 #define OBJECT_TYPE_BAT							9
 
@@ -137,6 +138,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BLACK_KNIGHT: 
 	{
 		obj = new CBlack_Knight(x,y); 
+		break;
+	}
+
+	case OBJECT_TYPE_ZOMBIE:
+	{
+		obj = new CZombie();
 		break;
 	}
 
@@ -251,9 +258,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 void CPlayScene::_ParseSection_MAP_INFO(string line)
 {
 	vector<string> tokens = split(line);
-	if (tokens.size() < 2) return; // skip invalid lines
+	if (tokens.size() < 3) return; // skip invalid lines
 	this->mapWidth = atoi(tokens[0].c_str());
-	this->offset_y= atoi(tokens[1].c_str());
+	this->mapHeight = atoi(tokens[1].c_str());
+	this->offset_y= atoi(tokens[2].c_str());
 }
 
 void CPlayScene::_ParseSection_TILE_MAP(string line)
@@ -344,11 +352,39 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(objects[i]);
 	}
 
-	for (size_t i = 0; i < objects.size(); i++)
+	/*for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (objects[i]->visible == false)
 			continue;
 		objects[i]->Update(dt, &coObjects);
+	}*/
+
+	// Get the bounding box of the viewport
+	float left, top, right, bottom;
+	CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
+
+	// Get objects in cells
+	updateObjects.clear();
+	grid = new CGrid();
+	grid->Init(&coObjects,mapWidth, mapHeight, CELL_WIDTH, CELL_HEIGHT);
+
+	//Get collidable objects
+	grid->GetObjectsInRectangle(left, top, right, bottom, updateObjects);
+
+	// Get collide-able objects
+	for (UINT i = 0; i < updateObjects.size(); i++)
+	{
+		//if (updateObjects[i]->isVisible() == true)
+			coObjects.push_back(updateObjects[i]);
+	}
+
+	// Update objects
+	for (UINT i = 0; i < updateObjects.size(); i++)
+	{
+		//if (updateObjects[i]->isVisible() == true)
+		
+			updateObjects[i]->Update(dt, &coObjects);
+		
 	}
 
 	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)

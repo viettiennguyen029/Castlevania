@@ -194,6 +194,22 @@ void CGameObject::ReDirect(float positionX)
 	else	nx = 1;
 }
 
+bool CGameObject::IsInViewport()
+{
+	// The viewport bounding box
+	float vpLeft, vpTop, vpRight, vpBottom;
+	CGame::GetInstance()->GetCameraBoundingBox(vpLeft, vpTop, vpRight, vpBottom);
+	
+	// The object bounding box
+	float left, top, right, bottom;
+	this->GetBoundingBox(left, top, right, bottom);
+
+	if (vpLeft > right || vpTop > bottom|| vpRight < left || vpBottom < top)
+		return false;
+
+	return true;
+}
+
 
 CGameObject::~CGameObject()
 {
