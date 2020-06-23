@@ -39,6 +39,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_DAGGER					7
 #define OBJECT_TYPE_BOOMERANG			71
 
+#define OBJECT_TYPE_ZOMBIE					63
+#define OBJECT_TYPE_HUNCH_BACK			64
+
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 #define OBJECT_TYPE_BAT							9
 
@@ -49,6 +52,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_MOVING_PLATFORM	30
 #define OBJECT_TYPE_CROWN_ITEM				40
 #define OBJECT_TYPE_PORTAL						50
+#define OBJECT_TYPE_DOOR							51
 #define OBJECT_TYPE_BREAK_WALL				90
 #define OBJECT_TYPE_WALL_PIECES				91
 
@@ -140,6 +144,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_ZOMBIE:
+	{
+		obj = new CZombie();
+		break;
+	}
+
+	case OBJECT_TYPE_HUNCH_BACK:
+	{
+		obj = new CHunchBack();
+		break;
+	}
+
 	case OBJECT_TYPE_CANDLE: 
 	{
 		 int it = atoi(tokens[4].c_str());
@@ -153,8 +169,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_BIG_HEART: 
 	{
 		obj = new ItemBigHeart();
-		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::BIG_HEART, obj);
-		//CItems::GetInstance()->AddItem((int)ItemType::BIG_HEART, obj);
 		items->AddItem((int)ItemType::BIG_HEART, obj);
 		break;
 	}
@@ -176,8 +190,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_DAGGER:
 	{
 		obj = new ItemDagger();
-		//CItems::GetInstance()->AddItem((int)CGameObject::ItemType::DAGGER, obj);
-		//CItems::GetInstance()->AddItem((int)ItemType::DAGGER, obj);
 		items->AddItem((int)ItemType::DAGGER, obj);
 		break;
 	}
@@ -226,6 +238,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_DOOR:
+	{
+		float r = atof(tokens[4].c_str());
+		float b = atof(tokens[5].c_str());
+		obj = new CDoor(x, y, r, b);
+		break;
+	}
 
 	case OBJECT_TYPE_PORTAL:
 	{
@@ -233,8 +252,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float b = atof(tokens[5].c_str());
 		int scene_id = atoi(tokens[6].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
+		break;
 	}
-	break;
 
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
@@ -251,9 +270,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 void CPlayScene::_ParseSection_MAP_INFO(string line)
 {
 	vector<string> tokens = split(line);
-	if (tokens.size() < 2) return; // skip invalid lines
+	if (tokens.size() < 3) return; // skip invalid lines
 	this->mapWidth = atoi(tokens[0].c_str());
-	this->offset_y= atoi(tokens[1].c_str());
+	this->mapHeight = atoi(tokens[1].c_str());
+	this->offset_y= atoi(tokens[2].c_str());
 }
 
 void CPlayScene::_ParseSection_TILE_MAP(string line)
@@ -337,6 +357,7 @@ void CPlayScene::Load()
 void CPlayScene::Update(DWORD dt)
 {	
 	vector<LPGAMEOBJECT> coObjects;
+	
 	for (size_t i = 1; i < objects.size(); i++)
 	{
 		if (objects[i]->visible == false)
@@ -350,6 +371,36 @@ void CPlayScene::Update(DWORD dt)
 			continue;
 		objects[i]->Update(dt, &coObjects);
 	}
+
+	
+	//// Get the bounding box of the viewport
+	//float left, top, right, bottom;
+	//CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
+
+	//// Get objects in cells
+	//updateObjects.clear();
+	//grid = new CGrid();
+	//grid->Init(&coObjects,mapWidth, mapHeight, CELL_WIDTH, CELL_HEIGHT);
+
+	////Get collidable objects
+	//grid->GetObjectsInRectangle(left, top, right, bottom, updateObjects);
+
+	//// Get collide-able objects
+	//for (UINT i = 0; i < updateObjects.size(); i++)
+	//{
+	//	//if (updateObjects[i]->isVisible() == true)
+	//		coObjects.push_back(updateObjects[i]);
+	//}
+
+	//// Update objects
+	//for (UINT i = 0; i < updateObjects.size(); i++)
+	//{
+	//	//if (updateObjects[i]->isVisible() == true)
+	//	
+	//		updateObjects[i]->Update(dt, &coObjects);
+	//	
+	//}
+	//player->Update(dt, &coObjects);
 
 	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
@@ -415,6 +466,9 @@ void CPlayScene::Unload()
 		{
 			delete objects[i];
 		} 
+		/*delete grid;
+		grid = NULL;*/
+
 	}
 
 	objects.clear();

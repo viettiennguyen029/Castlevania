@@ -421,9 +421,11 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
 
-			else if (dynamic_cast<CBat*>(e->obj) ||	dynamic_cast<CBlack_Knight*>(e->obj))
+			else if (dynamic_cast<CBat*>(e->obj) ||	
+			dynamic_cast<CBlack_Knight*>(e->obj) || 
+			dynamic_cast<CHunchBack*>(e->obj))
 			{
-			if (e->nx != 0 && untouchable==0)
+			if ((e->nx != 0 || e->ny!=0) && untouchable==0)
 			{
 			
 				if (onStairs == 0)
@@ -431,9 +433,12 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					StartUntouchable();
 					DebugOut(L"[INFO] Enemies collision, Simon is Damaged \n");
 
-					this->nx = (e->nx != 0) ?
-						-(e->nx) :
-						-(e->obj->GetOrientation());
+					//this->nx = (e->nx != 0) ?	-(e->nx) :	-(e->obj->GetOrientation());
+
+					if (e->nx != 0)
+						this->nx = -(e->nx);
+					else
+						this->nx = -(e->obj->GetOrientation());
 
 					SetState(SIMON_STATE_DEFLECT);
 				}
@@ -585,6 +590,7 @@ void CSimon::SetState(int state)
 void CSimon::Reset()
 {
 	onStairs = 0;
+	onMovingPlatform = 0;
 	SetState(SIMON_STATE_IDLE);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
