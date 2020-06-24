@@ -1,6 +1,7 @@
 #include "HunchBack.h"
 #include "Simon.h"
 
+
 void CHunchBack::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
@@ -11,6 +12,12 @@ void CHunchBack::GetBoundingBox(float& left, float& top, float& right, float& bo
 
 void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	CGameObject::Update(dt);
+
+	
+	// Fall down
+	vy += HUNCHBACK_GRAVITY * dt;	
+
 	//Activating Hunch Back to jump down
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
@@ -18,21 +25,22 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float xH, yH;
 	this->GetPosition(xH, yH);
 
-	if (xS-xH>90 && xS - xH <= 98 && yS - yH <= 34) // Active Point 
+	if (xS - xH <= 98 && yS - yH <= 34) // Active Point 
 	{
-		vx = 0.12f;
-		vy -= 0.12f;
+		SetState(HUNCH_BACK_STATE_JUMP);
+	}	
+
+	if (xH -xS>100)
+	{
+		SetOrientation(-1);
+		//SetState(HUNCH_BACK_STATE_IDLE);
 	}
 
-	if (y < 145)
+	if (xS - xH > 100)
 	{
-		DebugOut(L"[Hunch back] Jump down \n");
-		vx = 0.14f;
-		vy += 0.016f;
+		SetOrientation(1);
 	}
-		
-
-	CGameObject::Update(dt);
+	
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -41,9 +49,9 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CalcPotentialCollisions(coObjects, coEvents);
 
 	if (coEvents.size() == 0)
-	{
-		y += dy;
+	{		
 		x += dx;
+		y += dy;
 	}
 	else
 	{
@@ -51,8 +59,10 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdx, rdy;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x += min_tx * dx;
-		y += min_ty * dy;
+		x += min_tx * dx+ nx*0.4f;
+		if (ny <= 0)
+			y += min_ty * dy + ny * 0.4f;
+		
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
@@ -60,14 +70,26 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
+			
+				if (nx != 0) vx = 0;
 				if (e->ny != 0)
 				{
-					vx=vy = 0;
-					y += ny * 0.4f;
+					//vy = 0;
+					if (e->ny == -1) vy = 0; // hunch back standing on brick
+					else 	y += dy; //hunch back can jump through brick
 				}
+
+				if (hopping) vy = -0.3f;					
+			
 			}
 
-			
+			else
+			{
+				if (e->nx != 0)
+					x += dx;
+				else if (e->ny < 0) 
+					y += dy;
+			}
 		}
 	}
 
@@ -78,16 +100,26 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CHunchBack::Render()
 {
-	int ani = -1;
-	if (vx == 0)
+	/*int ani = 0;
+	switch (this->state)
+	{
+	case HUNCH_BACK_STATE_IDLE:
 		ani = 0;
-	else
+		
+		break;
+	case HUNCH_BACK_STATE_JUMP:
 		ani = 1;
-	animation_set->at(ani)->Render(x, y, nx);
+		break;
+	default:
+		break;
+	};*/
+	animation_set->at(state)->Render(x, y,nx);
+	
 }
 
 CHunchBack::CHunchBack()
 {
+	this->hopping = false;
 	this->healthPoint = 2;
 	vx = vy = 0;
 	SetState(HUNCH_BACK_STATE_IDLE);
@@ -96,4 +128,23 @@ CHunchBack::CHunchBack()
 void CHunchBack::SetState(int state)
 {
 	CGameObject::SetState(state);
+	switch (state)
+	{
+	case HUNCH_BACK_STATE_IDLE:
+	{
+		vx = 0;
+		vy = 0;
+		break;
+	}
+
+	case HUNCH_BACK_STATE_JUMP:
+	{
+		hopping = true;
+		if (nx == 1) vx = HUNCH_BACK_JUMP_SPEED_X;
+		else vx = -HUNCH_BACK_JUMP_SPEED_X;
+		break;
+	}
+		
+	}
+	this->state = state;
 }

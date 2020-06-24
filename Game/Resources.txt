@@ -8,6 +8,7 @@
 62	resources\Bat.png	116	116	116
 63	resources\Zombie.png	116	116	116
 64	resources\Hunchback.png	116	116	116
+65	resources\Ghost.png	116	116	116
 -4	resources\BreakWall.png	116	116	116
 -1	resources\Board.png	5	5	5
 #map_id	file_path	r	g	b	
@@ -244,6 +245,7 @@
 #============ HUNCH_BACK =================
 664	60041	100	60042	100
 665	60042	100
+666	60041	100
 
 # ================== ITEMS ================
 # Big Heart
@@ -310,7 +312,7 @@
 #Zombie
 63	663
 #Hunch back
-64	664	665
+64	664	665	666
 #Boomerang
 71	710
 #Break walll
