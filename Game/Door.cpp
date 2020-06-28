@@ -10,7 +10,7 @@ CDoor::CDoor(float l, float t, float r, float b)
 
 void CDoor::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CDoor::GetBoundingBox(float& l, float& t, float& r, float& b)

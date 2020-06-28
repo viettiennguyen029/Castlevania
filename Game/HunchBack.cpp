@@ -71,15 +71,21 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
 			
-				if (nx != 0) vx = 0;
+				if (nx != 0) x += dx;
 				if (e->ny != 0)
 				{
-					//vy = 0;
 					if (e->ny == -1) vy = 0; // hunch back standing on brick
 					else 	y += dy; //hunch back can jump through brick
 				}
 
-				if (hopping) vy = -0.3f;					
+				if (hopping)
+				{
+					// Random vy with small and large hops
+					float minvy = -0.1f;
+					float maxvy = -0.2f;
+					vy = minvy + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (maxvy - minvy)));
+				}
+				
 			
 			}
 
@@ -100,7 +106,7 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CHunchBack::Render()
 {
-	/*int ani = 0;
+	int ani = 0;
 	switch (this->state)
 	{
 	case HUNCH_BACK_STATE_IDLE:
@@ -110,11 +116,11 @@ void CHunchBack::Render()
 	case HUNCH_BACK_STATE_JUMP:
 		ani = 1;
 		break;
+		
 	default:
 		break;
-	};*/
-	animation_set->at(state)->Render(x, y,nx);
-	
+	};
+	animation_set->at(ani)->Render(x, y,nx);	
 }
 
 CHunchBack::CHunchBack()

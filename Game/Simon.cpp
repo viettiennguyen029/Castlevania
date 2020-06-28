@@ -190,6 +190,7 @@ CSimon::CSimon(float x, float y) :CGameObject()
 	this->y = y;
 	// this->autoMove = false;
 	SetState(SIMON_STATE_IDLE);
+	//this->currentSubWeapon = SubWeapon::UNKNOWN;
     whip = new CWhip();
 	dagger = new CDagger();
 }
@@ -227,8 +228,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coObjects->size(); ++i)
 	{
 		if (this->IsOverlapping(coObjects->at(i)))		
-			ovObjects.push_back(coObjects->at(i));		
-			
+			ovObjects.push_back(coObjects->at(i));				
 	}
 
 
@@ -238,6 +238,16 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		ProceedOnStairs();
 		vy = 0;
 	}
+
+	// Checking subweapon
+	/*if (secondWeapon)
+	{
+		if (animation_set->at(state)->GetCurrentFrame() == 2)
+		{
+			this->weapons->Select(int(currentSubWeapon));
+			secondWeapon = false;
+		}
+	}*/
 
 	vector <LPCOLLISIONEVENT> coEvents;
 	vector <LPCOLLISIONEVENT> coEventsResult;
@@ -388,10 +398,21 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				{
 					y = y -0.4f;
 					e->obj->SetVisible(false);
+					//this->currentSubWeapon = SubWeapon::BOOMERANG;
 					subWeapon = true;
 				}
 			}
 
+			else if (dynamic_cast<ItemHolyWater*>(e->obj))
+			{
+				DebugOut(L"[ITEMS] Holy water Collected \n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+					//this->currentSubWeapon = SubWeapon::HOLYWATER;
+				}
+			}
+			
 			else if (dynamic_cast<ItemMoneyBag*>(e->obj))
 			{
 				DebugOut(L"[ITEMS] Money Bag Collected \n");
@@ -399,7 +420,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				{
 					e->obj->SetVisible(false);
 				}
-			}
+			}			
 #pragma endregion
 			
 			else if (dynamic_cast<CStairBottom*> (e->obj) || 
@@ -471,14 +492,15 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		whip->SetOrientation(nx);
 		whip->SetWhipPosition(D3DXVECTOR2(x, y), isStanding);
 
-		if (animation_set->at(state)->GetCurrentFrame() == 2 || 
-			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->GetCurrentFrame()==2||
-			animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->GetCurrentFrame() == 2 ) // Only check collsion at the last frame of the whip
+		if (animation_set->at(state)->GetCurrentFrame() == 2 ||
+			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->GetCurrentFrame() == 2 ||
+			animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->GetCurrentFrame() == 2) // Only check collsion at the last frame of the whip
 		{
 			whip->Update(dt, coObjects);
+
 		}
 	}
-	
+
 }
 
 void CSimon::SetState(int state)
@@ -492,8 +514,7 @@ void CSimon::SetState(int state)
 		isStanding = true;
 		if (onMovingPlatform == true) { ; }
 		else vx = 0;
-		break;
-		
+		break;		
 	}
 
 	case SIMON_STATE_WALKING:
@@ -554,6 +575,7 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_THROW:
 	{
 		vx = 0;
+		//secondWeapon = true;
 		animation_set->at(SIMON_ANI_THROW)->Reset();
 		animation_set->at(SIMON_ANI_THROW)->SetAniStartTime(GetTickCount());
 		break;
@@ -660,7 +682,7 @@ void CSimon::Render()
 	// RenderBoundingBox();	
 
 	// Whip rendering
-	if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_SIT_ATTACK) 
+	if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_SIT_ATTACK)
 	{
 		whip->Render(animation_set->at(ani)->GetCurrentFrame());
 	}

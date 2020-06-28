@@ -1,16 +1,16 @@
 #pragma once
 #include "GameObject.h"
-#include "Brick.h"
 
-#define ITEM_MONEY_BAG_BBOX_WIDTH		12
-#define ITEM_MONEY_BAG_BBOX_HEIGHT	14
+#define ITEM_HOLY_WATER_BBOX_WIDTH		16
+#define ITEM_HOLY_WATER_BBOX_HEIGHT	16
 
-class ItemMoneyBag:public CGameObject
+class ItemHolyWater: public CGameObject
 {
+	DWORD start_visible = 0;
 public:
-	ItemMoneyBag();
-	void Render();
+	ItemHolyWater();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
 

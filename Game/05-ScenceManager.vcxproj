@@ -133,17 +133,18 @@
     <ClCompile Include="BreakWall.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Candle.cpp" />
-    <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Code.cpp" />
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="HolyWater.cpp" />
     <ClCompile Include="HunchBack.cpp" />
     <ClCompile Include="ItemBigHeart.cpp" />
     <ClCompile Include="ItemBoomerang.cpp" />
     <ClCompile Include="ItemChain.cpp" />
     <ClCompile Include="ItemCrown.cpp" />
     <ClCompile Include="ItemDagger.cpp" />
+    <ClCompile Include="ItemHolyWater.cpp" />
     <ClCompile Include="ItemMoneyBag.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="ItemSmallHeart.cpp" />
@@ -151,9 +152,10 @@
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Simon.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="StairBottom.cpp" />
     <ClCompile Include="StairTop.cpp" />
-    <ClCompile Include="Subweapons.cpp" />
+    <ClCompile Include="SubWeapon.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -176,28 +178,28 @@
     <ClInclude Include="BreakWall.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Candle.h" />
-    <ClInclude Include="Cell.h" />
     <ClInclude Include="Code.h" />
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="HolyWater.h" />
     <ClInclude Include="HunchBack.h" />
     <ClInclude Include="ItemBigHeart.h" />
     <ClInclude Include="ItemBoomerang.h" />
     <ClInclude Include="ItemChain.h" />
     <ClInclude Include="ItemCrown.h" />
     <ClInclude Include="ItemDagger.h" />
+    <ClInclude Include="ItemHolyWater.h" />
     <ClInclude Include="ItemMoneyBag.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="ItemSmallHeart.h" />
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="Portal.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
     <ClInclude Include="Simon.h" />
+    <ClInclude Include="Skeleton.h" />
     <ClInclude Include="StairBottom.h" />
     <ClInclude Include="StairTop.h" />
-    <ClInclude Include="Subweapons.h" />
+    <ClInclude Include="SubWeapon.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
@@ -211,9 +213,6 @@
     <ClInclude Include="WallPieces.h" />
     <ClInclude Include="Whip.h" />
     <ClInclude Include="Zombie.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Castlevania NES.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

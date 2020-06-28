@@ -13,6 +13,7 @@
 #include "BreakWall.h"
 #include "Bat.h"
 #include "Boomerang.h"
+#include "SubWeapon.h"
 
 #define SIMON_STATE_IDLE								0
 #define SIMON_STATE_WALKING						1
@@ -50,7 +51,7 @@
 #define SIMON_ANI_POWER_UP			14
 
 #define SIMON_GRAVITY						0.0006f	
-#define SIMON_WALKING_SPEED			0.075f
+#define SIMON_WALKING_SPEED			0.06f
 #define SIMON_JUMP_SPEED_Y				0.2f
 #define SIMON_GO_UPSTAIR_SPEED		0.03f
 #define SIMON_DIE_DEFLECT_SPEED		0.5
@@ -66,17 +67,6 @@
 #define SIMON_BBOX_WIDTH			15
 #define SIMON_BBOX_HEIGHT			30
 
-/*
-	Data struct for saving auto move event
-*/
-struct AutoMoveInfo
-{
-	float vx;
-	float vy;
-	float xDes;				// For auto moving till reach a point
-	float yDes;
-	DWORD autoTimeLast;		// For auto moving within a given time
-};
 
 class CSimon : public CGameObject
 {
@@ -95,14 +85,18 @@ public:
 	CWhip* whip;
 	CDagger* dagger;
 
+	//CSubWeapon* weapons;
+
+	//SubWeapon currentSubWeapon;
+	
+	//bool secondWeapon = false;
 	bool subWeapon = false;
 	bool isStanding = false;
 	bool powerUp = false;
 	bool onMovingPlatform = false;
 
 	DWORD discolorationTime = 0;
-	AutoMoveInfo autoMoveInfo;
-
+	
 	CSimon(float x=0.0f, float y =0.0f);
 	
 	virtual void Update(DWORD dt, vector <LPGAMEOBJECT>* coObject = NULL);

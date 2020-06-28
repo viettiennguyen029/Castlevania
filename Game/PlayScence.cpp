@@ -20,6 +20,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 */
 
 #define SCENE_SECTION_UNKNOWN			-1
+#define SCENE_SECTION_PLAYER					0
 #define SCENE_SECTION_OBJECTS					6
 #define SCENE_SECTION_MAP_INFO				7
 #define SCENE_SECTION_TILE_MAP				8
@@ -33,14 +34,17 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_ITEM_CHAIN				5
 #define OBJECT_TYPE_ITEM_MONEY_BAG		10
 
-#define OBJECT_TYPE_ITEM_DAGGER			6
-#define OBJECT_TYPE_ITEM_BOOMERANG 61
+#define OBJECT_TYPE_ITEM_DAGGER				80
+#define OBJECT_TYPE_ITEM_BOOMERANG	81
+#define OBJECT_TYPE_ITEM_HOLY_WATER		82
 
 #define OBJECT_TYPE_DAGGER					7
 #define OBJECT_TYPE_BOOMERANG			71
+#define OBJECT_TYPE_HOLY_WATER			72
 
 #define OBJECT_TYPE_ZOMBIE					63
 #define OBJECT_TYPE_HUNCH_BACK			64
+#define OBJECT_TYPE_SKELETON				65
 
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 #define OBJECT_TYPE_BAT							9
@@ -57,6 +61,38 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_WALL_PIECES				91
 
 #define MAX_SCENE_LINE 1024
+
+void CPlayScene::_ParseSection_PLAYER(string line)
+{
+	vector<string> tokens = split(line);
+	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = atof(tokens[1].c_str());
+	float y = atof(tokens[2].c_str());
+	int ani_set_id = atoi(tokens[3].c_str());
+
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+
+	CGameObject* playerObj = NULL;
+
+	if (player != NULL)
+	{
+		DebugOut(L"[ERROR] SIMON object was created before! ");
+		return;
+	}
+
+	//obj = new CSimon(x,y);
+	//obj = CSimon::GetInstance();
+	playerObj = CSimon::GetInstance();
+	player = (CSimon*)playerObj;
+
+	playerObj->SetPosition(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+	playerObj->SetAnimationSet(ani_set);
+
+	DebugOut(L"[INFO] Player object created!\n");
+}
 
 /*
 	Parse a line in section [OBJECTS] 
@@ -75,25 +111,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
+	//CGameObject *player1 = NULL;
 	CItems* items = CItems::GetInstance();
 
 	switch (object_type)
 	{	
-	case OBJECT_TYPE_SIMON:
-	{
-		if (player != NULL)
-		{
-			DebugOut(L"[ERROR] SIMON object was created before! ");
-			return;
-		}
-		
-		//obj = new CSimon(x,y);
-		obj = CSimon::GetInstance();
-		player = (CSimon*)obj;
-		
-		DebugOut(L"[INFO] Player object created!\n");
-		break;
-	}
+	//case OBJECT_TYPE_SIMON:
+	//{
+	//	if (player != NULL)
+	//	{
+	//		DebugOut(L"[ERROR] SIMON object was created before! ");
+	//		return;
+	//	}
+	//	
+	//	//obj = new CSimon(x,y);
+	//	//obj = CSimon::GetInstance();
+
+	//	DebugOut(L"[INFO] Player object created!\n");
+	//	break;
+	//}
 
 	case OBJECT_TYPE_BRICK:
 	{
@@ -118,6 +154,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBoomerang();
 		boomerang = (CBoomerang*)obj;
 		obj->SetVisible(false);
+		break;
+	}
+
+	case OBJECT_TYPE_HOLY_WATER:
+	{
+		obj =  CHolyWater::GetInstance();
+		CSubWeapon::GetInstance()->Add((int)SubWeapon::HOLYWATER, obj);
 		break;
 	}
 
@@ -153,6 +196,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_HUNCH_BACK:
 	{
 		obj = new CHunchBack();
+		break;
+	}
+
+	case OBJECT_TYPE_SKELETON:
+	{
+		obj = new CSkeleton(x, y);
 		break;
 	}
 
@@ -194,9 +243,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_ITEM_HOLY_WATER:
+	{
+		obj = new ItemHolyWater();
+		items->AddItem((int)ItemType::HOLY_WATER, obj);
+		break;
+	}
+
 	case OBJECT_TYPE_ITEM_MONEY_BAG:
 	{
+		int state = atoi(tokens[4].c_str());
 		obj = new ItemMoneyBag();
+		obj->SetState(state);
 		items->AddItem((int)ItemType::MONEY_BAG, obj);
 		break;
 	}
@@ -263,8 +321,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	// General object setup
 	obj->SetPosition(x, y);
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-	obj->SetAnimationSet(ani_set);
+	obj->SetAnimationSet(ani_set);	
 	objects.push_back(obj);
+	// grid ->Classify(obj);
 }
 
 void CPlayScene::_ParseSection_MAP_INFO(string line)
@@ -325,6 +384,8 @@ void CPlayScene::Load()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 
+		if (line == "[PLAYER]") {
+			section = SCENE_SECTION_PLAYER; continue;}
 		if (line == "[OBJECTS]") { 
 			section = SCENE_SECTION_OBJECTS; continue; }		
 		if (line == "[MAP_INFO]") {
@@ -339,6 +400,7 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{ 
+			case SCENE_SECTION_PLAYER:_ParseSection_PLAYER(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 			case SCENE_SECTION_MAP_INFO: _ParseSection_MAP_INFO(line); break;
 			case SCENE_SECTION_TILE_MAP:_ParseSection_TILE_MAP(line); break;
@@ -351,14 +413,19 @@ void CPlayScene::Load()
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
+
+	//grid = new CGrid();
+	// grid->Init(&objects, mapWidth, mapHeight, CELL_WIDTH, CELL_HEIGHT);
+
 }
 
 
 void CPlayScene::Update(DWORD dt)
 {	
+	// We know that Simon is the first object in the list hence we won't add him into the colliable object list
 	vector<LPGAMEOBJECT> coObjects;
 	
-	for (size_t i = 1; i < objects.size(); i++)
+	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (objects[i]->visible == false)
 			continue;
@@ -372,6 +439,7 @@ void CPlayScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}
 
+	player->Update(dt, &coObjects);
 	
 	//// Get the bounding box of the viewport
 	//float left, top, right, bottom;
@@ -379,27 +447,24 @@ void CPlayScene::Update(DWORD dt)
 
 	//// Get objects in cells
 	//updateObjects.clear();
-	//grid = new CGrid();
-	//grid->Init(&coObjects,mapWidth, mapHeight, CELL_WIDTH, CELL_HEIGHT);
 
 	////Get collidable objects
 	//grid->GetObjectsInRectangle(left, top, right, bottom, updateObjects);
 
 	//// Get collide-able objects
-	//for (UINT i = 0; i < updateObjects.size(); i++)
+	//for (size_t i = 0; i < updateObjects.size(); i++)
 	//{
-	//	//if (updateObjects[i]->isVisible() == true)
+	//	if (updateObjects[i]->isVisible() == true)
 	//		coObjects.push_back(updateObjects[i]);
 	//}
 
 	//// Update objects
-	//for (UINT i = 0; i < updateObjects.size(); i++)
+	//for (size_t i = 0; i < updateObjects.size(); i++)
 	//{
-	//	//if (updateObjects[i]->isVisible() == true)
-	//	
-	//		updateObjects[i]->Update(dt, &coObjects);
-	//	
+	//	if (updateObjects[i]->isVisible() == true)	
+	//		updateObjects[i]->Update(dt, &coObjects);		
 	//}
+	//DebugOut(L"Objects size: %d\n", coObjects.size());
 	//player->Update(dt, &coObjects);
 
 	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
@@ -438,13 +503,14 @@ void CPlayScene::Render()
 	for (int i = 0; i < tiledMap.size(); i++)
 		tiledMap[i]->Render();
 
-	for (int i = objects.size()-1; i >=0;i--) // Simon is rendered at the last 
+	for (int i = objects.size() - 1; i >= 0; i--)
 	{
 		if (objects[i]->visible == false)
 			continue;
 		objects[i]->Render();
 	}	
 
+	player->Render();// Simon is rendered at the last 
 	HUD->Render();
 }
 
@@ -466,10 +532,12 @@ void CPlayScene::Unload()
 		{
 			delete objects[i];
 		} 
-		/*delete grid;
-		grid = NULL;*/
+		
 
 	}
+
+	/*delete grid;
+	grid = NULL;*/
 
 	objects.clear();
 	tiledMap.clear();
@@ -502,12 +570,26 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	}		
 	case DIK_S: // Attack
 	{
+		// If Simon's state attack is not end, then continue
+		if ((simon->GetState() == SIMON_STATE_ATTACK ||simon->GetState() == SIMON_STATE_SIT_ATTACK))
+			return;
 
-		if (CGame::GetInstance()->IsKeyDown(DIK_UP)) // Sub weapon attack 
+		if (simon->GetState() == SIMON_STATE_IDLE ||	simon->GetState() == SIMON_STATE_JUMP ||
+			simon->GetState() == SIMON_STATE_GO_UPSTAIR || simon->GetState() == SIMON_ANI_GO_DOWNSTAIR)
 		{
-			if (simon->subWeapon == false)
-				return;
-			if (simon->GetState()== SIMON_STATE_THROW && dagger->visible == true) return;
+			simon->SetState(SIMON_STATE_ATTACK);
+		}
+
+		else if (simon->GetState() == SIMON_STATE_SIT)
+		{
+			simon->SetState(SIMON_STATE_SIT_ATTACK);
+		}
+
+		if (CGame::GetInstance()->IsKeyDown(DIK_UP) ) // Sub weapon attack 
+		{
+			//if (simon->subWeapon == false)
+			//	return;
+			//if (simon->GetState() == SIMON_STATE_THROW && dagger->visible == true) return;
 
 			// UseDagger();
 			float xS, yS;
@@ -515,25 +597,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			dagger->SetPosition(xS, yS);
 			dagger->SetOrientation(simon->nx);
 			dagger->SetVisible(true);
+
 			simon->SetState(SIMON_STATE_THROW);
+			
 		}
 
-		// If Simon's state attack is not end, then continue
-		if ((simon->GetState() == SIMON_STATE_ATTACK ||
-			simon->GetState() == SIMON_STATE_SIT_ATTACK))
-			return;
-
-		if (simon->GetState() == SIMON_STATE_IDLE ||
-			simon->GetState() == SIMON_STATE_JUMP ||
-			simon->GetState() == SIMON_STATE_GO_UPSTAIR||
-			simon->GetState()== SIMON_ANI_GO_DOWNSTAIR) 
-		{
-			simon->SetState(SIMON_STATE_ATTACK);
-		}
-		else if (simon->GetState() == SIMON_STATE_SIT)
-		{
-			simon->SetState(SIMON_STATE_SIT_ATTACK);
-		}
 		break;
 	}	
 
@@ -554,17 +622,14 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 		
 	}
-	
+
+		
 	case DIK_Q: // Upgrade whip
 	{
 		simon->whip->PowerUp();
 		// simon->nextSceneWhip->PowerUp();
 		break;
 	}
-
-	//case DIK_A: // reset
-	//	simon->Reset(); 
-	//	break;
 
 	case DIK_1:
 		CGame::GetInstance()->SwitchScene(1);
@@ -666,7 +731,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	else if (game->IsKeyDown(DIK_DOWN))
 	{
-		if (simon->onStairs == 0&& simon->ovObjects.size()==0 )
+		if (simon->onStairs == 0&& simon->ovObjects.size()==0)
 			simon->SetState(SIMON_STATE_SIT);
 		else
 			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);

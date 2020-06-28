@@ -16,10 +16,12 @@
 #include "ItemDagger.h"
 #include "ItemBoomerang.h"
 #include "ItemMoneyBag.h"
+#include "ItemHolyWater.h"
 #include "ItemCrown.h"
 #include "Dagger.h"
 #include "Black_Knight.h"
 #include "HunchBack.h"
+#include"Skeleton.h"
 #include "Bat.h"
 #include "Zombie.h"
 #include "StairTop.h"
@@ -28,11 +30,12 @@
 #include "MovingPlatform.h"
 #include "Door.h"
 #include "Boomerang.h"
+#include "HolyWater.h"
 #include "BreakWall.h"
 #include "WallPieces.h"
 #include "Board.h"
 #include<vector>
-#include "Grid.h"
+//#include "Grid.h"
 
 #define SCREEN_WIDTH	 270
 #define SCREEN_HEIGHT 270
@@ -55,14 +58,14 @@ protected:
 
 	Board* HUD;
 	
-	CGrid *grid;
+	//CGrid *grid;
 	int mapWidth, mapHeight;
 	int offset_y; // an empty space to render HUD
-
+	
 	vector<LPTILE> tiledMap;	
 	vector<LPGAMEOBJECT> objects;				// Base objects
-	vector<LPGAMEOBJECT> updateObjects;	// The objects need be updated
-
+	
+	void _ParseSection_PLAYER(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_MAP_INFO(string line);
 	void  _ParseSection_TILE_MAP(string line);

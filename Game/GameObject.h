@@ -46,17 +46,12 @@ enum class ItemType
 	BIG_HEART = 4,
 	SMALL_HEART = 44,
 	CHAIN = 5,
-	DAGGER = 6,
-	BOOMERANG = 61,
+	DAGGER = 80,
+	BOOMERANG = 81,
+	HOLY_WATER = 82,
 	MONEY_BAG = 10
 };
 
-enum class SubWeapon
-{
-	UNKNOWN =-1,
-	DAGGER =7,
-	BOOMERANG = 71
-};
 
 class CGameObject
 {

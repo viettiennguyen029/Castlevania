@@ -1,10 +1,11 @@
+[PLAYER]
+# type	x	y	ani_set_id
+0	30	170	0
+
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 
+# 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 
 # 7 = Dagger,71 = Boomerang, 8 = Black Knight, 9 = Bat, 90 = Break wall, 91 = Wall pieces
-
-# SIMON
-0	30	170	0
 
 #================ BRICK ==================
 1	0	216	1	230	16
@@ -20,7 +21,7 @@
 1	16	104	1	16	16
 
 #Small candle	extra1: item, extra 2: state
-2	96	153	2	61	1
+2	96	153	2	81	1
 2	196	153	2	4	1
 2	150	57	2	10	1
 
@@ -28,9 +29,9 @@
 #Big heart
 4	206	153	41
 #Boomerang
-61	76	153	45
+81	76	153	45
 #Money bag
-10	150	55	46
+10	150	55	46	0
 
 # DAGGER
 7	46	145	43

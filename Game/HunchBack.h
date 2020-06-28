@@ -7,7 +7,7 @@
 #define HUNCH_BACK_BBOX_HEIGHT	16
 #define HUNCH_BACK_BBOX_WIDTH		16
 
-#define HUNCHBACK_GRAVITY			0.002f
+#define HUNCHBACK_GRAVITY		0.00042f
 #define HUNCH_BACK_JUMP_SPEED_X	0.08f
 
 class CHunchBack  : public CGameObject

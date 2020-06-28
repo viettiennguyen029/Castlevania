@@ -117,9 +117,6 @@
     <ClCompile Include="MovingPlatform.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Subweapons.cpp">
-      <Filter>Weapons</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Boomerang.cpp">
       <Filter>Weapons</Filter>
@@ -148,17 +145,26 @@
     <ClCompile Include="Zombie.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Cell.cpp">
-      <Filter>Spatial Partition</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Spatial Partition</Filter>
-    </ClCompile>
     <ClCompile Include="Door.cpp">
       <Filter>Hidden Objects</Filter>
     </ClCompile>
     <ClCompile Include="HunchBack.cpp">
       <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemHolyWater.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="HolyWater.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="SubWeapon.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Spatial Partition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -243,9 +249,6 @@
     <ClInclude Include="MovingPlatform.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Subweapons.h">
-      <Filter>Weapons</Filter>
-    </ClInclude>
     <ClInclude Include="Boomerang.h">
       <Filter>Weapons</Filter>
     </ClInclude>
@@ -255,7 +258,6 @@
     <ClInclude Include="Code.h">
       <Filter>HUD</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="VariousStair.h">
       <Filter>Hidden Objects</Filter>
     </ClInclude>
@@ -274,21 +276,26 @@
     <ClInclude Include="Zombie.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Cell.h">
-      <Filter>Spatial Partition</Filter>
+    <ClInclude Include="Door.h">
+      <Filter>Hidden Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="HunchBack.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemHolyWater.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="HolyWater.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="SubWeapon.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Spatial Partition</Filter>
     </ClInclude>
-    <ClInclude Include="Door.h">
-      <Filter>Hidden Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="resource1.h" />
-    <ClInclude Include="HunchBack.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Castlevania NES.rc" />
   </ItemGroup>
 </Project>

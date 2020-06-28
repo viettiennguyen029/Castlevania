@@ -32,7 +32,8 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 
 			else if (dynamic_cast<CBlack_Knight*>(temp)||
-				dynamic_cast<CBat*>(temp))
+				dynamic_cast<CBat*>(temp)||
+				dynamic_cast<CHunchBack*>(temp))
 			{
 				DebugOut(L"[INFO] Enemy take damaged \n");
 				temp->TakeDamage(this->damage);
@@ -136,6 +137,7 @@ void CWhip::Render(int currentFrame)
 {
 	CAnimationSets::GetInstance()->Get(WHIP_ANI_SET)->at(state)->RenderByFrame(currentFrame, nx, x, y);
 	ShowHitEffect();
+	//RenderBoundingBox();
 }
 
 void CWhip::SetState(int state)
@@ -151,4 +153,3 @@ void CWhip::SetDamage(int state)
 	}
 	else damage = 2;
 }
-

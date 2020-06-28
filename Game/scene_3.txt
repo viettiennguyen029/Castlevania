@@ -1,11 +1,13 @@
-[OBJECTS]
-# type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Flame, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
-# 8 = Black Knight,
-
-# SIMON
+[PLAYER]
+# type	x	y	ani_set_id
 0	370	205	0
 #0	450	80	0
+
+[OBJECTS]
+# type	x	y	ani_set_id	extra_settings per object type
+# 1 = Brick, 2 = Candle, 3= Flame, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
+# 8 = Black Knight,
+
 # top wall
 1	1	122	1	32	16
 1	97	122	1	64	16

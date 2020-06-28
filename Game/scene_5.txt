@@ -1,6 +1,11 @@
+[PLAYER]
+# type	x	y	ani_set_id
+#0	5	120	0
+0	88	200	0
+
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
+# 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
 # 8 = Black Knight
 
 # SIMON

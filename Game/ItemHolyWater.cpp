@@ -1,20 +1,29 @@
-#include "ItemMoneyBag.h"
+#include "ItemHolyWater.h"
+#include "Brick.h"
 
-
-ItemMoneyBag::ItemMoneyBag()
+ItemHolyWater::ItemHolyWater()
 {
-	this->visible = false;
+	SetVisible(false);
 }
 
-void ItemMoneyBag::Render()
-{
-	animation_set->at(state)->Render(x, y, -1);
-}
-
-void ItemMoneyBag::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
+void ItemHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
+
 	vy += ITEM_GRAVITY * dt;				// simple fall down
+
+	if (visible)
+	{
+		if (start_visible < 5000)
+		{
+			start_visible += dt;
+		}
+		else
+		{
+			SetVisible(false);
+			start_visible = 0;
+		}
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -24,8 +33,8 @@ void ItemMoneyBag::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 	if (coEvents.size() == 0)
 	{
-		y += dy;
 		x += dx;
+		y += dy;
 	}
 	else
 	{
@@ -56,10 +65,17 @@ void ItemMoneyBag::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void ItemMoneyBag::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void ItemHolyWater::Render()
+{
+	animation_set->at(0)->Render(x, y, 1);
+}
+
+void ItemHolyWater::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
-	right = x + ITEM_MONEY_BAG_BBOX_WIDTH;
-	bottom = y + ITEM_MONEY_BAG_BBOX_HEIGHT;
+	right = x + ITEM_HOLY_WATER_BBOX_WIDTH;
+	bottom = y + ITEM_HOLY_WATER_BBOX_HEIGHT;
 }
+
+
