@@ -8,8 +8,9 @@ class CGrid
 	int column;
 	int row;
 
-	vector<LPGAMEOBJECT> cells[3][12];
-
+	vector<LPGAMEOBJECT> cells[6][10];
+	vector<LPGAMEOBJECT> crossObject;
+	static CGrid* __instance;
 public:
 	// Put the object in the suitable cell
 	void Classify(LPGAMEOBJECT obj); 
@@ -18,5 +19,7 @@ public:
 	void GetObjects(vector<LPGAMEOBJECT>&objects, float left, float top, float right, float bottom);
 
 	void Clear();
+
+	static CGrid* GetInstance();
 };
 

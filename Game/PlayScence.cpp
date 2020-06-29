@@ -323,7 +323,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 	obj->SetAnimationSet(ani_set);	
 	objects.push_back(obj);
-	// grid ->Classify(obj);
+	grid ->Classify(obj);
 }
 
 void CPlayScene::_ParseSection_MAP_INFO(string line)
@@ -413,10 +413,6 @@ void CPlayScene::Load()
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
-
-	//grid = new CGrid();
-	// grid->Init(&objects, mapWidth, mapHeight, CELL_WIDTH, CELL_HEIGHT);
-
 }
 
 
@@ -425,7 +421,7 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Simon is the first object in the list hence we won't add him into the colliable object list
 	vector<LPGAMEOBJECT> coObjects;
 	
-	for (size_t i = 0; i < objects.size(); i++)
+	/*for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (objects[i]->visible == false)
 			continue;
@@ -437,50 +433,21 @@ void CPlayScene::Update(DWORD dt)
 		if (objects[i]->visible == false)
 			continue;
 		objects[i]->Update(dt, &coObjects);
-	}
+	}*/
 
-	player->Update(dt, &coObjects);
+	// player->Update(dt, &coObjects);
 	
-	//// Get the bounding box of the viewport
-	//float left, top, right, bottom;
-	//CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
-
-	//// Get objects in cells
-	//updateObjects.clear();
-
-	////Get collidable objects
-	//grid->GetObjectsInRectangle(left, top, right, bottom, updateObjects);
-
-	//// Get collide-able objects
-	//for (size_t i = 0; i < updateObjects.size(); i++)
-	//{
-	//	if (updateObjects[i]->isVisible() == true)
-	//		coObjects.push_back(updateObjects[i]);
-	//}
-
-	//// Update objects
-	//for (size_t i = 0; i < updateObjects.size(); i++)
-	//{
-	//	if (updateObjects[i]->isVisible() == true)	
-	//		updateObjects[i]->Update(dt, &coObjects);		
-	//}
-	//DebugOut(L"Objects size: %d\n", coObjects.size());
-	//player->Update(dt, &coObjects);
-
-	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
-
 	// Update camera to follow simon
 	float cx, cy;
-	player->GetPosition(cx, cy);	
+	player->GetPosition(cx, cy);
 	CGame* game = CGame::GetInstance();
 
-	if (cx >= SCREEN_WIDTH/ 2)
+	if (cx >= SCREEN_WIDTH / 2)
 	{
 		cx -= game->GetScreenWidth() / 2;
 		cy -= game->GetScreenHeight() / 2;
 
-		if (cx > mapWidth - SCREEN_WIDTH )
+		if (cx > mapWidth - SCREEN_WIDTH)
 		{
 			cx = mapWidth - SCREEN_WIDTH;
 		}
@@ -490,9 +457,48 @@ void CPlayScene::Update(DWORD dt)
 	{
 		cx = 0.0f;
 	}
-	
+
 	// CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
-	game ->SetCamPos(cx, 0.0f /*cy*/);
+	game->SetCamPos(cx, 0.0f /*cy*/);
+
+	// Get the bounding box of the viewport
+	float left, top, right, bottom;
+	CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
+
+	//// Get objects in cells
+	//updateObjects.clear();
+
+	//Get collidable objects
+	updateObject.clear();
+	grid->GetObjects(updateObject, left, top, right, bottom);
+
+	// Add update objects in cells into vector base objects
+	/*for (size_t i = 0; i < objects.size(); i++)
+	{
+		updateObject.push_back(objects[i]);
+	}*/
+
+	// Get collide-able objects in the grid 
+	for (size_t i = 0; i < updateObject.size(); i++)
+	{
+		if (updateObject[i]->isVisible() == true)
+			coObjects.push_back(updateObject[i]);
+	}
+
+	// Call Update function of each object
+	for (size_t i = 0; i < updateObject.size(); i++)
+	{
+		if (updateObject[i]->isVisible() == true)
+		updateObject[i]->Update(dt, &coObjects);
+	}
+
+	//DebugOut(L"Objects size: %d\n", coObjects.size());
+	player->Update(dt, &coObjects);
+
+	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
+	if (player == NULL) return;
+
+	
 
 	HUD->Update(dt);
 }
@@ -539,6 +545,8 @@ void CPlayScene::Unload()
 	/*delete grid;
 	grid = NULL;*/
 
+	grid->Clear();
+	//grid = NULL;
 	objects.clear();
 	tiledMap.clear();
 	CItems::GetInstance()->Clear();

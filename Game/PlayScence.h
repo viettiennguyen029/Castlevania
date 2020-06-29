@@ -35,13 +35,10 @@
 #include "WallPieces.h"
 #include "Board.h"
 #include<vector>
-//#include "Grid.h"
+#include "Grid.h"
 
 #define SCREEN_WIDTH	 270
 #define SCREEN_HEIGHT 270
-
-#define CELL_WIDTH	90
-#define CELL_HEIGHT	48
 
 #define TILE_WIDTH	32
 #define TILE_HEIGHT	32
@@ -58,13 +55,14 @@ protected:
 
 	Board* HUD;
 	
-	//CGrid *grid;
+	CGrid* grid = CGrid::GetInstance();
 	int mapWidth, mapHeight;
 	int offset_y; // an empty space to render HUD
 	
 	vector<LPTILE> tiledMap;	
 	vector<LPGAMEOBJECT> objects;				// Base objects
-	
+	vector<LPGAMEOBJECT> updateObject;  // The objects need to be updated
+
 	void _ParseSection_PLAYER(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_MAP_INFO(string line);
