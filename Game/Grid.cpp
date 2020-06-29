@@ -7,18 +7,33 @@
 
 void CGrid::Classify(LPGAMEOBJECT obj)
 {
-	float x, y;
-	obj->GetPosition(x, y);
+	int beginCellColumn, beginCellRow, endCellColumn, endCellRow;
+	float l, t, r, b;
+	obj->GetBoundingBox(l, t, r, b);
 
-	int column = (int)(x / CELL_WIDTH);
-	int row = (int)(y / CELL_HEIGHT);
+	//this->GetCellsContainRectangle(left, top, right, bottom, beginCellColumn, beginCellRow, endCellColumn, endCellRow);
 
-	if (dynamic_cast<CBrick*>(obj))
+	beginCellColumn = (int)(l / CELL_WIDTH);
+	beginCellRow = (int)(t / CELL_HEIGHT);
+
+	endCellColumn = (int)(r / CELL_WIDTH);
+	endCellRow = (int)(b / CELL_HEIGHT);
+
+	for (int i = beginCellRow; i <= endCellRow; i++)
 	{
-		crossObject.push_back(obj);
+		for (int j = beginCellColumn; j <= endCellColumn; j++)
+		{
+			cells[i][j].push_back(obj);
+			//cells[column][row]->Add(obj);
+		}
 	}
+	
+	int a = 1;
 
-	cells[row][column].push_back(obj);
+	//cells[row][column].push_back(obj);
+
+	// add object to the suitable cells
+	
 }
 
 void CGrid::GetObjects(vector<LPGAMEOBJECT>&updateobjects, float left, float top, float right, float bottom)
@@ -44,14 +59,30 @@ void CGrid::GetObjects(vector<LPGAMEOBJECT>&updateobjects, float left, float top
 		{
 			for (UINT k = 0; k < cells[row][column].size(); k++)
 			{
-				updateobjects.push_back(cells[row][column].at(k));
+				// Check the object if is in the vector or not !
+				if ((find(updateobjects.begin(), updateobjects.end(), cells[row][column].at(k)) != updateobjects.end()== false))
+				{
+					if (cells[row][column].at(k)->isVisible())
+					{
+						updateobjects.push_back(cells[row][column].at(k));
+					}
+				}
 			}
 		}
 	}
 
 	
-	updateobjects.push_back(crossObject.at(0));
+	//updateobjects.push_back(crossObject.at(0));
 }
+
+//void CGrid::GetCellsContainRectangle(float const& left, float const& top, float const& right, float const& bottom, int& firstCellColumn, int& firstCellRow, int& lastCellColumn, int& lastCellRow)
+//{
+//	firstCellColumn = (left < 0) ? 0 : left / CELL_WIDTH;
+//	firstCellRow = (top < 0) ? 0 : top / CELL_HEIGHT;
+//
+//	lastCellColumn = (right / CELL_WIDTH < 10) ? (right / CELL_WIDTH) : 10 - 1;
+//	lastCellRow = (bottom / CELL_HEIGHT < 6) ? (bottom / CELL_HEIGHT) : 6 - 1;
+//}
 
 void CGrid::Clear()
 {
