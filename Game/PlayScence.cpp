@@ -37,10 +37,13 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_ITEM_DAGGER				80
 #define OBJECT_TYPE_ITEM_BOOMERANG	81
 #define OBJECT_TYPE_ITEM_HOLY_WATER		82
+#define OBJECT_TYPE_ITEM_INVISIBILITY		83
+#define OBJECT_TYPE_ITEM_AXE					84
 
 #define OBJECT_TYPE_DAGGER					7
 #define OBJECT_TYPE_BOOMERANG			71
 #define OBJECT_TYPE_HOLY_WATER			72
+
 
 #define OBJECT_TYPE_ZOMBIE					63
 #define OBJECT_TYPE_HUNCH_BACK			64
@@ -254,6 +257,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		obj = new ItemHolyWater();
 		items->AddItem((int)ItemType::HOLY_WATER, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_INVISIBILITY:
+	{
+		obj = new ItemInvisibility();
+		items->AddItem((int)ItemType::INVISIBILITY, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_AXE:
+	{
+		obj = new ItemAxe();
+		items->AddItem((int)ItemType::AXE, obj);
 		break;
 	}
 

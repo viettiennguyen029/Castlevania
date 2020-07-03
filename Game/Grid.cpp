@@ -72,10 +72,12 @@ void CGrid::GetObjects(vector<LPGAMEOBJECT>&updateobjects, float left, float top
 void CGrid::Clear()
 {
 	for (int i = 0; i < 6; i++)
+	{
 		for (int j = 0; j < 10; j++)
 		{
 			cells[i][j].clear();
 		}
+	}		
 }
 
 CGrid* CGrid::__instance = NULL;

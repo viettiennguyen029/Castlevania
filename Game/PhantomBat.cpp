@@ -21,7 +21,7 @@ bool CPhantomBat::IsInRetreats()
 
 void CPhantomBat::GetBossPosition()
 {
-	boss_x = x;
+	boss_x = x+PHANTOM_BAT_BBOX_WIDTH/2;
 	boss_y = y + PHANTOM_BAT_BBOX_HEIGHT / 2;
 }
 
@@ -30,7 +30,7 @@ void CPhantomBat::DetectPlayer()
 	float left, top, right, bottom;
 	CSimon::GetInstance()->GetBoundingBox(left, top, right, bottom);
 	
-	player_x = left;
+	player_x = (left + right) / 2;
 	player_y = (top + bottom) / 2;
 }
 
@@ -87,7 +87,6 @@ void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// Update the current boss's central position
 	GetBossPosition();
 
-
 	// Find player
 	DetectPlayer();
 
@@ -133,7 +132,7 @@ void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// Keep the BossBat being inside the viewport	
 
-	CGameObject::Update(dt);
+	
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -148,7 +147,7 @@ void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
 		if (x < left && x + PHANTOM_BAT_BBOX_WIDTH > right)
 			vx = -vx;
-		if (y < top && y + PHANTOM_BAT_BBOX_HEIGHT > bottom-5)
+		if (y < top +50 && y + PHANTOM_BAT_BBOX_HEIGHT > bottom-5)
 			vx = -vy;
 
 		y += dy;
@@ -216,7 +215,7 @@ void CPhantomBat::SwoopDown()
 	{
 		// Vector speed to run into Simon for an attack
 		vx = (player_x - boss_x) / (PHANTOM_BAT_SWOOP_DOWN_TIME / 2);
-		vy = (player_x - boss_y) / (PHANTOM_BAT_SWOOP_DOWN_TIME / 2);
+		vy = (player_y - boss_y) / (PHANTOM_BAT_SWOOP_DOWN_TIME / 2);
 
 		// To keep the boss move not too fast
 		vx = (vx > 0) ?

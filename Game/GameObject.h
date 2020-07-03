@@ -49,6 +49,8 @@ enum class ItemType
 	DAGGER = 80,
 	BOOMERANG = 81,
 	HOLY_WATER = 82,
+	INVISIBILITY	=83,
+	AXE = 84,
 	MONEY_BAG = 10
 };
 

@@ -17,6 +17,8 @@
 #include "ItemBoomerang.h"
 #include "ItemMoneyBag.h"
 #include "ItemHolyWater.h"
+#include "ItemInvisibility.h"
+#include "ItemAxe.h"
 #include "ItemCrown.h"
 #include "Dagger.h"
 #include "Black_Knight.h"

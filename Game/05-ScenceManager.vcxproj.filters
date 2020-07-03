@@ -78,9 +78,6 @@
     <ClCompile Include="ItemDagger.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-    <ClCompile Include="Items.cpp">
-      <Filter>Items</Filter>
-    </ClCompile>
     <ClCompile Include="Dagger.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
@@ -169,6 +166,13 @@
     <ClCompile Include="PhantomBat.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="ItemInvisibility.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemAxe.cpp" />
+    <ClCompile Include="Items.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -211,9 +215,6 @@
       <Filter>Items</Filter>
     </ClInclude>
     <ClInclude Include="ItemDagger.h">
-      <Filter>Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Items.h">
       <Filter>Items</Filter>
     </ClInclude>
     <ClInclude Include="Dagger.h">
@@ -297,11 +298,18 @@
     <ClInclude Include="Skeleton.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="PhantomBat.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Spatial Partition</Filter>
     </ClInclude>
-    <ClInclude Include="PhantomBat.h">
-      <Filter>Enemies</Filter>
+    <ClInclude Include="ItemInvisibility.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemAxe.h" />
+    <ClInclude Include="Items.h">
+      <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
