@@ -166,6 +166,9 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Spatial Partition</Filter>
     </ClCompile>
+    <ClCompile Include="PhantomBat.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -296,6 +299,9 @@
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Spatial Partition</Filter>
+    </ClInclude>
+    <ClInclude Include="PhantomBat.h">
+      <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

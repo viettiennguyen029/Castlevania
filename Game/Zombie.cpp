@@ -4,7 +4,7 @@
 CZombie::CZombie()
 {
 	this->healthPoint = 1;
-	this->vx = 0;
+	this->vx = 0.06f;
 	SetState(ZOMBIE_STATE_MOVING);
 }
 
@@ -19,6 +19,12 @@ void CZombie::GetBoundingBox(float& left, float& top, float& right, float& botto
 void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
+
+	// Simple fall down
+	vy += ZOMBIE_GRAVITY * dt;
+
+	if (nx == 1) vx = ZOMBIE_MOVING_SPEED;
+	else if (nx -1) vx = -ZOMBIE_MOVING_SPEED;
 
 	if (start_untouchable != 0)
 	{
@@ -60,11 +66,12 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		}
 	}
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 void CZombie::Render()
 {
-	animation_set->at(0)->Render(x, y, nx);
+	animation_set->at(ZOMBIE_STATE_MOVING)->Render(x, y, nx);
 }
 
 void CZombie::SetState(int state)
@@ -73,7 +80,7 @@ void CZombie::SetState(int state)
 	switch (state)
 	{
 	case ZOMBIE_STATE_MOVING:
-		vx = 0;
+		vx = ZOMBIE_MOVING_SPEED;
 		vy = 0;
 		break;
 	}

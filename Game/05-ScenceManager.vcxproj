@@ -150,6 +150,7 @@
     <ClCompile Include="ItemSmallHeart.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovingPlatform.cpp" />
+    <ClCompile Include="PhantomBat.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Skeleton.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Items.h" />
     <ClInclude Include="ItemSmallHeart.h" />
     <ClInclude Include="MovingPlatform.h" />
+    <ClInclude Include="PhantomBat.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Skeleton.h" />

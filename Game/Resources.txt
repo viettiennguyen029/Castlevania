@@ -12,6 +12,7 @@
 64	resources\Hunchback.png	116	116	116
 65	resources\Ghost.png	116	116	116
 66	resources\Skeleton.png	116	116	116
+67	resources\Boss.png	116	116	116
 #map_id	file_path	r	g	b	
 1	resources\tilesheet1.png	5	5	5
 2	resources\tilesheet2.png	5	5	5
@@ -134,6 +135,12 @@
 60053	39	14	45	30	66
 60054	47	16	62	29	66
 60055	65	15	80	29	66
+#============= PHANTOM BAT ===============
+#Sleep
+60070	1	11	17	27	67
+#Flying
+60071	18	11	66	34	67
+60072	81	11	129	34	67
 #============ MOVING PLATFORM ============
 33300	64	69	96	77	10
 #================= BRICK =================
@@ -272,6 +279,11 @@
 665	60042	100
 666	60041	100
 
+#============ PHANTOM_BAT ================
+#Sleep
+670	60070	100
+# Flying
+671	60071	100	60072	100
 #============== SKELETON =================
 #Dance
 650	60051	100	60052	100
@@ -355,3 +367,5 @@
 64	664	665	666
 #Skeleton
 65	650
+#Phantom Bat
+67	670	671

@@ -23,6 +23,7 @@
 #include "HunchBack.h"
 #include"Skeleton.h"
 #include "Bat.h"
+#include "PhantomBat.h"
 #include "Zombie.h"
 #include "StairTop.h"
 #include "StairBottom.h"

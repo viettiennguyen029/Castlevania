@@ -1,7 +1,7 @@
 [PLAYER]
 # type	x	y	ani_set_id
-0	10	70	0
-
+#0	10	70	0
+0	464	120	0
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
@@ -20,7 +20,10 @@
 #3	0	0	3
 
 # Zombie
-63	130	100	63
+63	30	180	63
+
+# Phantom Bat
+67	620	65	67
 
 # type	l	t	ani_set_id	r	b
 # STAIR bottom
@@ -37,7 +40,7 @@
 
 #Width	offset_y
 [MAP_INFO]
-765	192	40
+786	192	40
 [TILE_MAP]
 0	0	1	2	0	1	3	0	1	4	5	6	0	7	1	6	0	7	1	6	0	8	3	9	10
 0	2	11	0	0	11	12	0	11	13	2	0	1	7	11	6	1	7	11	6	1	4	12	9	10

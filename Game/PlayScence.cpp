@@ -45,6 +45,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_ZOMBIE					63
 #define OBJECT_TYPE_HUNCH_BACK			64
 #define OBJECT_TYPE_SKELETON				65
+#define  OBJECT_TYPE_PHANTOM_BAT		67
 
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 #define OBJECT_TYPE_BAT							9
@@ -202,6 +203,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SKELETON:
 	{
 		obj = new CSkeleton(x, y);
+		break;
+	}
+
+	case OBJECT_TYPE_PHANTOM_BAT:
+	{
+		obj = new CPhantomBat(x,y);
 		break;
 	}
 
@@ -434,8 +441,6 @@ void CPlayScene::Update(DWORD dt)
 			continue;
 		objects[i]->Update(dt, &coObjects);
 	}*/
-
-	// player->Update(dt, &coObjects);
 	
 	// Update camera to follow simon
 	float cx, cy;
@@ -463,20 +468,11 @@ void CPlayScene::Update(DWORD dt)
 
 	// Get the bounding box of the viewport
 	float left, top, right, bottom;
-	CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
+	game->GetCameraBoundingBox(left, top, right, bottom);
 
-	//// Get objects in cells
-	//updateObjects.clear();
-
-	//Get collidable objects
+	//Get objects in grid
 	updateObject.clear();
 	grid->GetObjects(updateObject, left, top, right, bottom);
-
-	// Add update objects in cells into vector base objects
-	/*for (size_t i = 0; i < objects.size(); i++)
-	{
-		updateObject.push_back(objects[i]);
-	}*/
 
 	// Get collide-able objects in the grid 
 	for (size_t i = 0; i < updateObject.size(); i++)
@@ -484,6 +480,7 @@ void CPlayScene::Update(DWORD dt)
 		if (updateObject[i]->isVisible() == true)
 			coObjects.push_back(updateObject[i]);
 	}
+	//DebugOut(L"Object: %d, Object update: %d\n", objects.size(), updateObject.size());
 
 	// Call Update function of each object
 	for (size_t i = 0; i < updateObject.size(); i++)
@@ -492,14 +489,10 @@ void CPlayScene::Update(DWORD dt)
 		updateObject[i]->Update(dt, &coObjects);
 	}
 
-	//DebugOut(L"Objects size: %d\n", coObjects.size());
 	player->Update(dt, &coObjects);
 
 	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
-
-	
-
 	HUD->Update(dt);
 }
 
@@ -526,9 +519,9 @@ void CPlayScene::Render()
 void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
-	{		
-		if (dynamic_cast<CSimon*>(objects[i]) || 
-			dynamic_cast<CWhip*>(objects[i]) || 
+	{
+		if (dynamic_cast<CSimon*>(objects[i]) ||
+			dynamic_cast<CWhip*>(objects[i]) ||
 			dynamic_cast<CDagger*>(objects[i]) ||
 			dynamic_cast<CBoomerang*>(objects[i]))
 		{
@@ -537,21 +530,19 @@ void CPlayScene::Unload()
 		else
 		{
 			delete objects[i];
-		} 
-		
+		}
+
 
 	}
 
-	/*delete grid;
-	grid = NULL;*/
-
 	grid->Clear();
-	//grid = NULL;
+
 	objects.clear();
 	tiledMap.clear();
-	CItems::GetInstance()->Clear();
-	player = NULL;
 
+	CItems::GetInstance()->Clear();
+
+	player = NULL;
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);	
 }
 

@@ -18,11 +18,6 @@ public:
 	// Get objects in cells[x][y] based on camera position
 	void GetObjects(vector<LPGAMEOBJECT>&objects, float left, float top, float right, float bottom);
 
-	/*void GetCellsContainRectangle(float const& left, float const& top,
-		float const& right, float const& bottom,
-		int& firstCellColumn, int& firstCellRow,
-		int& lastCellColumn, int& lastCellRow);*/
-
 	void Clear();
 
 	static CGrid* GetInstance();
