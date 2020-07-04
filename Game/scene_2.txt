@@ -19,6 +19,16 @@
 # vertical wall left
 1	2	56	1	14	64
 1	16	104	1	16	16
+#Breakable, extra 1 =state, extra 2 = item
+90	224	121	90	0	-1
+90	224	137	90	0	-1
+90	128	217	90	0	-1
+
+#Wall pieces
+91	222	122	91
+91	226	124	91
+91	228	125	91
+91	224	126	91
 
 #Small candle	extra1: item, extra 2: state
 2	96	153	2	81	1
@@ -28,6 +38,9 @@
 #ITEMS
 #Big heart
 4	206	153	41
+4	44	85	41
+#Small heart
+44	40	57	44
 #Boomerang
 81	76	153	45
 #Money bag
@@ -39,24 +52,13 @@
 71	40	145	71
 
 #Black Knight
-8	44	85	5
+8	44	85	5	4
 
 #Bat
-9	40	57	6
-
-#Break wall
-90	224	121	90
-90	224	137	90
-90	128	217	90
-
-#Wall pieces
-91	222	122	91
-91	226	124	91
-91	228	125	91
-91	224	126	91
+9	40	57	6	44
 
 #Crown item
-40	130	217	40
+40	130	240	40
 # WHIP
 #3	0	0	3
 

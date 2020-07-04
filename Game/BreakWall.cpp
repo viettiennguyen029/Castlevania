@@ -15,6 +15,7 @@ void CBreakWall::Destroy()
 {
 	CWallPieces::GetInstance()->DropPiece(this->x, this->y);
 	this->visible = false;
+	CItems::GetInstance()->CheckAndDrop(this);
 }
 
 void CBreakWall::SetState(int state)

@@ -169,8 +169,13 @@
     <ClCompile Include="ItemInvisibility.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-    <ClCompile Include="ItemAxe.cpp" />
     <ClCompile Include="Items.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemAxe.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemMeat.cpp">
       <Filter>Items</Filter>
     </ClCompile>
   </ItemGroup>
@@ -307,8 +312,13 @@
     <ClInclude Include="ItemInvisibility.h">
       <Filter>Items</Filter>
     </ClInclude>
-    <ClInclude Include="ItemAxe.h" />
     <ClInclude Include="Items.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemAxe.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemMeat.h">
       <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>

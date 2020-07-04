@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Sprites.h"
+#include "Items.h"
 #define  UNTOUCHABLE_TIME	200
 CGameObject::CGameObject()
 {
@@ -144,8 +145,8 @@ void CGameObject::TakeDamage(int damage)
 
 void CGameObject::Die()
 {	
-	
 	this->SetVisible(false);
+	CItems::GetInstance()->CheckAndDrop(this);
 }
 
 bool CGameObject::AABB(float left_a, float top_a, float right_a, float bottom_a, float left_b, float top_b, float right_b, float bottom_b)

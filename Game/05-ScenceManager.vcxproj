@@ -147,6 +147,7 @@
     <ClCompile Include="ItemDagger.cpp" />
     <ClCompile Include="ItemHolyWater.cpp" />
     <ClCompile Include="ItemInvisibility.cpp" />
+    <ClCompile Include="ItemMeat.cpp" />
     <ClCompile Include="ItemMoneyBag.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="ItemSmallHeart.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="ItemDagger.h" />
     <ClInclude Include="ItemHolyWater.h" />
     <ClInclude Include="ItemInvisibility.h" />
+    <ClInclude Include="ItemMeat.h" />
     <ClInclude Include="ItemMoneyBag.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="ItemSmallHeart.h" />

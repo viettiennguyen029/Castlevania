@@ -3,8 +3,7 @@
 #define WHIP_ANI_SET 36
 
 CWhip::CWhip():CGameObject()
-{
-	
+{	
 	SetState(NORMAL_WHIP);
 }
 
@@ -102,7 +101,7 @@ void CWhip::PowerUp()
 	if (state == NORMAL_WHIP) SetState(SHORT_CHAIN) ;	
 	 else if (state == SHORT_CHAIN) SetState(LONG_CHAIN);
 
-	DebugOut(L"Whip Level %d\n", GetState());
+	DebugOut(L"[INFO] Whip Updated, level %d\n", GetState());
 }
 
 void CWhip::ShowHitEffect()

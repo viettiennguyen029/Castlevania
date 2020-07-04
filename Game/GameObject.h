@@ -51,6 +51,7 @@ enum class ItemType
 	HOLY_WATER = 82,
 	INVISIBILITY	=83,
 	AXE = 84,
+	MEAT=85,
 	MONEY_BAG = 10
 };
 

@@ -39,6 +39,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_ITEM_HOLY_WATER		82
 #define OBJECT_TYPE_ITEM_INVISIBILITY		83
 #define OBJECT_TYPE_ITEM_AXE					84
+#define OBJECT_TYPE_ITEM_MEAT					85
 
 #define OBJECT_TYPE_DAGGER					7
 #define OBJECT_TYPE_BOOMERANG			71
@@ -172,7 +173,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_CROWN_ITEM: obj = new ItemCrown(); break;
 
-	case OBJECT_TYPE_BREAK_WALL: obj = new CBreakWall(x,y); break;
+	case OBJECT_TYPE_BREAK_WALL:
+	{
+		int state = atoi(tokens[4].c_str());
+		int it = atoi(tokens[5].c_str());
+		obj = new CBreakWall(x, y); 
+		obj->SetState(state);
+		obj->SetItemId(it);
+		break;
+	}
 
 	case OBJECT_TYPE_WALL_PIECES: 
 	{
@@ -182,12 +191,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BAT:
 	{
+		int it = atoi(tokens[4].c_str());
 		obj = new CBat(x,y);
+		obj->SetItemId(it);
 		break;
 	}	
 	case OBJECT_TYPE_BLACK_KNIGHT: 
 	{
+		int it = atoi(tokens[4].c_str());
 		obj = new CBlack_Knight(x,y); 
+		obj->SetItemId(it);
 		break;
 	}
 
@@ -271,6 +284,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		obj = new ItemAxe();
 		items->AddItem((int)ItemType::AXE, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_MEAT:
+	{
+		obj = new ItemMeat();
+		items->AddItem((int)ItemType::MEAT, obj);
 		break;
 	}
 

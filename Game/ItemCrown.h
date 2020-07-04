@@ -6,7 +6,7 @@
 #define CROWN_BBOX_HEIGHT		16
 #define CROWN_MAX_Y					200
 #define CROWN_ACTIVE_POINT_X 218
-#define CROWN_GROWING_UP_SPEED	0.01f
+#define CROWN_GROWING_UP_SPEED	0.03f
 
 class ItemCrown : public CGameObject
 {
