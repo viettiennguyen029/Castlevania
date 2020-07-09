@@ -36,6 +36,13 @@ void CSubWeapon::UseDagger()
 
 void CSubWeapon::UseBoomerang()
 {
+	LPGAMEOBJECT boomerang = GetWeapon((int)SubWeapon::BOOMERANG);
+	if (boomerang == NULL) return;
+	boomerang->SetVisible(true);
+	boomerang->SetOrientation(CSimon::GetInstance()->GetOrientation());
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
+	boomerang->SetPosition(xS, yS);
 }
 
 void CSubWeapon::UseHolyWater()
@@ -53,12 +60,12 @@ void CSubWeapon::UseHolyWater()
 
 LPGAMEOBJECT CSubWeapon::GetWeapon(int weapon)
 {
-	if (subweapons[weapon].empty())
+	if (CSubWeapon::GetInstance()->subweapons[weapon].empty())
 		DebugOut(L"\n[ERROR] No weapons");
 
 	else
 	{
-		for (auto i = subweapons[weapon].begin(); i != subweapons[weapon].end(); ++i)
+		for (auto i = CSubWeapon::GetInstance()->subweapons[weapon].begin(); i != CSubWeapon::GetInstance()->subweapons[weapon].end(); ++i)
 		{
 			if ((*i)->isVisible() == false)
 			{

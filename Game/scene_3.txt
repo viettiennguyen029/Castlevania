@@ -46,8 +46,8 @@
 # Moving Platform
 30	32	122	33
 
-#Break wall
-90	352	121	90
+#Break wall, extra 1 =state, extra 2 = item
+90	352	121	90	0	-1
 
 #Wall pieces
 91	352	121	91
@@ -56,7 +56,7 @@
 91	352	121	91
 
 #Bat
-9	300	62	6
+9	300	62	6	44
 
 #DAGGER
 7	46	105	43
@@ -64,8 +64,8 @@
 71	40	145	71
 
 #Black Knight
-8	322	120	5
-8	100	75	5
+8	322	120	5	4
+8	100	75	5	4
 
 #STAIR top
 -3	450	121	0	466	152	1

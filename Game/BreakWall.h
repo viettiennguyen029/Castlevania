@@ -4,7 +4,7 @@
 #include "Items.h"
 
 #define BREAK_WALL_WIDTH	16
-#define BREAK_WALL_HEIGHT 16
+#define BREAK_WALL_HEIGHT 14
 
 #define WALL_STATE_NORMAL 0
 #define WALL_STATE_BREAK	1

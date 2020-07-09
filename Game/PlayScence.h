@@ -65,6 +65,7 @@ protected:
 	
 	vector<LPTILE> tiledMap;	
 	vector<LPGAMEOBJECT> objects;				// Base objects
+	vector<LPGAMEOBJECT> hiddenObject;  
 	vector<LPGAMEOBJECT> updateObject;  // The objects need to be updated
 
 	void _ParseSection_PLAYER(string line);

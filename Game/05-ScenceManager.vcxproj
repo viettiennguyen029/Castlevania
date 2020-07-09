@@ -136,6 +136,7 @@
     <ClCompile Include="Code.cpp" />
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HolyWater.cpp" />
     <ClCompile Include="HunchBack.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Code.h" />
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="Ghost.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HolyWater.h" />
     <ClInclude Include="HunchBack.h" />

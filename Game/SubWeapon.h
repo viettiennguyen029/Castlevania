@@ -6,7 +6,7 @@ using namespace std;
 
 enum class SubWeapon
 {
-	UNKNOWN = -1,
+	UNKNOWN = 0,
 	DAGGER = 7,
 	BOOMERANG = 71,
 	HOLYWATER = 72
@@ -17,7 +17,7 @@ enum class SubWeapon
 */
 class CSubWeapon
 {
-private:
+private:	
 	unordered_map<int, vector<LPGAMEOBJECT>> subweapons;
 	static CSubWeapon* __instance;
 public:

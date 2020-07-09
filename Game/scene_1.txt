@@ -5,25 +5,23 @@
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
 
-# SIMON
-#0	46	130	0
-
 # CANDLE
 #extra_settings = Item Object ID
-2	100	166	2	4	0
+2	100	166	2	80	0
 2	210	166	2	5	0
 2	330	166	2	5	0
 2	450	166	2	4	0
-2	570	166	2	80	0
+2	570	166	2	4	0
 
 # ITEMS
 #BigHeart
-4	100	166	41
+4	570	166	41
+4	450	166	41
 #Chain
 5	210	166	42
 5	330	166	42
 #Dagger
-80	570	166	43
+80	100	166	43
 
 #DAGGER
 7	46	160	43

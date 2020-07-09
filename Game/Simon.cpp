@@ -200,7 +200,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	// Calculate x,y
 	CGameObject::Update(dt);
 	// whip->Update(dt, coObjects);
-	dagger->Update(dt, coObjects);
+	// dagger->Update(dt, coObjects);
 
 	// Simple fall down
 	vy += SIMON_GRAVITY * dt;
@@ -240,14 +240,14 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	}
 
 	// Checking subweapon
-	/*if (secondWeapon)
+	if (subWeapon)
 	{
-		if (animation_set->at(state)->GetCurrentFrame() == 2)
-		{
+		//if (animation_set->at(SIMON_STATE_THROW)->GetCurrentFrame() == 2)
+		//{
 			this->weapons->Select(int(currentSubWeapon));
-			secondWeapon = false;
-		}
-	}*/
+			subWeapon = false;
+		//}
+	}
 
 	vector <LPCOLLISIONEVENT> coEvents;
 	vector <LPCOLLISIONEVENT> coEventsResult;
@@ -398,7 +398,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				{
 					y = y -0.4f;
 					e->obj->SetVisible(false);
-					//this->currentSubWeapon = SubWeapon::BOOMERANG;
+					this->currentSubWeapon = int(SubWeapon::BOOMERANG);
 					subWeapon = true;
 				}
 			}
@@ -576,7 +576,7 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_THROW:
 	{
 		vx = 0;
-		//secondWeapon = true;
+		subWeapon = true;
 		animation_set->at(SIMON_ANI_THROW)->Reset();
 		animation_set->at(SIMON_ANI_THROW)->SetAniStartTime(GetTickCount());
 		break;

@@ -12,19 +12,6 @@ void ItemCrown::Render()
 
 void ItemCrown::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	/*if (visible)
-	{
-		if (start_visible < ITEM_LIFESPAN)
-		{
-			start_visible += dt;
-		}
-		else
-		{
-			SetVisible(false);
-			start_visible = 0;
-		}
-	}*/
-
 	CGameObject::Update(dt);
 
 	float xS, yS;

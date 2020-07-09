@@ -50,6 +50,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_HUNCH_BACK			64
 #define OBJECT_TYPE_SKELETON				65
 #define  OBJECT_TYPE_PHANTOM_BAT		67
+#define OBJECT_TYPE_GHOST					68
 
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 #define OBJECT_TYPE_BAT							9
@@ -157,8 +158,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BOOMERANG:
 	{
 		obj = new CBoomerang();
-		boomerang = (CBoomerang*)obj;
-		obj->SetVisible(false);
+		obj->SetVisible(false); 
+		/*boomerang = (CBoomerang*)obj;
+		obj->SetVisible(false);*/
+		CSubWeapon::GetInstance()->Add((int)SubWeapon::BOOMERANG, obj);
 		break;
 	}
 
@@ -367,6 +370,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 	obj->SetAnimationSet(ani_set);	
 	objects.push_back(obj);
+
+	if (obj->visible == false) hiddenObject.push_back(obj);
+
 	grid ->Classify(obj);
 }
 
@@ -500,7 +506,6 @@ void CPlayScene::Update(DWORD dt)
 		cx = 0.0f;
 	}
 
-	// CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 	game->SetCamPos(cx, 0.0f /*cy*/);
 
 	// Get the bounding box of the viewport
@@ -510,6 +515,12 @@ void CPlayScene::Update(DWORD dt)
 	//Get objects in grid
 	updateObject.clear();
 	grid->GetObjects(updateObject, left, top, right, bottom);
+
+	for (size_t i = 0; i < hiddenObject.size(); i++)
+	{
+		if (hiddenObject[i]->isVisible())
+			updateObject.push_back(hiddenObject[i]);
+	}
 
 	// Get collide-able objects in the grid 
 	for (size_t i = 0; i < updateObject.size(); i++)
@@ -525,7 +536,6 @@ void CPlayScene::Update(DWORD dt)
 		if (updateObject[i]->isVisible() == true)
 		updateObject[i]->Update(dt, &coObjects);
 	}
-
 	player->Update(dt, &coObjects);
 
 	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
@@ -644,19 +654,23 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	// Testing Boomerang function
 	case DIK_D:
 	{
-		if (simon->subWeapon == false)
-			return;
-		if (simon->GetState() == SIMON_STATE_THROW && boomerang->visible == true) return;
+		//if (simon->subWeapon == false)
+			//return;
+		//if (simon->GetState() == SIMON_STATE_THROW && boomerang->visible == true) return;
 
 		// UseBoomerang();
-		float xS, yS;
+		/*float xS, yS;
 		simon->GetPosition(xS, yS);
 		boomerang->SetPosition(xS, yS);
 		boomerang->SetOrientation(simon->nx);
 		boomerang->SetVisible(true);
-		simon->SetState(SIMON_STATE_THROW);
-		break;
-		
+		simon->SetState(SIMON_STATE_THROW);*/
+
+		if (simon->GetSubWeapon() != (int)SubWeapon::UNKNOWN)
+		{
+			simon->SetState(SIMON_STATE_THROW); 
+			break;
+		}		
 	}
 
 		

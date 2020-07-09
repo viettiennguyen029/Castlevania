@@ -9,6 +9,7 @@ CBreakWall::CBreakWall(float x, float y) : CGameObject()
 void CBreakWall::Render()
 {	
 	animation_set->at(state)->Render(x, y, -1);
+	RenderBoundingBox();
 }
 
 void CBreakWall::Destroy()

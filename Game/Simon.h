@@ -85,12 +85,11 @@ public:
 	CWhip* whip;
 	CDagger* dagger;
 
-	//CSubWeapon* weapons;
-
-	//SubWeapon currentSubWeapon;
-	
-	//bool secondWeapon = false;
 	bool subWeapon = false;
+	CSubWeapon* weapons;
+	int currentSubWeapon;
+	int GetSubWeapon() { return this->currentSubWeapon; }
+	
 	bool isStanding = false;
 	bool powerUp = false;
 	bool onMovingPlatform = false;
