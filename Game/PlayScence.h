@@ -25,6 +25,7 @@
 #include "Black_Knight.h"
 #include "HunchBack.h"
 #include"Skeleton.h"
+#include"Ghost.h"
 #include "Bat.h"
 #include "PhantomBat.h"
 #include "Zombie.h"
@@ -65,16 +66,25 @@ protected:
 	
 	vector<LPTILE> tiledMap;	
 	vector<LPGAMEOBJECT> objects;				// Base objects
-	vector<LPGAMEOBJECT> hiddenObject;  
+	vector<LPGAMEOBJECT> hiddenObject;  // Objects that trigger a condition to turn visible on
 	vector<LPGAMEOBJECT> updateObject;  // The objects need to be updated
 
-	void _ParseSection_PLAYER(string line);
-	void _ParseSection_OBJECTS(string line);
-	void _ParseSection_MAP_INFO(string line);
-	void  _ParseSection_TILE_MAP(string line);
+	void _ParseSection_SCENE_TEXTURES(string line);
+	void _ParseSection_SCENE_SPRITES(string line);
+	void _ParseSection_SCENE_ANIMATIONS(string line);
+	void _ParseSection_SCENE_ANIMATION_SETS(string line);
+	void _ParseSection_SCENE_PLAYER(string line);
+	void _ParseSection_SCENE_OBJECTS(string line);
+	void _ParseSection_SCENE_MAP_INFO(string line);
+	void _ParseSection_SCENE_TILE_MAP(string line);
+
+	void _ReleaseSection_SCENE_TEXTURES(string line);
+	void _ReleaseSection_SCENE_SPRITES(string line);
+	void _ReleaseSection_SCENE_ANIMATIONS(string line);
+	void _ReleaseSection_SCENE_ANIMATION_SETS(string line);
 
 public: 
-	CPlayScene(int id, LPCWSTR filePath);
+	CPlayScene(int id, LPCWSTR filePath, LPCWSTR releaseScene);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
@@ -83,8 +93,6 @@ public:
 	CSimon* GetPlayer() { return player; }
 	CDagger* GetDagger() { return dagger; }
 	CBoomerang* GetBoomerang() { return boomerang; }
-
-	//void UseDagger();
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler

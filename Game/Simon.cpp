@@ -168,20 +168,6 @@ void CSimon::GoDownStair()
 }
 
 
-//void CSimon::StartAutoMove(float vx, float xDestination)
-//{
-//	if (!autoMove)
-//	{
-//		autoMoveInfo.xDes = xDestination;
-//		autoMoveInfo.vx = vx;
-//
-//		autoMove = true;
-//	}
-//	// Proceed Auto Move
-//
-//}
-
-
 CSimon::CSimon(float x, float y) :CGameObject()
 {
 	start_x = x;
@@ -242,11 +228,14 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	// Checking subweapon
 	if (subWeapon)
 	{
-		//if (animation_set->at(SIMON_STATE_THROW)->GetCurrentFrame() == 2)
-		//{
+		if (animation_set->at(SIMON_ANI_ATTACK)->GetCurrentFrame() == 2||
+			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->GetCurrentFrame() == 2 || 
+			animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->GetCurrentFrame() == 2)
+		{
 			this->weapons->Select(int(currentSubWeapon));
 			subWeapon = false;
-		//}
+			//animation_set->at(SIMON_ANI_ATTACK)->Reset();
+		}
 	}
 
 	vector <LPCOLLISIONEVENT> coEvents;
@@ -375,7 +364,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					this->SetState(SIMON_STATE_IDLE);
 					e->obj->SetVisible(false);
 					this->whip->PowerUp();
-					DebugOut(L"[INFO] WHIP UPGRADED \n");
+					//DebugOut(L"[INFO] WHIP UPGRADED \n");
 				}
 			}
 
@@ -387,7 +376,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					//this->powerUp = true;
 					//this->SetState(SIMON_STATE_IDLE);
 					e->obj->SetVisible(false);
-					subWeapon = true;
+					this->currentSubWeapon = int(SubWeapon::DAGGER);
 				}
 			}
 
@@ -399,7 +388,6 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					y = y -0.4f;
 					e->obj->SetVisible(false);
 					this->currentSubWeapon = int(SubWeapon::BOOMERANG);
-					subWeapon = true;
 				}
 			}
 
@@ -409,7 +397,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				if (e->nx != 0 || e->ny != 0)
 				{
 					e->obj->SetVisible(false);
-					//this->currentSubWeapon = SubWeapon::HOLYWATER;
+					this->currentSubWeapon = int(SubWeapon::HOLYWATER);
 				}
 			}
 			
@@ -579,6 +567,15 @@ void CSimon::SetState(int state)
 		subWeapon = true;
 		animation_set->at(SIMON_ANI_THROW)->Reset();
 		animation_set->at(SIMON_ANI_THROW)->SetAniStartTime(GetTickCount());
+
+		animation_set->at(SIMON_ANI_ATTACK)->Reset();
+		animation_set->at(SIMON_ANI_ATTACK)->SetAniStartTime(GetTickCount());
+
+		animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->Reset();
+		animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->SetAniStartTime(GetTickCount());
+
+		animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->Reset();
+		animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->SetAniStartTime(GetTickCount());
 		break;
 	}
 

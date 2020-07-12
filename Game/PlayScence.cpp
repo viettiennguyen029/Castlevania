@@ -9,7 +9,7 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
+CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR releaseScene):	CScene(id, filePath, releaseScene)
 {
 	key_handler = new CPlayScenceKeyHandler(this);	
 }
@@ -21,9 +21,18 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 
 #define SCENE_SECTION_UNKNOWN			-1
 #define SCENE_SECTION_PLAYER					0
+#define SCENE_SECTION_TEXTURES				2
+#define SCENE_SECTION_SPRITES					3
+#define SCENE_SECTION_ANIMATIONS			4
+#define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS					6
 #define SCENE_SECTION_MAP_INFO				7
 #define SCENE_SECTION_TILE_MAP				8
+
+#define SCENE_SECTION_RELEASE_TEXTURES		-2
+#define SCENE_SECTION_RELEASE_SPRITES			-3
+#define SCENE_SECTION_RELEASE_ANIMATIONS	-4
+#define SCENE_SECTION_RELEASE_ANIMATION_SETS	-5
 
 #define OBJECT_TYPE_SIMON						0
 #define OBJECT_TYPE_BRICK						1
@@ -45,12 +54,11 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_BOOMERANG			71
 #define OBJECT_TYPE_HOLY_WATER			72
 
-
 #define OBJECT_TYPE_ZOMBIE					63
 #define OBJECT_TYPE_HUNCH_BACK			64
 #define OBJECT_TYPE_SKELETON				65
+#define OBJECT_TYPE_GHOST					66
 #define  OBJECT_TYPE_PHANTOM_BAT		67
-#define OBJECT_TYPE_GHOST					68
 
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 #define OBJECT_TYPE_BAT							9
@@ -68,7 +76,89 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 
 #define MAX_SCENE_LINE 1024
 
-void CPlayScene::_ParseSection_PLAYER(string line)
+void CPlayScene::_ParseSection_SCENE_TEXTURES(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 5) return; // skip invalid lines
+
+	int texID = atoi(tokens[0].c_str());
+	wstring path = ToWSTR(tokens[1]);
+	int R = atoi(tokens[2].c_str());
+	int G = atoi(tokens[3].c_str());
+	int B = atoi(tokens[4].c_str());
+
+	CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
+}
+
+void CPlayScene::_ParseSection_SCENE_SPRITES(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 6) return; // skip invalid lines
+
+	int ID = atoi(tokens[0].c_str());
+	int l = atoi(tokens[1].c_str());
+	int t = atoi(tokens[2].c_str());
+	int r = atoi(tokens[3].c_str());
+	int b = atoi(tokens[4].c_str());
+	int texID = atoi(tokens[5].c_str());
+
+	LPDIRECT3DTEXTURE9 tex = CTextures::GetInstance()->Get(texID);
+	if (tex == NULL)
+	{
+		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
+		return;
+	}
+
+	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
+}
+
+void CPlayScene::_ParseSection_SCENE_ANIMATIONS(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
+
+	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+
+	LPANIMATION ani = new CAnimation();
+
+	int ani_id = atoi(tokens[0].c_str());
+	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
+	{
+		int sprite_id = atoi(tokens[i].c_str());
+		int frame_time = atoi(tokens[i + 1].c_str());
+		ani->Add(sprite_id, frame_time);
+	}
+
+	CAnimations::GetInstance()->Add(ani_id, ani);
+}
+
+void CPlayScene::_ParseSection_SCENE_ANIMATION_SETS(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return; // skip invalid lines - an animation set must at least id and one animation id
+
+	int ani_set_id = atoi(tokens[0].c_str());
+
+	LPANIMATION_SET s = new CAnimationSet();
+
+	CAnimations* animations = CAnimations::GetInstance();
+
+	for (int i = 1; i < tokens.size(); i++)
+	{
+		int ani_id = atoi(tokens[i].c_str());
+
+		LPANIMATION ani = animations->Get(ani_id);
+		s->push_back(ani);
+	}
+
+	CAnimationSets::GetInstance()->Add(ani_set_id, s);
+}
+
+void CPlayScene::_ParseSection_SCENE_PLAYER(string line)
 {
 	vector<string> tokens = split(line);
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
@@ -103,7 +193,7 @@ void CPlayScene::_ParseSection_PLAYER(string line)
 /*
 	Parse a line in section [OBJECTS] 
 */
-void CPlayScene::_ParseSection_OBJECTS(string line)
+void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -117,26 +207,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
-	//CGameObject *player1 = NULL;
 	CItems* items = CItems::GetInstance();
 
 	switch (object_type)
 	{	
-	//case OBJECT_TYPE_SIMON:
-	//{
-	//	if (player != NULL)
-	//	{
-	//		DebugOut(L"[ERROR] SIMON object was created before! ");
-	//		return;
-	//	}
-	//	
-	//	//obj = new CSimon(x,y);
-	//	//obj = CSimon::GetInstance();
-
-	//	DebugOut(L"[INFO] Player object created!\n");
-	//	break;
-	//}
-
+	
 	case OBJECT_TYPE_BRICK:
 	{
 		int width = atoi(tokens[4].c_str());
@@ -167,7 +242,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_HOLY_WATER:
 	{
-		obj =  CHolyWater::GetInstance();
+		obj = new CHolyWater();
+		//obj =  CHolyWater::GetInstance();
 		CSubWeapon::GetInstance()->Add((int)SubWeapon::HOLYWATER, obj);
 		break;
 	}
@@ -222,6 +298,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SKELETON:
 	{
 		obj = new CSkeleton(x, y);
+		break;
+	}
+
+	case OBJECT_TYPE_GHOST:
+	{
+		obj = new CGhost(x, y);
 		break;
 	}
 
@@ -376,7 +458,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	grid ->Classify(obj);
 }
 
-void CPlayScene::_ParseSection_MAP_INFO(string line)
+void CPlayScene::_ParseSection_SCENE_MAP_INFO(string line)
 {
 	vector<string> tokens = split(line);
 	if (tokens.size() < 3) return; // skip invalid lines
@@ -385,7 +467,7 @@ void CPlayScene::_ParseSection_MAP_INFO(string line)
 	this->offset_y= atoi(tokens[2].c_str());
 }
 
-void CPlayScene::_ParseSection_TILE_MAP(string line)
+void CPlayScene::_ParseSection_SCENE_TILE_MAP(string line)
 {
 	int cureneMapId = (CGame::GetInstance()->GetSceneId());
 	LPDIRECT3DTEXTURE9 tilesheet = CTextures::GetInstance()->Get(cureneMapId);
@@ -415,6 +497,52 @@ void CPlayScene::_ParseSection_TILE_MAP(string line)
 	this->offset_y += TILE_HEIGHT;
 }
 
+void CPlayScene::_ReleaseSection_SCENE_TEXTURES(string line)
+{
+	vector<string> tokens = split(line);	
+	
+	for (int i = 0; i < tokens.size(); i++)
+	{
+		int texID = atoi(tokens[i].c_str());
+		CTextures::GetInstance()->Release(texID);
+	}
+		
+}
+
+void CPlayScene::_ReleaseSection_SCENE_SPRITES(string line)
+{
+	vector<string> tokens = split(line);
+
+	for (int i = 0; i < tokens.size(); i++)
+	{
+		int spriteID = atoi(tokens[i].c_str());
+		CSprites::GetInstance()->Release(spriteID);
+	}
+}
+
+void CPlayScene::_ReleaseSection_SCENE_ANIMATIONS(string line)
+{
+	vector<string> tokens = split(line);
+
+	for (int i = 0; i < tokens.size(); i++)
+	{
+		int aniID = atoi(tokens[i].c_str());
+		CAnimations::GetInstance()->Release(aniID);
+	}
+}
+
+void CPlayScene::_ReleaseSection_SCENE_ANIMATION_SETS(string line)
+{
+	vector<string> tokens = split(line);
+
+	for (int i = 0; i < tokens.size(); i++)
+	{
+		int ani_set_id = atoi(tokens[i].c_str());
+		CAnimationSets::GetInstance()->Release(ani_set_id);
+	}
+}
+
+
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
@@ -435,13 +563,34 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 
 		if (line == "[PLAYER]") {
-			section = SCENE_SECTION_PLAYER; continue;}
+			section = SCENE_SECTION_PLAYER; continue;
+		}
+	
+		if (line == "[TEXTURES]"){
+			section = SCENE_SECTION_TEXTURES; continue;
+		}
+
+		if (line == "[SPRITES]") {
+			section = SCENE_SECTION_SPRITES; continue;
+		}
+
+		if (line == "[ANIMATIONS]") {
+			section = SCENE_SECTION_ANIMATIONS; continue;
+		}
+		if (line == "[ANIMATIONS_SETS]") {
+			section = SCENE_SECTION_ANIMATION_SETS; continue;
+		}
+
 		if (line == "[OBJECTS]") { 
-			section = SCENE_SECTION_OBJECTS; continue; }		
+			section = SCENE_SECTION_OBJECTS; continue; 
+		}		
+
 		if (line == "[MAP_INFO]") {
-			section = SCENE_SECTION_MAP_INFO; continue;}
+			section = SCENE_SECTION_MAP_INFO; continue;
+		}
 		if (line == "[TILE_MAP]") {
-			section = SCENE_SECTION_TILE_MAP; continue;}
+			section = SCENE_SECTION_TILE_MAP; continue;
+		}
 		
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
@@ -450,10 +599,14 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{ 
-			case SCENE_SECTION_PLAYER:_ParseSection_PLAYER(line); break;
-			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-			case SCENE_SECTION_MAP_INFO: _ParseSection_MAP_INFO(line); break;
-			case SCENE_SECTION_TILE_MAP:_ParseSection_TILE_MAP(line); break;
+			case SCENE_SECTION_TEXTURES: _ParseSection_SCENE_TEXTURES(line); break;
+			case SCENE_SECTION_SPRITES: _ParseSection_SCENE_SPRITES(line); break;
+			case SCENE_SECTION_ANIMATIONS: _ParseSection_SCENE_ANIMATIONS(line); break;
+			case SCENE_SECTION_ANIMATION_SETS: _ParseSection_SCENE_ANIMATION_SETS(line); break;
+			case SCENE_SECTION_PLAYER:_ParseSection_SCENE_PLAYER(line); break;
+			case SCENE_SECTION_OBJECTS: _ParseSection_SCENE_OBJECTS(line); break;
+			case SCENE_SECTION_MAP_INFO: _ParseSection_SCENE_MAP_INFO(line); break;
+			case SCENE_SECTION_TILE_MAP:_ParseSection_SCENE_TILE_MAP(line); break;
 		}
 	}
 
@@ -512,15 +665,15 @@ void CPlayScene::Update(DWORD dt)
 	float left, top, right, bottom;
 	game->GetCameraBoundingBox(left, top, right, bottom);
 
-	//Get objects in grid
-	updateObject.clear();
-	grid->GetObjects(updateObject, left, top, right, bottom);
-
 	for (size_t i = 0; i < hiddenObject.size(); i++)
 	{
 		if (hiddenObject[i]->isVisible())
 			updateObject.push_back(hiddenObject[i]);
 	}
+
+	//Get objects in grid
+	updateObject.clear();
+	grid->GetObjects(updateObject, left, top, right, bottom);
 
 	// Get collide-able objects in the grid 
 	for (size_t i = 0; i < updateObject.size(); i++)
@@ -565,6 +718,48 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
+#pragma region Release Resources
+	//ifstream f;
+	//f.open(releaseScene);
+
+	//// current resource section flag
+	//int section = SCENE_SECTION_UNKNOWN;
+
+	//char str[MAX_SCENE_LINE];
+	//while (f.getline(str, MAX_SCENE_LINE))
+	//{
+	//	string line(str);
+
+	//	if (line[0] == '#') continue;	// skip comment lines	
+
+	//	if (line == "[RELEASE_TEXTURES]") {
+	//		section = SCENE_SECTION_RELEASE_TEXTURES; continue;
+	//	}
+
+	//	if (line == "[RELEASE_SPRITES]") {
+	//		section = SCENE_SECTION_RELEASE_SPRITES; continue;
+	//	}
+
+	//	if (line == "[RELEASE_ANIMATIONS]") {
+	//		section = SCENE_SECTION_RELEASE_ANIMATIONS; continue;
+	//	}
+	//	if (line == "[RELEASE_ANIMATION_SETS]") {
+	//		section = SCENE_SECTION_RELEASE_ANIMATION_SETS; continue;
+	//	}
+
+	//	if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
+
+	//	switch (section)
+	//	{
+	//		case SCENE_SECTION_RELEASE_TEXTURES: _ReleaseSection_SCENE_TEXTURES(line); break;
+	//		case SCENE_SECTION_RELEASE_SPRITES: _ReleaseSection_SCENE_SPRITES(line); break;
+	//		case SCENE_SECTION_RELEASE_ANIMATIONS: _ReleaseSection_SCENE_ANIMATIONS(line); break;
+	//		case SCENE_SECTION_RELEASE_ANIMATION_SETS: _ReleaseSection_SCENE_ANIMATION_SETS(line); break;
+	//	}
+	//}
+
+	//f.close();
+#pragma endregion
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CSimon*>(objects[i]) ||
@@ -578,8 +773,6 @@ void CPlayScene::Unload()
 		{
 			delete objects[i];
 		}
-
-
 	}
 
 	grid->Clear();
@@ -734,7 +927,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		return;
 
 	if (simon->GetState() == SIMON_STATE_THROW &&
-		simon->animation_set->at(SIMON_ANI_THROW)->IsOver(SIMON_ATTACK_TIME) == false)
+		simon->animation_set->at(SIMON_STATE_THROW)->IsOver(SIMON_ATTACK_TIME) == false)
 		return;
 
 	if (simon->GetState() == SIMON_STATE_ATTACK &&

@@ -79,5 +79,10 @@ void CTextures::Clear()
 	textures.clear();
 }
 
-
-
+void CTextures::Release(unsigned int id)
+{
+	LPDIRECT3DTEXTURE9 tex = textures[id];
+	if (tex != NULL) tex->Release();
+	textures.erase(id);
+	DebugOut(L"[INFO] Texture released Ok: id=%d, \n", id);
+}

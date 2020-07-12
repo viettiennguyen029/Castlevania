@@ -19,5 +19,6 @@ public:
 	LPDIRECT3DTEXTURE9 Get(unsigned int i);
 
 	void Clear();
+	void Release(unsigned int id);
 	static CTextures * GetInstance();
 };

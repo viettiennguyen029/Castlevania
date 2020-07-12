@@ -53,5 +53,10 @@ void CSprites::Clear()
 	sprites.clear();
 }
 
+void CSprites::Release(int id)
+{
+	LPSPRITE s = sprites[id];
+	delete s;
 
-
+	sprites.erase(id);
+}

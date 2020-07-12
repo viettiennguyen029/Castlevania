@@ -18,7 +18,7 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (dynamic_cast<CCandle*>(temp))
 			{
-				DebugOut(L"[INFO]Whip Collision with Torch \n");
+				DebugOut(L"[INFO] Candle destroyed  \n");
 				temp->SetState(CANDLE_DESTROYED);
 				temp->animation_set->at(CANDLE_DESTROYED)->SetAniStartTime(GetTickCount());
 			}

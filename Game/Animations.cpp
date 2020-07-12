@@ -77,6 +77,14 @@ void CAnimations::Clear()
 	animations.clear();
 }
 
+void CAnimations::Release(int id)
+{
+	LPANIMATION ani = animations[id];
+	delete ani;
+
+	animations.erase(id);
+}
+
 CAnimationSets * CAnimationSets::__instance = NULL;
 
 CAnimationSets::CAnimationSets()
@@ -97,6 +105,14 @@ LPANIMATION_SET CAnimationSets::Get(unsigned int id)
 		DebugOut(L"[ERROR] Failed to find animation set id: %d\n",id);
 	 
 	return ani_set;
+}
+
+void CAnimationSets::Release(unsigned int id)
+{
+	LPANIMATION_SET aniset = animation_sets[id];
+	delete aniset;
+
+	animation_sets.erase(id);
 }
 
 void CAnimationSets::Add(int id, LPANIMATION_SET ani_set)

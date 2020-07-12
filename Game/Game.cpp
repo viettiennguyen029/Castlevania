@@ -381,11 +381,12 @@ void CGame::_ParseSection_SCENES(string line)
 {
 	vector<string> tokens = split(line);
 
-	if (tokens.size() < 2) return;
+	if (tokens.size() < 3) return;
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
+	LPCWSTR release = ToLPCWSTR(tokens[2]);
 
-	LPSCENE scene = new CPlayScene(id, path);
+	LPSCENE scene = new CPlayScene(id, path, release);
 	scenes[id] = scene;
 }
 
