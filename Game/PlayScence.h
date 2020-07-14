@@ -36,6 +36,7 @@
 #include "Door.h"
 #include "Boomerang.h"
 #include "HolyWater.h"
+#include "Axe.h"
 #include "BreakWall.h"
 #include "WallPieces.h"
 #include "Board.h"

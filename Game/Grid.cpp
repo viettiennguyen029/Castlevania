@@ -62,8 +62,7 @@ void CGrid::GetObjects(vector<LPGAMEOBJECT>&updateobjects, float left, float top
 					if (cells[row][column].at(k)->isVisible())
 					{
 						updateobjects.push_back(cells[row][column].at(k));
-					}
-					
+					}					
 				}
 			}
 		}

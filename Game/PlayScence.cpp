@@ -53,6 +53,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR releaseScene):	CScene(i
 #define OBJECT_TYPE_DAGGER					7
 #define OBJECT_TYPE_BOOMERANG			71
 #define OBJECT_TYPE_HOLY_WATER			72
+#define OBJECT_TYPE_AXE							73
 
 #define OBJECT_TYPE_ZOMBIE					63
 #define OBJECT_TYPE_HUNCH_BACK			64
@@ -248,6 +249,13 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_AXE:
+	{
+		obj = new CAxe();
+		CSubWeapon::GetInstance()->Add((int)SubWeapon::AXE, obj);
+		break;
+	}
+
 	case OBJECT_TYPE_MOVING_PLATFORM: obj = new CMovingPlatform(); break;
 
 	case OBJECT_TYPE_CROWN_ITEM: obj = new ItemCrown(); break;
@@ -326,6 +334,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_BIG_HEART: 
 	{
 		obj = new ItemBigHeart();
+		obj->SetVisible(false);
 		items->AddItem((int)ItemType::BIG_HEART, obj);
 		break;
 	}
@@ -333,6 +342,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_SMALL_HEART:
 	{
 		obj = new ItemSmallHeart ();
+		obj->SetVisible(false);
 		items->AddItem((int)ItemType::SMALL_HEART, obj);
 		break;
 	}
@@ -340,6 +350,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_CHAIN:
 	{
 		 obj = new ItemChain();
+		 obj->SetVisible(false);
 		 items->AddItem((int)ItemType::CHAIN, obj);
 		break;
 	}
@@ -354,6 +365,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_HOLY_WATER:
 	{
 		obj = new ItemHolyWater();
+		obj->SetVisible(false);
 		items->AddItem((int)ItemType::HOLY_WATER, obj);
 		break;
 	}
@@ -361,6 +373,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_INVISIBILITY:
 	{
 		obj = new ItemInvisibility();
+		obj->SetVisible(false);
 		items->AddItem((int)ItemType::INVISIBILITY, obj);
 		break;
 	}
@@ -368,6 +381,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_AXE:
 	{
 		obj = new ItemAxe();
+		obj->SetVisible(false);
 		items->AddItem((int)ItemType::AXE, obj);
 		break;
 	}
@@ -375,6 +389,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_MEAT:
 	{
 		obj = new ItemMeat();
+		obj->SetVisible(false);
 		items->AddItem((int)ItemType::MEAT, obj);
 		break;
 	}
@@ -383,6 +398,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	{
 		int state = atoi(tokens[4].c_str());
 		obj = new ItemMoneyBag();
+		obj->SetVisible(false);
 		obj->SetState(state);
 		items->AddItem((int)ItemType::MONEY_BAG, obj);
 		break;
@@ -391,6 +407,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM_BOOMERANG:
 	{
 		obj = new ItemBoomerang();
+		obj->SetVisible(false);
 		items->AddItem((int)ItemType::BOOMERANG, obj);
 		break;
 	}
@@ -453,7 +470,8 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	obj->SetAnimationSet(ani_set);	
 	objects.push_back(obj);
 
-	if (obj->visible == false) hiddenObject.push_back(obj);
+	if (obj->visible == false) 
+		hiddenObject.push_back(obj);
 
 	grid ->Classify(obj);
 }
@@ -665,10 +683,16 @@ void CPlayScene::Update(DWORD dt)
 	float left, top, right, bottom;
 	game->GetCameraBoundingBox(left, top, right, bottom);
 
+	//hiddenObject.clear();
 	for (size_t i = 0; i < hiddenObject.size(); i++)
 	{
 		if (hiddenObject[i]->isVisible())
-			updateObject.push_back(hiddenObject[i]);
+		{
+			if (find(hiddenObject.begin(), hiddenObject.end(), hiddenObject[i]) != hiddenObject.end() == false)
+			{
+				updateObject.push_back(hiddenObject[i]);
+			}
+		}
 	}
 
 	//Get objects in grid

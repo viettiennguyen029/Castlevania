@@ -181,6 +181,9 @@
     <ClCompile Include="Ghost.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Axe.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -326,6 +329,9 @@
     </ClInclude>
     <ClInclude Include="Ghost.h">
       <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Axe.h">
+      <Filter>Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

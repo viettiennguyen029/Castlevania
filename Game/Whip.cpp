@@ -4,7 +4,7 @@
 
 CWhip::CWhip():CGameObject()
 {	
-	SetState(NORMAL_WHIP);
+	SetState(LONG_CHAIN);
 }
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -83,13 +83,13 @@ void CWhip::SetWhipPosition(D3DXVECTOR2 simonPos, bool isStanding)
 	if (nx>0)
 	{
 		simonPos.x -= 49.0f;
-		if(isStanding) simonPos.y -= 3.0f;
+		if(isStanding) simonPos.y -= 2.0f;
 		else simonPos.y += 3.0f;		
 	}
 	else
 	{
 		simonPos.x -= 53.0f;
-		if (isStanding) simonPos.y -= 3.0f;
+		if (isStanding) simonPos.y -= 2.0f;
 		else simonPos.y += 3.0f;
 	}
 	

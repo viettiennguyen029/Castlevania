@@ -25,6 +25,10 @@ void CSubWeapon::Select(int weapon)
 		UseHolyWater();
 		break;
 
+	case (int)SubWeapon::AXE:
+		UseAxe();
+		break;
+
 	default:
 		break;
 	}
@@ -42,7 +46,8 @@ void CSubWeapon::UseBoomerang()
 	boomerang->SetOrientation(CSimon::GetInstance()->GetOrientation());
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	boomerang->SetPosition(xS, yS);
+	int nx = CSimon::GetInstance()->GetOrientation();
+	boomerang->SetPosition(xS+(10*nx), yS+5);
 }
 
 void CSubWeapon::UseHolyWater()
@@ -50,12 +55,23 @@ void CSubWeapon::UseHolyWater()
 	LPGAMEOBJECT holywater = GetWeapon((int)SubWeapon::HOLYWATER);
 	if (holywater == NULL) return;
 	holywater->SetVisible(true);
-	holywater->nx = CSimon::GetInstance()->GetOrientation();
+	holywater->SetOrientation(CSimon::GetInstance()->GetOrientation());
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	float xW = xS;
-	float yW= yS + 5;
-	holywater->SetPosition(xW, yW);
+	int nx = CSimon::GetInstance()->GetOrientation();
+	holywater->SetPosition(xS + (11 * nx), yS + 6);
+}
+
+void CSubWeapon::UseAxe()
+{
+	LPGAMEOBJECT axe = GetWeapon((int)SubWeapon::AXE);
+	if (axe == NULL) return;
+	axe->SetVisible(true);
+	axe->nx = CSimon::GetInstance()->GetOrientation();
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
+	int nx = CSimon::GetInstance()->GetOrientation();
+	axe->SetPosition(xS + (4 * nx), yS );
 }
 
 LPGAMEOBJECT CSubWeapon::GetWeapon(int weapon)

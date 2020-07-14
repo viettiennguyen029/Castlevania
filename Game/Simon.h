@@ -55,7 +55,7 @@
 #define SIMON_JUMP_SPEED_Y				0.2f
 #define SIMON_GO_UPSTAIR_SPEED		0.03f
 #define SIMON_DIE_DEFLECT_SPEED		0.5
-#define SIMON_ATTACK_TIME				300
+#define SIMON_ATTACK_TIME				350
 #define SIMON_AUTO_STAIR_TIME			300
 #define SIMON_DISCOLOR_TIME			700
 
@@ -106,6 +106,7 @@ public:
 	void SetState(int state);	
 	void Reset();
 	bool isOnGround() { return vy == 0; }	
+	bool lastFrameAttack();
 
 	static CSimon* GetInstance();
 

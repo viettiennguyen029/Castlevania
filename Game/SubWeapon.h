@@ -9,7 +9,8 @@ enum class SubWeapon
 	UNKNOWN = 0,
 	DAGGER = 7,
 	BOOMERANG = 71,
-	HOLYWATER = 72
+	HOLYWATER = 72,
+	AXE = 73
 };
 
 /*
@@ -22,9 +23,12 @@ private:
 	static CSubWeapon* __instance;
 public:
 	void Select(int weapon);
+
 	void UseDagger();
 	void UseBoomerang();
 	void UseHolyWater();
+	void UseAxe();
+
 	LPGAMEOBJECT GetWeapon(int weapon);
 	void Add(int weapon, LPGAMEOBJECT obj);
 	CSubWeapon() { ; }

@@ -7,8 +7,6 @@ CHolyWater::CHolyWater()
 {
 	SetVisible(false);
 	this->damage = 2;
-	
-
 	vy = HOLY_WATER_VY;	
 }
 
@@ -54,10 +52,11 @@ void CHolyWater::SetState(int state)
 void CHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
-
+	
+	
 	if (burning_start != 0)
 	{
-		if (GetTickCount() - burning_start > 2400)
+		if (GetTickCount() - burning_start > BURNING_TIME)
 		{
 			burning = false;
 			burning_start = 0;
@@ -113,9 +112,10 @@ void CHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetState(HOLY_WATER_STATE_BURN);
 				if (!burning)
 				{
-					x += (HOLY_WATER_NORMAL_BBOX_WIDTH - HOLY_WATER_BURN_BBOX_WIDTH) / 2;
+					x += (HOLY_WATER_NORMAL_BBOX_WIDTH - HOLY_WATER_BURN_BBOX_WIDTH) ;
 					y += (HOLY_WATER_NORMAL_BBOX_HEIGHT - HOLY_WATER_BURN_BBOX_HEIGHT)-1;
 
+					// Start burning on the ground
 					burning = true;
 					burning_start = GetTickCount();
 				}

@@ -10,6 +10,12 @@
 # SIMON
 0	10	70	0
 
+#Axe
+73	348	150	73
+
+#Holy water [delete me]
+#72	538	183	72
+
 # BRICK
 1	2	216	1	760	14
 1	2	120	1	112	16
@@ -42,6 +48,8 @@
 83	220	90	48
 #Axe
 84	348	150	49
+#Holy water
+#82	348	150	47
 
 #Small candle	extra1: item, extra 2: state
 2	40	152	2	4	1

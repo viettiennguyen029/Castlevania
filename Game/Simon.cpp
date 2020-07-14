@@ -185,9 +185,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 {
 	// Calculate x,y
 	CGameObject::Update(dt);
-	// whip->Update(dt, coObjects);
-	// dagger->Update(dt, coObjects);
-
+	
 	// Simple fall down
 	vy += SIMON_GRAVITY * dt;
 	
@@ -228,13 +226,10 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	// Checking subweapon
 	if (subWeapon)
 	{
-		if (animation_set->at(SIMON_ANI_ATTACK)->GetCurrentFrame() == 2||
-			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->GetCurrentFrame() == 2 || 
-			animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->GetCurrentFrame() == 2)
+		if (lastFrameAttack())
 		{
 			this->weapons->Select(int(currentSubWeapon));
 			subWeapon = false;
-			//animation_set->at(SIMON_ANI_ATTACK)->Reset();
 		}
 	}
 
@@ -400,6 +395,16 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					this->currentSubWeapon = int(SubWeapon::HOLYWATER);
 				}
 			}
+
+			else if (dynamic_cast<ItemAxe*>(e->obj))
+			{
+			DebugOut(L"[ITEMS] Holy water Collected \n");
+			if (e->nx != 0 || e->ny != 0)
+				{
+				e->obj->SetVisible(false);
+				this->currentSubWeapon = int(SubWeapon::AXE);
+				}
+			}
 			
 			else if (dynamic_cast<ItemMoneyBag*>(e->obj))
 			{
@@ -481,12 +486,9 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		whip->SetOrientation(nx);
 		whip->SetWhipPosition(D3DXVECTOR2(x, y), isStanding);
 
-		if (animation_set->at(state)->GetCurrentFrame() == 2 ||
-			animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->GetCurrentFrame() == 2 ||
-			animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->GetCurrentFrame() == 2) // Only check collsion at the last frame of the whip
+		if (lastFrameAttack()) // Only check collsion at the last frame of the whip
 		{
 			whip->Update(dt, coObjects);
-
 		}
 	}
 
@@ -614,6 +616,16 @@ void CSimon::Reset()
 	SetState(SIMON_STATE_IDLE);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
+}
+
+bool CSimon::lastFrameAttack()
+{
+	if (animation_set->at(SIMON_ANI_ATTACK)->GetCurrentFrame() == 2 ||
+		animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->GetCurrentFrame() == 2 ||
+		animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->GetCurrentFrame() == 2)
+		return true;
+	else
+		return false;
 }
 
 void CSimon::Render()

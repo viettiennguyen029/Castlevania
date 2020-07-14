@@ -11,7 +11,9 @@
 #define HOLY_WATER_BURN_BBOX_HEIGHT	13
 
 #define  HOLY_WATER_VY		0.0002
-#define HOLY_WATER_SPEED_VX	0.12
+#define HOLY_WATER_SPEED_VX	0.1
+
+#define BURNING_TIME		2400
 class CHolyWater : public CGameObject
 {
 	bool burning = false;
@@ -21,7 +23,6 @@ class CHolyWater : public CGameObject
 	vector<vector<float>> hitEffects; //a vector for saving the hit effects coordinates when the whip hits the target
 	int startShow = 0;
 	CAnimation* hitEffect = CAnimations::GetInstance()->Get(HIT_EFFECT_ANIMATION);
-
 
 public:
 	CHolyWater();
