@@ -67,7 +67,8 @@ protected:
 	
 	vector<LPTILE> tiledMap;	
 	vector<LPGAMEOBJECT> objects;				// Base objects
-	vector<LPGAMEOBJECT> hiddenObject;  // Objects that trigger a condition to turn visible on
+	vector<LPGAMEOBJECT>visibleObjects;
+	vector<LPGAMEOBJECT> invisibleObjects;  // Objects that trigger a condition to turn visible on
 	vector<LPGAMEOBJECT> updateObject;  // The objects need to be updated
 
 	void _ParseSection_SCENE_TEXTURES(string line);
@@ -92,8 +93,8 @@ public:
 	virtual void Unload();
 
 	CSimon* GetPlayer() { return player; }
-	CDagger* GetDagger() { return dagger; }
-	CBoomerang* GetBoomerang() { return boomerang; }
+
+	void GetVisibleObject();
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler

@@ -226,8 +226,8 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_DAGGER:
 	{
 		obj = new CDagger();
-		dagger = (CDagger*)obj;
 		obj->SetVisible(false);
+		CSubWeapon::GetInstance()->Add((int)SubWeapon::DAGGER, obj);
 		break;
 	}
 
@@ -235,8 +235,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	{
 		obj = new CBoomerang();
 		obj->SetVisible(false); 
-		/*boomerang = (CBoomerang*)obj;
-		obj->SetVisible(false);*/
 		CSubWeapon::GetInstance()->Add((int)SubWeapon::BOOMERANG, obj);
 		break;
 	}
@@ -469,11 +467,8 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 	obj->SetAnimationSet(ani_set);	
 	objects.push_back(obj);
-
-	if (obj->visible == false) 
-		hiddenObject.push_back(obj);
-
 	grid ->Classify(obj);
+	
 }
 
 void CPlayScene::_ParseSection_SCENE_MAP_INFO(string line)
@@ -632,6 +627,8 @@ void CPlayScene::Load()
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"resources\\bbox.png", D3DCOLOR_XRGB(0, 0, 0));
 
+	GetVisibleObject();
+
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
 }
@@ -683,21 +680,23 @@ void CPlayScene::Update(DWORD dt)
 	float left, top, right, bottom;
 	game->GetCameraBoundingBox(left, top, right, bottom);
 
+	updateObject.clear();
+
+	//Get objects in grid
+	grid->GetObjectsInGrid(updateObject, left, top, right, bottom);
+
 	//hiddenObject.clear();
-	for (size_t i = 0; i < hiddenObject.size(); i++)
+	for (size_t i = 0; i < invisibleObjects.size(); i++)
 	{
-		if (hiddenObject[i]->isVisible())
+		if (invisibleObjects[i]->isVisible())
 		{
-			if (find(hiddenObject.begin(), hiddenObject.end(), hiddenObject[i]) != hiddenObject.end() == false)
+			// Condition to prevent adding object repeatedly
+			if (find(updateObject.begin(), updateObject.end(), invisibleObjects[i]) != updateObject.end() == false)
 			{
-				updateObject.push_back(hiddenObject[i]);
+				updateObject.push_back(invisibleObjects[i]);
 			}
 		}
 	}
-
-	//Get objects in grid
-	updateObject.clear();
-	grid->GetObjects(updateObject, left, top, right, bottom);
 
 	// Get collide-able objects in the grid 
 	for (size_t i = 0; i < updateObject.size(); i++)
@@ -810,13 +809,22 @@ void CPlayScene::Unload()
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);	
 }
 
+void CPlayScene::GetVisibleObject()
+{
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->isVisible() == false)
+			invisibleObjects.push_back(objects[i]);
+		else
+			visibleObjects.push_back(objects[i]);
+	}
+}
+
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	DebugOut(L"KeyDown: %d\n", KeyCode);
 
 	CSimon *simon = ((CPlayScene*)scence)->GetPlayer();
-	CDagger *dagger = ((CPlayScene*)scence)->GetDagger();
-	CBoomerang *boomerang = ((CPlayScene*)scence)->GetBoomerang();
 
 	switch (KeyCode)
 	{	
@@ -850,43 +858,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 		if (CGame::GetInstance()->IsKeyDown(DIK_UP) ) // Sub weapon attack 
 		{
-			//if (simon->subWeapon == false)
-			//	return;
-			//if (simon->GetState() == SIMON_STATE_THROW && dagger->visible == true) return;
-
-			// UseDagger();
-			float xS, yS;
-			simon->GetPosition(xS, yS);
-			dagger->SetPosition(xS, yS);
-			dagger->SetOrientation(simon->nx);
-			dagger->SetVisible(true);
-
-			simon->SetState(SIMON_STATE_THROW);
-			
-		}
-
-		break;
-	}	
-
-	// Testing Boomerang function
-	case DIK_D:
-	{
-		//if (simon->subWeapon == false)
-			//return;
-		//if (simon->GetState() == SIMON_STATE_THROW && boomerang->visible == true) return;
-
-		// UseBoomerang();
-		/*float xS, yS;
-		simon->GetPosition(xS, yS);
-		boomerang->SetPosition(xS, yS);
-		boomerang->SetOrientation(simon->nx);
-		boomerang->SetVisible(true);
-		simon->SetState(SIMON_STATE_THROW);*/
-
-		if (simon->GetSubWeapon() != (int)SubWeapon::UNKNOWN)
-		{
-			simon->SetState(SIMON_STATE_THROW); 
-			break;
+			if (simon->GetSubWeapon() != (int)SubWeapon::UNKNOWN)
+			{
+				simon->SetState(SIMON_STATE_THROW);
+				break;
+			}			
 		}		
 	}
 

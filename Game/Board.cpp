@@ -9,13 +9,19 @@ void Board::Render()
 	float cx, cy;
 	game->GetCamPos(cx, cy);
 
+	// Game info
 	sprites->Get(80000)->Draw(cx , cy+2,-1);
 	code->DrawNumber(4, cx+150, cy +8, time);
 	code->DrawNumber(6, cx + 55, cy + 8, 123456);
 	code->DrawNumber(2, cx + 234, cy + 8, game->GetSceneId());
 
+	// HP
 	code->DrawHP(cx + 60, cy + 18, 0, 14);
 	code->DrawHP(cx + 60, cy + 28, 1, 13);
+
+	// Sub-weapon
+	code->DrawSubWeapon(cx + 158, cy + 17, simon->currentSubWeapon);
+
 }
 Board::Board()
 { 

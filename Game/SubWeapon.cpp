@@ -36,6 +36,14 @@ void CSubWeapon::Select(int weapon)
 
 void CSubWeapon::UseDagger()
 {
+	LPGAMEOBJECT dagger = GetWeapon((int)SubWeapon::DAGGER);
+	if (dagger == NULL) return;
+	dagger->SetVisible(true);
+	dagger->SetOrientation(CSimon::GetInstance()->GetOrientation());
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
+	int nx = CSimon::GetInstance()->GetOrientation();
+	dagger->SetPosition(xS + (10 * nx), yS + 5);
 }
 
 void CSubWeapon::UseBoomerang()

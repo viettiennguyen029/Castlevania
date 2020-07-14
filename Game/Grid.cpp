@@ -33,14 +33,8 @@ void CGrid::Classify(LPGAMEOBJECT obj)
 	
 }
 
-void CGrid::GetObjects(vector<LPGAMEOBJECT>&updateobjects, float left, float top, float right, float bottom)
+void CGrid::GetObjectsInGrid(vector<LPGAMEOBJECT>&updateobjects, float left, float top, float right, float bottom)
 {
-	//updateobjects.clear();
-	//objects.clear();
-	//crossObject.clear();
-	
-	//unordered_set<LPGAMEOBJECT> setOfObjects;
-
 	int firstCellColumn, firstCellRow;		// the left-top cell that containing the rectangle's area
 	int lastCellColumn, lastCellRow;		// the right-bottom cell that containing the rectangle's area
 
@@ -56,7 +50,7 @@ void CGrid::GetObjects(vector<LPGAMEOBJECT>&updateobjects, float left, float top
 		{
 			for (UINT k = 0; k < cells[row][column].size(); k++)
 			{
-				// Check the object if is in the vector or not !
+				// Check the object if is in the vector or not ! Ref: https://www.techiedelight.com/check-vector-contains-given-element-cpp/
 				if ((find(updateobjects.begin(), updateobjects.end(), cells[row][column].at(k)) != updateobjects.end()== false))
 				{
 					if (cells[row][column].at(k)->isVisible())

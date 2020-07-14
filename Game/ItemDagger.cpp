@@ -8,7 +8,7 @@ ItemDagger::ItemDagger()
 
 void ItemDagger::Render()
 {
-	animation_set->at(0)->Render(x, y, nx);
+	animation_set->at(0)->Render(x, y, -1);
 }
 
 void ItemDagger::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

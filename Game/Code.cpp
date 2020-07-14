@@ -1,5 +1,6 @@
 #include "Code.h"
 #include "Sprites.h"
+#include "SubWeapon.h"
 
 void Code::DrawNumber(int max, float x, float y, int s)
 {
@@ -45,6 +46,37 @@ void Code::DrawHP(float x, float y, int type, int s)
 	sprite1 = NULL;
 	sprite2 = NULL;
 
+}
+
+void Code::DrawSubWeapon(float x, float y, int subweapon)
+{
+	switch (subweapon)
+	{
+	
+	case (int)SubWeapon::DAGGER:
+	{
+		CSprites::GetInstance()->Get(40003)->Draw(x, y+4, -1);
+		break;
+	}
+	case(int)SubWeapon::BOOMERANG:
+	{
+		CSprites::GetInstance()->Get(40005)->Draw(x, y+1, -1);
+		break;
+	}	
+	case (int)SubWeapon::HOLYWATER:
+	{
+		CSprites::GetInstance()->Get(40007)->Draw(x-3, y, 1);
+		break;
+	}
+
+	case (int)SubWeapon::AXE:
+	{
+		CSprites::GetInstance()->Get(40009)->Draw(x, y + 1, -1);
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 int Code::Convert(char c)

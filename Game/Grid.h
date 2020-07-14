@@ -16,7 +16,7 @@ public:
 	void Classify(LPGAMEOBJECT obj); 
 
 	// Get objects in cells[x][y] based on camera position
-	void GetObjects(vector<LPGAMEOBJECT>&objects, float left, float top, float right, float bottom);
+	void GetObjectsInGrid(vector<LPGAMEOBJECT>&objects, float left, float top, float right, float bottom);
 
 	void Clear();
 

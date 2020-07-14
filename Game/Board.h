@@ -15,6 +15,7 @@ class Board
 	DWORD count;
 	bool isStop= false;
 
+	CSimon* simon = CSimon::GetInstance();
 public: 
 	Board();	
 	void Render();

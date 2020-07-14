@@ -9,7 +9,7 @@ CDagger::CDagger() : CGameObject()
 
 void CDagger::Render()
 {
-	animation_set->at(0)->Render(x, y, nx);
+	animation_set->at(0)->Render(x, y, -nx);
 }
 
 void CDagger::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -17,6 +17,11 @@ void CDagger::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (nx < 0) vx = -DAGGER_SPEED;
 	else vx = DAGGER_SPEED;
 	vy = 0;
+
+	if (!IsInViewport())
+	{
+		this->SetVisible(false);
+	}
 
 	CGameObject::Update(dt);
 

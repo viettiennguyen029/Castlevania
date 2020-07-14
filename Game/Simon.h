@@ -113,6 +113,5 @@ public:
 	void GoUpStair();
 	void GoDownStair();
 	void ProceedOnStairs();
-	vector<LPGAMEOBJECT> ovObjects;		// overlapping objects
-	
+	vector<LPGAMEOBJECT> ovObjects;		// overlapping objects	
 };
