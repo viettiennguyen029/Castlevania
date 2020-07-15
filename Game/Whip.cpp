@@ -32,7 +32,8 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			else if (dynamic_cast<CBlack_Knight*>(temp)||
 				dynamic_cast<CBat*>(temp)||
-				dynamic_cast<CHunchBack*>(temp))
+				dynamic_cast<CHunchBack*>(temp)||
+				dynamic_cast<CGhost*>(temp))
 			{
 				DebugOut(L"[INFO] Enemy take damaged \n");
 				temp->TakeDamage(this->damage);

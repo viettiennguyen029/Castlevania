@@ -11,6 +11,8 @@ void CGhost::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
+	vy = 0;
+	vx = (nx > 0) ? GHOST_MOVING_SPEED : -GHOST_MOVING_SPEED;
 
 	if (start_untouchable != 0)
 	{
@@ -48,15 +50,32 @@ void CGhost::Render()
 	animation_set->at(state)->Render(x, y, nx);	
 }
 
-CGhost::CGhost(float x, float y)
+CGhost::CGhost()
 {
-	this->start_x = x;
-	this->start_y = y;
 	this->healthPoint = 2;
+	this->SetVisible(false);
 	SetState(GHOST_STATE_MOVING);
+	this->nx = -1;
 }
 
 void CGhost::SetState(int state)
 {
 	CGameObject::SetState(state);
+	switch (state)
+	{
+	case GHOST_STATE_MOVING:
+	{
+		vy = 0;
+		vx = (nx > 0) ? 0.052f : -0.052f;
+		break;
+	}
+	}
+
+}
+
+CGhost* CGhost::__instance = NULL;
+CGhost* CGhost::GetInstance()
+{
+	if (__instance == NULL) __instance = new CGhost();
+		return __instance;
 }

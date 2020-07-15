@@ -60,6 +60,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR releaseScene):	CScene(i
 #define OBJECT_TYPE_SKELETON				65
 #define OBJECT_TYPE_GHOST					66
 #define  OBJECT_TYPE_PHANTOM_BAT		67
+#define OBJECT_TYPE_BONES						69
 
 #define OBJECT_TYPE_BLACK_KNIGHT		8
 #define OBJECT_TYPE_BAT							9
@@ -303,13 +304,20 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 
 	case OBJECT_TYPE_SKELETON:
 	{
-		obj = new CSkeleton(x, y);
+		obj = CSkeleton::GetInstance();
+		//obj = new CSkeleton(x, y);
 		break;
 	}
 
+	case OBJECT_TYPE_BONES:
+	{
+		obj = new CBones();
+		break;
+	}
 	case OBJECT_TYPE_GHOST:
 	{
-		obj = new CGhost(x, y);
+		//obj = new CGhost();
+		obj = CGhost::GetInstance();
 		break;
 	}
 
@@ -467,6 +475,10 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 	obj->SetAnimationSet(ani_set);	
 	objects.push_back(obj);
+
+	if (obj->isVisible() == false)
+		invisibleObjects.push_back(obj);
+
 	grid ->Classify(obj);
 	
 }
@@ -627,10 +639,7 @@ void CPlayScene::Load()
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"resources\\bbox.png", D3DCOLOR_XRGB(0, 0, 0));
 
-	GetVisibleObject();
-
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
-
 }
 
 
@@ -809,17 +818,6 @@ void CPlayScene::Unload()
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);	
 }
 
-void CPlayScene::GetVisibleObject()
-{
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		if (objects[i]->isVisible() == false)
-			invisibleObjects.push_back(objects[i]);
-		else
-			visibleObjects.push_back(objects[i]);
-	}
-}
-
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	DebugOut(L"KeyDown: %d\n", KeyCode);
@@ -867,12 +865,37 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	}
 
 		
-	case DIK_Q: // Upgrade whip
+	//case DIK_Q: // Upgrade whip
+	//{
+	//	simon->whip->PowerUp();
+	//	// simon->nextSceneWhip->PowerUp();
+	//	break;
+	//}
+
+	case DIK_Q: // Use Dagger
 	{
-		simon->whip->PowerUp();
-		// simon->nextSceneWhip->PowerUp();
+		simon->currentSubWeapon = 7;
 		break;
 	}
+
+	case DIK_W: // Use Boomerang
+	{
+		simon->currentSubWeapon = 71;
+		break;
+	}
+
+	case DIK_E: // Use Holy water
+	{
+		simon->currentSubWeapon = 72;
+		break;
+	}
+
+	case DIK_R: // Use Axe
+	{
+		simon->currentSubWeapon = 73;
+		break;
+	}
+
 
 	case DIK_1:
 		CGame::GetInstance()->SwitchScene(1);
@@ -919,9 +942,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (simon->GetState() == SIMON_STATE_ATTACK &&
 		simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false) return;
 	
-		//simon->animation_set->at(SIMON_ANI_ATTACK)->Reset();
-		
-
 	if (simon->GetState() == SIMON_STATE_SIT_ATTACK && 
 		simon->animation_set->at(SIMON_ANI_SIT_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false)
 		return;

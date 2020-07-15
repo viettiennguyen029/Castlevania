@@ -11,6 +11,8 @@ class CSkeleton : public CGameObject
 	float start_x;
 	float start_y;
 
+	static CSkeleton* __instance;
+
 public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
@@ -18,4 +20,6 @@ public:
 
 	CSkeleton(float x = 0.0f, float y = 0.0f);
 	virtual void SetState(int state);
+
+	static CSkeleton* GetInstance();
 };

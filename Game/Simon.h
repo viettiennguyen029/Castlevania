@@ -73,6 +73,7 @@ class CSimon : public CGameObject
 	static CSimon* __instance; 
 	float start_x, start_y; // Initial position of simon at scene instead of (0,0)
 
+	float firstY; // Check if simon is falling down in the large distance
 	int untouchable;
 	DWORD untouchable_start;
 public:
@@ -93,8 +94,10 @@ public:
 	bool isStanding = false;
 	bool powerUp = false;
 	bool onMovingPlatform = false;
+	bool atuo_crouching = false;
 
 	DWORD discolorationTime = 0;
+	DWORD auto_crouching_start = 0;
 	
 	CSimon(float x=0.0f, float y =0.0f);
 	

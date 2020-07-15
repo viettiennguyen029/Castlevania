@@ -25,6 +25,7 @@
 #include "Black_Knight.h"
 #include "HunchBack.h"
 #include"Skeleton.h"
+#include "Bones.h"
 #include"Ghost.h"
 #include "Bat.h"
 #include "PhantomBat.h"
@@ -67,7 +68,6 @@ protected:
 	
 	vector<LPTILE> tiledMap;	
 	vector<LPGAMEOBJECT> objects;				// Base objects
-	vector<LPGAMEOBJECT>visibleObjects;
 	vector<LPGAMEOBJECT> invisibleObjects;  // Objects that trigger a condition to turn visible on
 	vector<LPGAMEOBJECT> updateObject;  // The objects need to be updated
 
@@ -93,8 +93,6 @@ public:
 	virtual void Unload();
 
 	CSimon* GetPlayer() { return player; }
-
-	void GetVisibleObject();
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler

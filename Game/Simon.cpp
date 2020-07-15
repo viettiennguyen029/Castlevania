@@ -172,13 +172,14 @@ CSimon::CSimon(float x, float y) :CGameObject()
 {
 	start_x = x;
 	start_y = y;
+
 	this->x = x;
 	this->y = y;
-	// this->autoMove = false;
+	
 	SetState(SIMON_STATE_IDLE);
-	//this->currentSubWeapon = SubWeapon::UNKNOWN;
+
+	this->currentSubWeapon = int(SubWeapon::UNKNOWN);
     whip = new CWhip();
-	dagger = new CDagger();
 }
 
 void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
@@ -233,6 +234,20 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		}
 	}
 
+
+	//if (atuo_crouching)
+	//{
+	//	SetState(SIMON_STATE_SIT);
+	//		if (auto_crouching_start < 300)			
+	//			auto_crouching_start += dt;
+	//		else
+	//		{
+	//			auto_crouching_start = 0;
+	//			atuo_crouching = false;
+	//			SetState(SIMON_STATE_IDLE);
+	//		}
+	//}
+
 	vector <LPCOLLISIONEVENT> coEvents;
 	vector <LPCOLLISIONEVENT> coEventsResult;
 
@@ -267,8 +282,27 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
+		x += min_tx * dx + nx * 0.2f;
+		y += min_ty * dy + ny * 0.2f;
+
+
+		// Activating Enemies when Simon has reached the destination in scene 4
+		if (CGame::GetInstance()->GetSceneId() == 4)
+		{
+			if (x < 556) // Activing ghost
+			{
+				CGhost* ghost = CGhost::GetInstance();
+				if (ghost->healthPoint > 0) ghost->SetVisible(true);
+			}
+
+			if (x<130) // Set Skeleton visible
+			{
+				CSkeleton* skeleton = CSkeleton::GetInstance();
+				if (skeleton->healthPoint > 0) skeleton->SetVisible(true);
+			}
+
+		}
+		
 
 		/*
 		Collision logic with others objects
@@ -541,6 +575,7 @@ void CSimon::SetState(int state)
 		animation_set->at(SIMON_ANI_ATTACK)->Reset();
 		animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->Reset();
 		animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->Reset();
+		animation_set->at(SIMON_ANI_SIT_ATTACK)->Reset();
 
 		if (onStairs == 0) 
 			animation_set->at(SIMON_ANI_ATTACK)->SetAniStartTime(GetTickCount());
@@ -558,6 +593,8 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_SIT_ATTACK:
 	{
+		animation_set->at(SIMON_ANI_ATTACK)->Reset();
+
 		animation_set->at(SIMON_ANI_SIT_ATTACK)->Reset();
 		animation_set->at(SIMON_ANI_SIT_ATTACK)->SetAniStartTime(GetTickCount());
 		break;
@@ -621,6 +658,7 @@ void CSimon::Reset()
 bool CSimon::lastFrameAttack()
 {
 	if (animation_set->at(SIMON_ANI_ATTACK)->GetCurrentFrame() == 2 ||
+		animation_set->at(SIMON_ANI_SIT_ATTACK)->GetCurrentFrame() == 2||
 		animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->GetCurrentFrame() == 2 ||
 		animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->GetCurrentFrame() == 2)
 		return true;
