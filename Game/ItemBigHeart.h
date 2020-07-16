@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-#define ITEM_BIG_HEART_BBOX_WIDTH		12
+#define ITEM_BIG_HEART_BBOX_WIDTH		10
 #define ITEM_BIG_HEART_BBOX_HEIGHT	10
 
 class ItemBigHeart:public CGameObject

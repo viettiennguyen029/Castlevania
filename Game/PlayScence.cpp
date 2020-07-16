@@ -859,19 +859,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			if (simon->GetSubWeapon() != (int)SubWeapon::UNKNOWN)
 			{
 				simon->SetState(SIMON_STATE_THROW);
-				break;
 			}			
 		}		
+		break;
 	}
 
 		
-	//case DIK_Q: // Upgrade whip
-	//{
-	//	simon->whip->PowerUp();
-	//	// simon->nextSceneWhip->PowerUp();
-	//	break;
-	//}
-
 	case DIK_Q: // Use Dagger
 	{
 		simon->currentSubWeapon = 7;

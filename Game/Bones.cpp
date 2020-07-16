@@ -2,7 +2,7 @@
 
 CBones::CBones()
 {
-
+	SetVisible(false);
 }
 
 void CBones::GetBoundingBox(float& left, float& top, float& right, float& bottom)
