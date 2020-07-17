@@ -8,14 +8,14 @@
 
 #define RAVEN_FLYING_DOWN_SPEED	0.05
 
-#define RAVEN_FLYING_DOWN_TIME		400
-#define RAVEN_DELAY_TIME	100
+#define RAVEN_FLYING_DOWN_TIME		500
+#define RAVEN_DELAY_TIME	300
 class CRaven : public CGameObject
 {
 	int ny;
 
 	bool attackingPlayer = false;
-	DWORD attackingPlayer_start  =0;
+	DWORD attackingPlayer_start  = 0;
 	
 	bool activeRaven = false;
 	DWORD active_raven_start = 0;

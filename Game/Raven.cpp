@@ -8,11 +8,7 @@ CRaven::CRaven()
 
 void CRaven::Render()
 {
-	int ani = -1;
-	if (vx == 0)
-		ani = 0;
-	else ani = 1;
-	animation_set->at(ani)->Render(x, y, nx);
+	animation_set->at(state)->Render(x, y, nx);
 }
 
 void CRaven::SetState(int state)
@@ -28,8 +24,7 @@ void CRaven::SetState(int state)
 	}
 	case RAVEN_STATE_FLYING:
 	{
-		/*vx = -0.02f;
-		vy = 0.01f;*/
+		
 		break;
 	}
 
@@ -71,7 +66,7 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	// Stop a bit to find player
-	if (GetTickCount() - active_raven_start > RAVEN_FLYING_DOWN_TIME == true && state != RAVEN_STATE_IDLE)
+	if (GetTickCount() - active_raven_start > RAVEN_FLYING_DOWN_TIME == true && attackingPlayer== false && state != RAVEN_STATE_IDLE)
 	{
 		active_raven_start = 0;
 		attackingPlayer = true;
@@ -80,16 +75,16 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy = 0;
 	}
 
+	
 	// Start attacking
-	if (GetTickCount() - attackingPlayer_start > RAVEN_DELAY_TIME == true && attackingPlayer == true && buffSpeed == false)
+	if (GetTickCount() - attackingPlayer_start > RAVEN_DELAY_TIME== true &&  attackingPlayer == true && buffSpeed == false)
 	{
 		attackingPlayer_start = 0;
 		buffSpeed = true;
-		float VX = abs(xS - this->x);
-		float VY = abs(yS- this->y);
-		vx = (float)(VX * 0.0015) * nx;
-		vy = (float)(VY * 0.0015) * ny;
-
+		float DX = abs(xS - this->x);
+		float DY = abs(yS- this->y);
+		vx = (float)(DX * 0.0025) * nx;
+		vy = (float)(DY * 0.0025) * ny;
 	}
 
 
