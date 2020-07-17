@@ -8,6 +8,7 @@
 #define BAT_STATE_FLYING_HORIZONTAL  2
 
 #define BAT_FLYING_DOWN_DY		32
+
 #define POINT_ACTIVE_BAT_X			96
 #define POINT_ACTIVE_BAT_Y			34
 class CBat:public CGameObject

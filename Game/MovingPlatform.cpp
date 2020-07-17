@@ -11,6 +11,7 @@ CMovingPlatform::CMovingPlatform(): CGameObject()
 void CMovingPlatform::Render()
 {
 	animation_set->at(0)->Render(x, y, 1);
+	RenderBoundingBox();
 }
 
 void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

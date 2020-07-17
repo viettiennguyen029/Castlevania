@@ -60,6 +60,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR releaseScene):	CScene(i
 #define OBJECT_TYPE_SKELETON				65
 #define OBJECT_TYPE_GHOST					66
 #define  OBJECT_TYPE_PHANTOM_BAT		67
+#define OBJECT_TYPE_RAVEN						68
 #define OBJECT_TYPE_BONES						69
 
 #define OBJECT_TYPE_BLACK_KNIGHT		8
@@ -309,9 +310,17 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_RAVEN:
+	{
+		obj = new CRaven();
+		obj->SetOrientation(-1);
+		break;
+	}
+
 	case OBJECT_TYPE_BONES:
 	{
-		obj = new CBones();
+		obj = CBones::GetInstance();
+		//obj = new CBones();
 		break;
 	}
 	case OBJECT_TYPE_GHOST:
@@ -813,6 +822,12 @@ void CPlayScene::Unload()
 	tiledMap.clear();
 
 	CItems::GetInstance()->Clear();
+
+	CSkeleton* skeleton = CSkeleton::GetInstance();
+	skeleton = NULL;
+
+	CGhost* ghost = CGhost::GetInstance();
+	ghost = NULL;
 
 	player = NULL;
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);	

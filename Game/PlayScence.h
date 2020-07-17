@@ -25,6 +25,7 @@
 #include "Black_Knight.h"
 #include "HunchBack.h"
 #include"Skeleton.h"
+#include "Raven.h"
 #include "Bones.h"
 #include"Ghost.h"
 #include "Bat.h"
@@ -56,10 +57,7 @@ class CPlayScene: public CScene
 {
 protected: 
 	CSimon* player;	// A play scene has to have player, right? 
-	CWhip* whip;
-	CDagger* dagger;
-	CBoomerang* boomerang;
-
+	
 	Board* HUD;
 	
 	CGrid* grid = CGrid::GetInstance();

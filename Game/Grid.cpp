@@ -50,7 +50,7 @@ void CGrid::GetObjectsInGrid(vector<LPGAMEOBJECT>&updateobjects, float left, flo
 		{
 			for (UINT k = 0; k < cells[row][column].size(); k++)
 			{
-				// Check the object if is in the vector or not ! Ref: https://www.techiedelight.com/check-vector-contains-given-element-cpp/
+				// Check the object if is in the vector or not ! Ref: https://en.cppreference.com/w/cpp/algorithm/find
 				if ((find(updateobjects.begin(), updateobjects.end(), cells[row][column].at(k)) != updateobjects.end()== false))
 				{
 					if (cells[row][column].at(k)->isVisible())

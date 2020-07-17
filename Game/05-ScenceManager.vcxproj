@@ -158,6 +158,7 @@
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="PhantomBat.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Raven.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="StairBottom.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="PhantomBat.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="Raven.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="StairBottom.h" />

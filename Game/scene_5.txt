@@ -1,6 +1,6 @@
 [PLAYER]
 # type	x	y	ani_set_id
-0	5	120	0
+0	38	120	0
 #0	88	200	0
 
 [OBJECTS]
@@ -63,6 +63,12 @@
 #Stair bot
 -2	377	166	0	393	198	1
 -2	624	167	0	640	200	-1
+
+#Raven
+68	272	70	68
+68	418	118	68
+68	480	86	68
+68	520	197	68
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

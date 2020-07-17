@@ -15,6 +15,17 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	vy += 0.0018f * dt;
 
+	if (canThrowBones == true)
+	{
+		bone = CBones::GetInstance();
+		bone->SetPosition(x, y);
+		bone->SetOrientation(this->nx);
+		bone->SetStart_x(this->x);
+		bone->SetVisible(true);
+
+		this->canThrowBones = false;
+	}
+
 	if (start_untouchable != 0)
 	{
 		Untouchable();
@@ -47,14 +58,24 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj))
 			{				
-				// The limmied of the knight is the width of the bricks under its feet
-				CBrick* b = dynamic_cast<CBrick*>(e->obj);
+				// The limmied of the skeleton is the width of the bricks under its feet
+				//CBrick* b = dynamic_cast<CBrick*>(e->obj);
 
-				this->start_x = b->x + 1;
-				float end_x = start_x + b->width - SKELETON_BBOX_WIDTH/2;
+				//this->start_x = b->x + 1;
+				//float end_x = start_x + b->width - SKELETON_BBOX_WIDTH/2;
+
+				this->start_x = 33;
+				float end_x = 57;
 
 				if (e->ny != 0)
 				{
+
+					int r = rand() % 10;
+					if (r == 0)
+					{
+						canThrowBones = true;
+					}
+
 					vy = 0;
 					y += ny * 0.4f; 
 				}
