@@ -22,6 +22,7 @@ void CSimon::GoUpStair()
 			if (dynamic_cast<CStairBottom*>(ovObjects[i]) || dynamic_cast<CVariousStair*>(ovObjects[i]))
 			{				
 				stairs = ovObjects[i];
+				nx = stairs->GetOrientation();
 				if (dynamic_cast<CVariousStair*>(ovObjects[i]))
 				{
 					stairs->SetOrientation(-nx);
@@ -37,14 +38,21 @@ void CSimon::GoUpStair()
 			return;
 		}
 
-		// Enable go up stair
-		float xS, yS;
-		stairs->GetPosition(xS, yS);
-		nx = stairs->GetOrientation();
-		this->vx = nx * SIMON_GO_UPSTAIR_SPEED;
-		this->vy = -SIMON_GO_UPSTAIR_SPEED;
-		onStairs = 1;		
-		
+		// Try to reach the right point of stairs
+		float stair_x, stair_y;
+		stairs->GetPosition(stair_x, stair_y);
+
+		// Enable to go up stair
+		if (x != stair_x-8)
+		{
+			StartAutoWalk(SIMON_WALKING_SPEED, stair_x-8);
+		}
+		else
+		{
+			//nx = stairs->GetOrientation();
+			StartAutoWalk(nx * SIMON_GO_UPSTAIR_SPEED, -SIMON_GO_UPSTAIR_SPEED, SIMON_AUTO_UPSTAIR_TIME);
+			onStairs = 1;
+		}		
 	}
 	else 
 	{
@@ -53,8 +61,61 @@ void CSimon::GoUpStair()
 			this->nx = -nx;
 			onStairs = 1;
 		}
-		this->vx = nx * SIMON_GO_UPSTAIR_SPEED;
-		this->vy = -SIMON_GO_UPSTAIR_SPEED;
+		StartAutoWalk(nx * SIMON_GO_UPSTAIR_SPEED, -SIMON_GO_UPSTAIR_SPEED, SIMON_AUTO_UPSTAIR_TIME);
+	}
+}
+
+void CSimon::GoDownStair()
+{
+	// Check if Simon is on stairs and want to go down
+	if (onStairs == 0)
+	{
+		LPGAMEOBJECT stairs = NULL;
+
+		// Check if Simon is on a stairs-start 
+		for (UINT i = 0; i < ovObjects.size(); ++i)
+		{
+			if (dynamic_cast<CStairTop*>(ovObjects[i]) ||
+				dynamic_cast<CVariousStair*>(ovObjects[i]))
+			{
+				stairs = ovObjects[i];
+				if (dynamic_cast<CVariousStair*>(ovObjects[i])) stairs->nx = -nx;
+				break;
+			}
+		}
+
+		// Do nothing if there is no stairs overlapped
+		if (stairs == NULL)
+		{
+			state = SIMON_STATE_IDLE;
+			return;
+		}
+
+		// Enable go down stair
+		float stair_x, stair_y;
+		stairs->GetPosition(stair_x, stair_y);
+		
+		// Enable to go down stair
+		if (x != stair_x-8)
+		{
+			StartAutoWalk(SIMON_WALKING_SPEED, stair_x-8);
+		}
+		else
+		{
+			nx = -stairs->GetOrientation();
+			StartAutoWalk(nx * SIMON_GO_UPSTAIR_SPEED, SIMON_GO_UPSTAIR_SPEED, SIMON_AUTO_DOWNSTAIR_TIME);
+			onStairs = -1;
+		}
+
+	}
+	else
+	{
+		if (onStairs == 1) // Simon is going up stair and want to go back
+		{
+			this->nx = -nx;
+			onStairs = -1;
+		}
+		StartAutoWalk(nx * SIMON_GO_UPSTAIR_SPEED, SIMON_GO_UPSTAIR_SPEED, SIMON_AUTO_DOWNSTAIR_TIME);
 	}
 }
 
@@ -120,53 +181,147 @@ void CSimon::ProceedOnStairs()
 
 }
 
-void CSimon::GoDownStair()
+void CSimon::StartAutoWalk(float vx, float end_x)
 {
-	// Check if Simon is on stairs and want to go down
-	if (onStairs == 0)
+	if (!autoWalk)
 	{
-		LPGAMEOBJECT stairs = NULL;
+		autoInfo.xDes = end_x;
+		autoInfo.vx = vx;
 
-		// Check if Simon is on a stairs-start 
-		for (UINT i = 0; i < ovObjects.size(); ++i)
-		{
-			if (dynamic_cast<CStairTop*>(ovObjects[i]) || 
-				dynamic_cast<CVariousStair*>(ovObjects[i]))
-			{				
-				stairs = ovObjects[i];
-				if (dynamic_cast<CVariousStair*>(ovObjects[i])) stairs->nx = -nx;				
-				break;
-			}
-		}
-
-		// Do nothing if there is no stairs overlapped
-		if (stairs == NULL)
-		{
-			state = SIMON_STATE_IDLE;
-			return;
-		}
-
-		// Enable go down stair
-		float xS, yS;
-		stairs->GetPosition(xS, yS);
-		nx =- stairs->GetOrientation();
-		this->vx = nx * SIMON_GO_UPSTAIR_SPEED;
-		this->vy = SIMON_GO_UPSTAIR_SPEED;
-		onStairs = -1;
-
-	}
-	else
-	{
-		if (onStairs == 1) // Simon is going up stair and want to go back
-		{
-			this->nx = -nx;
-			onStairs = -1;
-		}
-		this->vx = nx * SIMON_GO_UPSTAIR_SPEED;
-		this->vy = SIMON_GO_UPSTAIR_SPEED;
+		autoWalk = true;
 	}
 }
 
+void CSimon::StartAutoWalk(float vx, float vy, DWORD time)
+{
+	// Can only perform one auto-walk at a time
+	// NOTE: this autoMove flag will be turned off in Update() -> ProceedAutoMove()
+	if (!autoWalk)
+	{
+		autoInfo.vx = vx;
+		autoInfo.vy = vy;
+		autoInfo.timeMove = time;
+
+		autoWalk = true;
+		auto_walk_start = GetTickCount();
+	}
+}
+
+void CSimon::ProceedAutoWalk()
+{
+	if (auto_walk_start == 0)
+	{
+		if (autoInfo.vx != 0 &&
+			autoInfo.xDes != x)
+		{
+			ReDirect(autoInfo.xDes);
+			vx = nx * autoInfo.vx;
+			dx = vx * dt;
+
+			// Calibrate the dx if Simon has passed and is moving far away from the destination
+			if (dx > 0)
+			{
+				if (x + dx > autoInfo.xDes)
+					dx = autoInfo.xDes - x;
+			}
+			else
+			{
+				if (x + dx < autoInfo.xDes)
+					dx = autoInfo.xDes - x;
+			}
+		}
+		else
+		{
+			autoWalk = false;
+			dx = dy = vx = vy = 0;
+		}
+	}
+	else
+	{
+		if (GetTickCount() - auto_walk_start > autoInfo.timeMove)
+		{
+			auto_walk_start = 0;
+			autoWalk = false;
+			dx = dy = vx = vy = 0;
+		}
+		else
+		{
+			// Calculate the dx, dy while moving automatically
+			vx = autoInfo.vx;
+			vy = autoInfo.vy;
+			dx = vx * dt;
+			dy = vy * dt;
+		}
+	}
+	
+}
+
+void CSimon::ProceedOverlapping()
+{
+	LPGAMEOBJECT ovObj;
+	for (UINT i = 0; i < ovObjects.size(); i++)
+	{
+		ovObj = ovObjects[i];
+
+		if (dynamic_cast<ItemBigHeart*>(ovObj))
+		{
+			DebugOut(L"[ITEMS] Heart Collected \n");
+			heart_quantity += 5;
+			ovObj->SetVisible(false);
+		}
+
+		else if (dynamic_cast<ItemSmallHeart*>(ovObj))
+		{
+			DebugOut(L"[ITEMS] Heart Collected \n");
+			heart_quantity += 1;
+			ovObj->SetVisible(false);
+		}
+
+		else if (dynamic_cast<ItemChain*>(ovObj))
+		{
+
+			this->powerUp = true;
+			this->SetState(SIMON_STATE_IDLE);
+			ovObj->SetVisible(false);
+			this->whip->PowerUp();
+			//DebugOut(L"[INFO] WHIP UPGRADED \n");
+		}			
+
+		else if (dynamic_cast<ItemDagger*>(ovObj))
+		{
+			DebugOut(L"[ITEMS] Dagger Collected \n");
+			ovObj->SetVisible(false);
+			this->currentSubWeapon = int(SubWeapon::DAGGER);
+		}
+
+		else if (dynamic_cast<ItemBoomerang*>(ovObj))
+		{
+			DebugOut(L"[ITEMS] Boomerang Collected \n");
+			ovObj->SetVisible(false);
+			this->currentSubWeapon = int(SubWeapon::BOOMERANG);
+		}
+
+		else if (dynamic_cast<ItemHolyWater*>(ovObj))
+		{
+			DebugOut(L"[ITEMS] Holy water Collected \n");
+			ovObj ->SetVisible(false);
+			this->currentSubWeapon = int(SubWeapon::HOLYWATER);
+		}
+
+		else if (dynamic_cast<ItemAxe*>(ovObj))
+		{
+			DebugOut(L"[ITEMS] Holy water Collected \n");
+			ovObj->SetVisible(false);
+			this->currentSubWeapon = int(SubWeapon::AXE);			
+		}
+
+		else if (dynamic_cast<ItemMoneyBag*>(ovObj))
+		{
+			DebugOut(L"[ITEMS] Money Bag Collected \n");
+			ovObj->SetVisible(false);
+		}		
+	}
+}
 
 CSimon::CSimon(float x, float y) :CGameObject()
 {
@@ -216,6 +371,10 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			ovObjects.push_back(coObjects->at(i));				
 	}
 
+	if (ovObjects.size() != 0)
+	{
+		ProceedOverlapping();
+	}
 
 	// Being On Stairs
 	if (onStairs != 0)
@@ -223,6 +382,10 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		ProceedOnStairs();
 		vy = 0;
 	}
+
+	// Auto Walk
+	if (autoWalk)
+		ProceedAutoWalk();
 
 	// Checking subweapon
 	if (subWeapon )
@@ -236,20 +399,6 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			subWeapon = false;
 		}
 	}
-
-
-	//if (atuo_crouching)
-	//{
-	//	SetState(SIMON_STATE_SIT);
-	//		if (auto_crouching_start < 300)			
-	//			auto_crouching_start += dt;
-	//		else
-	//		{
-	//			auto_crouching_start = 0;
-	//			atuo_crouching = false;
-	//			SetState(SIMON_STATE_IDLE);
-	//		}
-	//}
 
 	vector <LPCOLLISIONEVENT> coEvents;
 	vector <LPCOLLISIONEVENT> coEventsResult;
@@ -303,7 +452,6 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				CSkeleton* skeleton = CSkeleton::GetInstance();
 				if (skeleton->healthPoint > 0) skeleton->SetVisible(true);
 			}
-
 		}
 		
 

@@ -429,30 +429,24 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 
 	case OBJECT_TYPE_VARIOUS_STAIR:
 	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int nx = atoi(tokens[6].c_str());
-		obj = new CVariousStair(x, y, r, b);		
+		int nx = atoi(tokens[4].c_str());
+		obj = new CVariousStair();		
 		obj->SetOrientation(nx);
 		break;
 	}
 
 	case OBJECT_TYPE_STAIR_BOTTOM:
 	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int nx = atoi(tokens[6].c_str());		
-		obj = new CStairBottom(x,y,r,b);
+		int nx = atoi(tokens[4].c_str());		
+		obj = new CStairBottom();
 		obj->SetOrientation(nx);
 		break;
 	}
 
 	case OBJECT_TYPE_STAIR_TOP:
 	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int nx = atoi(tokens[6].c_str());
-		obj = new CStairTop(x, y, r, b);	
+		int nx = atoi(tokens[4].c_str());
+		obj = new CStairTop();	
 		obj->SetOrientation(nx);
 		break;
 	}
@@ -882,25 +876,25 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		
 	case DIK_Q: // Use Dagger
 	{
-		simon->currentSubWeapon = 7;
+		simon->SetSubWeapon(7);
 		break;
 	}
 
 	case DIK_W: // Use Boomerang
 	{
-		simon->currentSubWeapon = 71;
+		simon->SetSubWeapon(71);
 		break;
 	}
 
 	case DIK_E: // Use Holy water
 	{
-		simon->currentSubWeapon = 72;
+		simon->SetSubWeapon(72);
 		break;
 	}
 
 	case DIK_R: // Use Axe
 	{
-		simon->currentSubWeapon = 73;
+		simon->SetSubWeapon(73);
 		break;
 	}
 
@@ -970,7 +964,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		simon->animation_set->at(SIMON_ANI_DEFLECT)->IsOver(SIMON_DEFLECT_TIME) == false)
 		return ;
 	
-	if (simon->powerUp == true) return;
+	if (simon->PowingUp() == true) return;
 	
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
@@ -1002,7 +996,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	else if (game->IsKeyDown(DIK_DOWN))
 	{
-		if (simon->onStairs == 0&& simon->ovObjects.size()==0)
+		if (simon->onStairs == 0 && simon->GetOverlapObjectSize() ==0)
 			simon->SetState(SIMON_STATE_SIT);
 		else
 			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);

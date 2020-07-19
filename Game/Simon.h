@@ -56,7 +56,8 @@
 #define SIMON_GO_UPSTAIR_SPEED		0.03f
 #define SIMON_DIE_DEFLECT_SPEED		0.5
 #define SIMON_ATTACK_TIME				350
-#define SIMON_AUTO_STAIR_TIME			300
+#define SIMON_AUTO_UPSTAIR_TIME			280
+#define SIMON_AUTO_DOWNSTAIR_TIME		290
 #define SIMON_DISCOLOR_TIME			700
 
 #define SIMON_DEFLECT_TIME				800
@@ -68,8 +69,22 @@
 #define SIMON_BBOX_HEIGHT			30
 
 
+
+/*
+	Data struct for saving auto move event
+*/
+struct AutoInfo
+{
+	float vx;
+	float vy;
+	float xDes;				// For auto walking till reach a point
+	float yDes;
+	DWORD timeMove;		// For auto walking within a given time
+};
+
 class CSimon : public CGameObject
 {
+private:
 	int heart_quantity = 0;
 	static CSimon* __instance; 
 	float start_x, start_y; // Initial position of simon at scene instead of (0,0)
@@ -77,29 +92,38 @@ class CSimon : public CGameObject
 	float firstY; // Check if simon is falling down in the large distance
 	int untouchable;
 	DWORD untouchable_start;
+
+	AutoInfo autoInfo;
+
+	bool subWeapon = false;
+	CSubWeapon* weapons;
+	int currentSubWeapon;
+
+	bool isStanding = false;
+	bool powerUp = false;
+	bool onMovingPlatform = false;
+	bool atuo_crouching = false;
+	bool autoWalk = false;
+
+	DWORD discolorationTime = 0;
+	DWORD auto_crouching_start = 0;
+	DWORD auto_walk_start = 0;
+
+	vector<LPGAMEOBJECT> ovObjects;		// overlapping objects	
 public:
 
 	/* Assigned to -1 if going downstairs
 	 Assigned to 1 if going upstairs
 	 Assigned to 0 if not on stairs*/
 	int onStairs;
-
-	CWhip* whip;
-	CDagger* dagger;
-
-	bool subWeapon = false;
-	CSubWeapon* weapons;
-	int currentSubWeapon;
-	int GetSubWeapon() { return this->currentSubWeapon; }
-	int GetHeartQuantity() { return this->heart_quantity; }
+	CWhip* whip;	
 	
-	bool isStanding = false;
-	bool powerUp = false;
-	bool onMovingPlatform = false;
-	bool atuo_crouching = false;
+	int GetSubWeapon() { return this->currentSubWeapon; }
+	void SetSubWeapon(int weapon) { this->currentSubWeapon = weapon; }
 
-	DWORD discolorationTime = 0;
-	DWORD auto_crouching_start = 0;
+	int GetHeartQuantity() { return this->heart_quantity; }
+
+	bool PowingUp() { return this->powerUp; }
 	
 	CSimon(float x=0.0f, float y =0.0f);
 	
@@ -118,5 +142,11 @@ public:
 	void GoUpStair();
 	void GoDownStair();
 	void ProceedOnStairs();
-	vector<LPGAMEOBJECT> ovObjects;		// overlapping objects	
+
+	void StartAutoWalk(float vx, float end_x);
+	void StartAutoWalk(float vx, float vy, DWORD time);
+	void ProceedAutoWalk();
+
+	void ProceedOverlapping();
+	int GetOverlapObjectSize() { return this->ovObjects.size(); }
 };

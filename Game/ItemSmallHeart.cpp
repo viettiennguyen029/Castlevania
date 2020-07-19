@@ -6,12 +6,11 @@
 ItemSmallHeart::ItemSmallHeart()
 {	
 	this->visible = false;	
-	this->vx_variability = 0.0007f;
+	this->vx_variability = 0.0004f;
 }
 
 void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {	
-
 	CGameObject::Update(dt);
 
 	vy += ITEM_GRAVITY * dt;				// simple fall down	
@@ -19,9 +18,9 @@ void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (vy != 0)
 	{
 		vx += vx_variability * dt;
-		vy = 0.06f;
+		vy = 0.03f;
 
-		if (vx >= 0.15f || vx <= -0.15f)
+		if (vx >= 0.1f || vx <= -0.1f)
 			vx_variability *= -1;
 	}
 	else vy = 0;
@@ -37,8 +36,7 @@ void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetVisible(false);
 			start_visible = 0;
 		}
-	}
-	
+	}	
 	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -64,21 +62,21 @@ void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
 				// Block brick,stop moving in horizontal 
-				if (e->ny != 0 || e->nx!=0)
+				if (e->ny <0)
 				{
 					//y += 0.4f * e->ny;
 					vx=vy = 0;
-				}
-				//vx = vx_variability = 0;
+					y += 0.2f * e->ny;
+					//vx_variability = 0;
+				}				
 			}
 
-			else if (dynamic_cast<CStairTop*>(e->obj))
+			else if (dynamic_cast<CStairTop*>(e->obj) ||  (dynamic_cast<CStairBottom*>(e->obj)))
 			{
 				// Process normally
 				if (e->nx != 0) x += dx;
 				if (e->ny != 0) y += dy;
-			}
-
+			}	
 		
 		}
 	}

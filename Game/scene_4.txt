@@ -1,7 +1,7 @@
 [PLAYER]
 # type	x	y	ani_set_id
-0	720	167	0
-#0	130	167	0
+#0	720	167	0
+0	130	167	0
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
@@ -9,7 +9,6 @@
 # 8 = Black Knight
 
 # BRICK 
-#1	0	194	1	700	16
 1	16	120	1	16	96
 1	32	167	1	32	16
 1	65	199	1	64	16
@@ -66,19 +65,19 @@
 85	289	168	50
 
 #Hunch back
-64	425	121	64
+#64	425	121	64
 
 #Skeleton
-65	35	120	65
+#65	35	120	65
 
 #Bones
-69	60	135	69
+#69	60	135	69
 
 #Ghost
-66	650	180	66
+#66	650	180	66
 
 # STAIR Bottom
--2	154	102	0	166	134	-1
+-2	156	105	0	-1
 
 # DOOR
 # type	l	t	ani_set_id	r	b

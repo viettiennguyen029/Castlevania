@@ -24,7 +24,7 @@ void Board::Render()
 	code->DrawHP(cx + 60, cy + 28, 1, 13); // Boss's HP
 
 	// Sub-weapon
-	code->DrawSubWeapon(cx + 158, cy + 17, simon->currentSubWeapon);
+	code->DrawSubWeapon(cx + 158, cy + 17, simon->GetSubWeapon());
 
 }
 Board::Board()
