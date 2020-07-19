@@ -10,7 +10,7 @@ CStairBottom::CStairBottom(float l, float t, float r, float b)
 
 void CStairBottom::Render()
 {
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CStairBottom::GetBoundingBox(float& l, float& t, float& r, float& b)

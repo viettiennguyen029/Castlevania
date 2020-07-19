@@ -13,14 +13,17 @@
 class CRaven : public CGameObject
 {
 	int ny;
+	bool buffSpeed = false;
+
+	bool activeRaven = false;
+	DWORD active_raven_start = 0;
 
 	bool attackingPlayer = false;
 	DWORD attackingPlayer_start  = 0;
 	
-	bool activeRaven = false;
-	DWORD active_raven_start = 0;
-
-	bool buffSpeed = false;
+	bool attackAgain = false;
+	DWORD attackAgain_start = 0;
+	
 public:
 	CRaven();
 	virtual void Render();

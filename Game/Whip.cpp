@@ -33,6 +33,7 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else if (dynamic_cast<CBlack_Knight*>(temp)||
 				dynamic_cast<CBat*>(temp)||
 				dynamic_cast<CHunchBack*>(temp)||
+				dynamic_cast<CSkeleton*>(temp) ||
 				dynamic_cast<CGhost*>(temp))
 			{
 				DebugOut(L"[INFO] Enemy take damaged \n");
@@ -83,15 +84,15 @@ void CWhip::SetWhipPosition(D3DXVECTOR2 simonPos, bool isStanding)
 {	
 	if (nx>0)
 	{
-		simonPos.x -= 49.0f;
-		if(isStanding) simonPos.y -= 2.0f;
-		else simonPos.y += 3.0f;		
+		simonPos.x -= 42.0f;
+		if(isStanding) simonPos.y -= 0.0f;
+		simonPos.y += 7.0f;		
 	}
 	else
 	{
-		simonPos.x -= 53.0f;
-		if (isStanding) simonPos.y -= 2.0f;
-		else simonPos.y += 3.0f;
+		simonPos.x -= 49.0f;
+		if (isStanding) simonPos.y -= 0.0f;
+		else simonPos.y += 7.0f;
 	}
 	
 	SetPosition(simonPos.x, simonPos.y);

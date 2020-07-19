@@ -12,7 +12,7 @@ protected:
 	LPCWSTR releaseScene;
 
 public: 
-	CScene(int id, LPCWSTR filePath, LPCWSTR releaseScene);
+	CScene(int id, LPCWSTR filePath);
 
 	CKeyEventHandler * GetKeyEventHandler() { return key_handler; }
 	virtual void Load() = 0;

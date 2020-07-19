@@ -84,7 +84,7 @@ protected:
 	void _ReleaseSection_SCENE_ANIMATION_SETS(string line);
 
 public: 
-	CPlayScene(int id, LPCWSTR filePath, LPCWSTR releaseScene);
+	CPlayScene(int id, LPCWSTR filePath);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

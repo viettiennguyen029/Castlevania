@@ -10,7 +10,7 @@
 using namespace std;
 
 #define ID_TEX_BBOX		-100		// special texture to draw object bounding box
-#define ITEM_GRAVITY	0.0018f
+#define ITEM_GRAVITY	0.0006f
 
 class CGameObject; 
 typedef CGameObject * LPGAMEOBJECT;

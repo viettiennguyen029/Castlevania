@@ -7,24 +7,24 @@
 
 # CANDLE
 #extra_settings = Item Object ID
-2	100	166	2	80	0
+2	100	166	2	4	0
 2	210	166	2	5	0
 2	330	166	2	5	0
 2	450	166	2	4	0
-2	570	166	2	4	0
+2	570	166	2	80	0
 
 # ITEMS
 #BigHeart
-4	570	166	41
+4	100	166	41
 4	450	166	41
 #Chain
 5	210	166	42
 5	330	166	42
 #Dagger
-80	100	166	43
+80	570	166	43
 
 #DAGGER
-7	46	160	43
+7	570	166	43
 
 # BRICK 
 # extra 1 = width, extra 2 = height

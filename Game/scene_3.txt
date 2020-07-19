@@ -20,7 +20,7 @@
 # Balck Knight wall
 1	321	185	1	32	16
 # Vertical wall
-# Need to put in 
+1	480	64	1	16	90
 
 #Small Candle
 2	458	55	2	44	1

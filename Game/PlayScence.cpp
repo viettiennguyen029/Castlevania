@@ -9,7 +9,7 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR releaseScene):	CScene(id, filePath, releaseScene)
+CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);	
 }

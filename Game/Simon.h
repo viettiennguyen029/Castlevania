@@ -64,12 +64,13 @@
 #define SIMON_DEFLECT_SPEED_Y			0.14f
 #define SIMON_UNTOUCHABLE_TIME	3000
 
-#define SIMON_BBOX_WIDTH			15
+#define SIMON_BBOX_WIDTH			16
 #define SIMON_BBOX_HEIGHT			30
 
 
 class CSimon : public CGameObject
 {
+	int heart_quantity = 0;
 	static CSimon* __instance; 
 	float start_x, start_y; // Initial position of simon at scene instead of (0,0)
 
@@ -90,6 +91,7 @@ public:
 	CSubWeapon* weapons;
 	int currentSubWeapon;
 	int GetSubWeapon() { return this->currentSubWeapon; }
+	int GetHeartQuantity() { return this->heart_quantity; }
 	
 	bool isStanding = false;
 	bool powerUp = false;

@@ -11,8 +11,6 @@ void CGrid::Classify(LPGAMEOBJECT obj)
 	float l, t, r, b;
 	obj->GetBoundingBox(l, t, r, b);
 
-	//this->GetCellsContainRectangle(left, top, right, bottom, beginCellColumn, beginCellRow, endCellColumn, endCellRow);
-
 	beginCellColumn = (int)(l / CELL_WIDTH);
 	beginCellRow = (int)(t / CELL_HEIGHT);
 
@@ -25,12 +23,7 @@ void CGrid::Classify(LPGAMEOBJECT obj)
 		{
 			cells[i][j].push_back(obj);
 		}
-	}
-
-	//cells[row][column].push_back(obj);
-
-	// add object to the suitable cells
-	
+	}	
 }
 
 void CGrid::GetObjectsInGrid(vector<LPGAMEOBJECT>&updateobjects, float left, float top, float right, float bottom)
@@ -65,9 +58,9 @@ void CGrid::GetObjectsInGrid(vector<LPGAMEOBJECT>&updateobjects, float left, flo
 
 void CGrid::Clear()
 {
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < ROW_MAX; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < COLUMN_MAX; j++)
 		{
 			cells[i][j].clear();
 		}

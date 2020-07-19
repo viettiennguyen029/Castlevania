@@ -81,8 +81,13 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		attackingPlayer_start = 0;
 		buffSpeed = true;
+
+		attackAgain = true;
+		attackAgain_start = GetTickCount();
+
 		float DX = abs(xS - this->x);
 		float DY = abs(yS- this->y);
+
 		vx = (float)(DX * 0.0025) * nx;
 		vy = (float)(DY * 0.0025) * ny;
 	}
@@ -106,14 +111,12 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 		x += min_tx * dx;
-		y += min_ty * dy;
+		y += min_ty * dy;	
 
 	}
 
-
 	// clean up collision events
 	for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
 }
 
 void CRaven::GetBoundingBox(float& left, float& top, float& right, float& bottom)

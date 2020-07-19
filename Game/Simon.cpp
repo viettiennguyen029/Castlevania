@@ -225,10 +225,13 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	}
 
 	// Checking subweapon
-	if (subWeapon)
+	if (subWeapon )
 	{
+		if (heart_quantity <= 0) subWeapon = false;
+
 		if (lastFrameAttack())
 		{
+			heart_quantity -= 1;
 			this->weapons->Select(int(currentSubWeapon));
 			subWeapon = false;
 		}
@@ -370,6 +373,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] Heart Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
+					heart_quantity += 5;
 					e->obj->SetVisible(false);
 				}
 			}
@@ -379,6 +383,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] Heart Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
+					heart_quantity += 1;
 					y = y - 0.2f;
 					e->obj->SetVisible(false);
 				}
@@ -469,15 +474,11 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
 
-			else if (dynamic_cast<CBat*>(e->obj) ||	
-			dynamic_cast<CBlack_Knight*>(e->obj) || 
-			dynamic_cast<CHunchBack*>(e->obj) ||
-			dynamic_cast<CPhantomBat*>(e->obj) ||
-			dynamic_cast<CRaven*>(e->obj))
+			else if (dynamic_cast<CRaven*>(e->obj))
 			{
-			if ((e->nx != 0 || e->ny!=0) && untouchable==0)
+			if ((e->nx != 0 || e->ny != 0) && untouchable == 0)
 			{
-			
+				e->obj->SetVisible(false);
 				if (onStairs == 0)
 				{
 					StartUntouchable();
@@ -498,7 +499,39 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					if (e->nx != 0) x += dx;
 					if (e->ny != 0) y += dy;
 				}
-			 }
+			}
+			}
+
+			else if (dynamic_cast<CBat*>(e->obj) ||
+			dynamic_cast<CBlack_Knight*>(e->obj) || 
+			dynamic_cast<CHunchBack*>(e->obj) || 
+			dynamic_cast<CPhantomBat*>(e->obj))
+			{
+
+			if ((e->nx != 0 || e->ny != 0) && untouchable == 0)
+			{
+
+				if (onStairs == 0)
+				{
+					StartUntouchable();
+					DebugOut(L"[INFO] Enemies collision, Simon is Damaged \n");
+
+					//this->nx = (e->nx != 0) ?	-(e->nx) :	-(e->obj->GetOrientation());
+
+					if (e->nx != 0)
+						this->nx = -(e->nx);
+					else
+						this->nx = -(e->obj->GetOrientation());
+
+					SetState(SIMON_STATE_DEFLECT);
+				}
+				else
+				{
+					StartUntouchable();
+					if (e->nx != 0) x += dx;
+					if (e->ny != 0) y += dy;
+				}
+			}
 			 }
 
 			else
@@ -728,7 +761,7 @@ void CSimon::Render()
 	if (untouchable) alpha = 128;
 
 	animation_set->at(ani)->Render(x, y, nx, alpha);
-	// RenderBoundingBox();	
+	//RenderBoundingBox();	
 
 	// Whip rendering
 	if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_SIT_ATTACK)
@@ -739,8 +772,8 @@ void CSimon::Render()
 
 void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
+	left = x+SIMON_BBOX_WIDTH/2;
 	top = y;
-	right = x + SIMON_BBOX_WIDTH;
-	bottom = y+ SIMON_BBOX_HEIGHT;
+	right = left + SIMON_BBOX_WIDTH;
+	bottom = top + SIMON_BBOX_HEIGHT;
 }

@@ -3,12 +3,15 @@
 
 #define CELL_WIDTH	96
 #define CELL_HEIGHT	48
+
+#define COLUMN_MAX	10
+#define ROW_MAX			6
 class CGrid
 {
 	int column;
 	int row;
 
-	vector<LPGAMEOBJECT> cells[6][10];
+	vector<LPGAMEOBJECT> cells[ROW_MAX][COLUMN_MAX];
 	vector<LPGAMEOBJECT> crossObject;
 	static CGrid* __instance;
 public:

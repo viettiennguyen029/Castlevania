@@ -89,10 +89,8 @@ void CGame::Draw(float x, float y, int nx, LPDIRECT3DTEXTURE9 texture, int left,
 	D3DXVECTOR2 center = D3DXVECTOR2(p.x + (right - left) / 2, p.y + (bottom - top) / 2);
 	D3DXVECTOR2 rotate = D3DXVECTOR2(nx > 0 ? -1 : 1, 1);
 
-	// Xây dựng một ma trận 2D lưu thông tin biến đổi (scale, rotate)
 	D3DXMatrixTransformation2D(&newTransform, &center, 0.0f, &rotate, NULL, 0.0f, NULL);
 
-	// Cần nhân với ma trận cũ để tính ma trận biến đổi cuối cùng
 	D3DXMATRIX finalTransform = newTransform * oldTransform;
 	spriteHandler->SetTransform(&finalTransform);
 
@@ -381,12 +379,11 @@ void CGame::_ParseSection_SCENES(string line)
 {
 	vector<string> tokens = split(line);
 
-	if (tokens.size() < 3) return;
+	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
-	LPCWSTR release = ToLPCWSTR(tokens[2]);
 
-	LPSCENE scene = new CPlayScene(id, path, release);
+	LPSCENE scene = new CPlayScene(id, path);
 	scenes[id] = scene;
 }
 
