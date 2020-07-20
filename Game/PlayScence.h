@@ -41,6 +41,7 @@
 #include "Axe.h"
 #include "BreakWall.h"
 #include "WallPieces.h"
+#include "PointEffects.h"
 #include "Board.h"
 #include<vector>
 #include "Grid.h"

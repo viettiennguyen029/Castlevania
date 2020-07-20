@@ -137,6 +137,8 @@ public:
 	bool isOnGround() { return vy == 0; }	
 	bool lastFrameAttack();
 
+	//PointEffects* point_effect = PointEffects::GetInstance();
+
 	static CSimon* GetInstance();
 
 	void GoUpStair();

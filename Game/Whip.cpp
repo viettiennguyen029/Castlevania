@@ -41,6 +41,7 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				float l, t, r, b;
 				temp->GetBoundingBox(l, t, r, b);
 				hitEffects.push_back({ (l + r) / 2, (t + b) / 2 });				
+				
 			}
 		}
 		

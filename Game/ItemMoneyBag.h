@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Brick.h"
 
+
 #define ITEM_MONEY_BAG_BBOX_WIDTH		12
 #define ITEM_MONEY_BAG_BBOX_HEIGHT	14
 

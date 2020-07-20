@@ -64,6 +64,11 @@ void CWallPieces::DropPiece(float x, float y)
 	
 }
 
+void CWallPieces::Clear()
+{
+	pieces.clear();
+}
+
 CWallPieces* CWallPieces::__instance = NULL;
 CWallPieces* CWallPieces::GetInstance()
 {

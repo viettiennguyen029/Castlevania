@@ -22,6 +22,7 @@ public:
 
 	void AddPiece(CWallPiece* piece);
 	void DropPiece(float x, float y);
+	void Clear();
 	CWallPieces() { };
 	static CWallPieces* GetInstance();
 };

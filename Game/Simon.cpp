@@ -598,9 +598,21 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] Money Bag Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
-					e->obj->SetVisible(false);
+					e->obj->SetVisible(false);	
+					PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_100, e->obj->x + 5, e->obj->y+ 2);
+			
 				}
-			}			
+			}		
+
+			else if (dynamic_cast<ItemCrown*>(e->obj))
+			{
+			DebugOut(L"[ITEMS] (+2000) \n");
+			if (e->nx != 0 || e->ny != 0)
+				{
+				e->obj->SetVisible(false);
+				PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_2000, e->obj->x + 5, e->obj->y + 2);
+				}
+			}
 #pragma endregion
 			
 			else if (dynamic_cast<CStairBottom*> (e->obj) || 

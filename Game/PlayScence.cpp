@@ -76,6 +76,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_DOOR							51
 #define OBJECT_TYPE_BREAK_WALL				90
 #define OBJECT_TYPE_WALL_PIECES				91
+#define OBJECT_TYPE_POINT_EFFECTS			92
 
 #define MAX_SCENE_LINE 1024
 
@@ -181,8 +182,7 @@ void CPlayScene::_ParseSection_SCENE_PLAYER(string line)
 		return;
 	}
 
-	//obj = new CSimon(x,y);
-	//obj = CSimon::GetInstance();
+
 	playerObj = CSimon::GetInstance();
 	player = (CSimon*)playerObj;
 
@@ -274,6 +274,13 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	{
 		obj = new CWallPiece();		
 		CWallPieces::GetInstance()->AddPiece((CWallPiece*)obj);
+		break;
+	}
+
+	case OBJECT_TYPE_POINT_EFFECTS:
+	{
+		obj = new PointEffect();
+		PointEffects::GetInstance()->Add((PointEffect*)obj);
 		break;
 	}
 	case OBJECT_TYPE_BAT:
@@ -669,22 +676,10 @@ void CPlayScene::Update(DWORD dt)
 	float cx, cy;
 	player->GetPosition(cx, cy);
 	CGame* game = CGame::GetInstance();
+	cx -= game->GetScreenWidth() / 2;
 
-	if (cx >= SCREEN_WIDTH / 2)
-	{
-		cx -= game->GetScreenWidth() / 2;
-		cy -= game->GetScreenHeight() / 2;
-
-		if (cx > mapWidth - SCREEN_WIDTH)
-		{
-			cx = mapWidth - SCREEN_WIDTH;
-		}
-	}
-
-	else if (cx < SCREEN_WIDTH / 2)
-	{
-		cx = 0.0f;
-	}
+	if (cx >= (mapWidth - SCREEN_WIDTH))
+		cx = mapWidth - SCREEN_WIDTH;
 
 	game->SetCamPos(cx, 0.0f /*cy*/);
 
@@ -816,12 +811,8 @@ void CPlayScene::Unload()
 	tiledMap.clear();
 
 	CItems::GetInstance()->Clear();
-
-	CSkeleton* skeleton = CSkeleton::GetInstance();
-	skeleton = NULL;
-
-	CGhost* ghost = CGhost::GetInstance();
-	ghost = NULL;
+	CWallPieces::GetInstance()->Clear();
+	PointEffects::GetInstance()->Clear();
 
 	player = NULL;
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);	

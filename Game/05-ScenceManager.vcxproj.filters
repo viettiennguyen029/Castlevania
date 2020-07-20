@@ -190,6 +190,9 @@
     <ClCompile Include="Raven.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="PointEffects.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -344,6 +347,9 @@
     </ClInclude>
     <ClInclude Include="Raven.h">
       <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="PointEffects.h">
+      <Filter>Effects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

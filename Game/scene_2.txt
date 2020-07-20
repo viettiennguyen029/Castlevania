@@ -30,6 +30,9 @@
 91	228	125	91
 91	224	126	91
 
+#Point effect
+92	150	190	92
+
 #Small candle	extra1: item, extra 2: state
 2	96	153	2	81	1
 2	196	153	2	4	1
@@ -59,7 +62,6 @@
 
 #Crown item
 40	130	240	40
-#40	130	220	40
 # WHIP
 #3	0	0	3
 
