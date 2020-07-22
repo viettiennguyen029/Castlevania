@@ -157,9 +157,6 @@
     <ClCompile Include="Axe.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
-    <ClCompile Include="Bones.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Raven.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
@@ -198,6 +195,9 @@
     </ClCompile>
     <ClCompile Include="ItemWatch.cpp">
       <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -324,9 +324,6 @@
     <ClInclude Include="Axe.h">
       <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="Bones.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="Raven.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -365,6 +362,9 @@
     </ClInclude>
     <ClInclude Include="ItemWatch.h">
       <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

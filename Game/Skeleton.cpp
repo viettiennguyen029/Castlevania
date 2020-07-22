@@ -1,5 +1,6 @@
 #include "Skeleton.h"
 #include "Brick.h"
+#include "Simon.h"
 
 void CSkeleton::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -11,24 +12,54 @@ void CSkeleton::GetBoundingBox(float& left, float& top, float& right, float& bot
 
 void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
-	CGameObject::Update(dt);
-
-	vy += 0.0018f * dt;
-
-	if (canThrowBones == true)
+	if (stopMoving == true)
 	{
-		bone = CBones::GetInstance();
-		bone->SetPosition(x, y);
-		bone->SetOrientation(this->nx);
-		bone->SetStart_x(this->x);
-		bone->SetVisible(true);
-
-		this->canThrowBones = false;
+		stop = true;
+		for (UINT i = 0; i < bones.size(); i++)
+		{
+			bones.at(i)->Update(dt, coObjects, stop);
+		}
+		return;
 	}
+	else
+	{
+		stop = false;
+	}
+
+	CGameObject::Update(dt);
+	vy += 0.0011f * dt;
 
 	if (start_untouchable != 0)
 	{
 		Untouchable();
+	}
+
+	
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
+
+	nx = (this->x > xS) ? -1 : 1;
+	
+	if (xS - x < 130 && state == SKELETON_STATE_IDLE)
+	{
+		SetState(SKELETON_STATE_ACTIVE);
+	}
+
+	if (rand() % 150 < 2)
+	{
+		LPGAMEOBJECT bone;
+		bone = new CBone(x, y, nx);
+		bones.push_back(bone);
+	}
+
+	for (UINT i = 0; i < bones.size(); i++)
+	{
+		bones.at(i)->Update(dt, coObjects, stop);
+		if (bones.at(i)->IsInViewport() == false)
+		{
+			delete bones.at(i);
+			bones.erase(bones.begin() + i);
+		}
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -57,14 +88,8 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovin
 			LPCOLLISIONEVENT  e = coEventsResult[i];
 
 			if (dynamic_cast<CBrick*>(e->obj))
-			{				
-				// The limmied of the skeleton is the width of the bricks under its feet
-				//CBrick* b = dynamic_cast<CBrick*>(e->obj);
-
-				//this->start_x = b->x + 1;
-				//float end_x = start_x + b->width - SKELETON_BBOX_WIDTH/2;
-
-				this->start_x = 33;
+			{			
+				float start1_x = 33;
 				float end_x = 57;
 
 				if (e->ny != 0)
@@ -80,9 +105,9 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovin
 					y += ny * 0.4f; 
 				}
 
-				if (x >= end_x || x <= start_x)
+				if (x >= end_x || x <= start1_x)
 				{
-					vx = -vx;
+					vx *= -1;
 				}
 			}
 		}
@@ -95,22 +120,41 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovin
 
 void CSkeleton::Render()
 {
-	animation_set->at(state)->Render(x, y, nx);
+	if (stop)
+	{
+		int currentFrame = animation_set->at(0)->GetCurrentFrame();
+		animation_set->at(0)->SetCurrentFrame(currentFrame);
+		animation_set->at(0)->RenderByFrame(currentFrame, nx, x, y);
+	}
+	else		
+		animation_set->at(0)->Render(x, y, nx);
+
+	// Rendering bones
+	for (UINT i = 0; i < bones.size(); i++)
+	{
+		bones.at(i)->Render();
+		//DebugOut(L"How many bones? :%d\n", (int)bones.size());
+	}
 }
 
-CSkeleton::CSkeleton(float x, float y)
+CSkeleton::CSkeleton()
 {
-	this->start_x = x;
-	this->start_y = y;
 	this->healthPoint = 2;
-	SetVisible(false);
-	SetState(SKELETON_STATE_DANCING);
-	this->vx = 0.03f;
+	SetState(SKELETON_STATE_IDLE);
 }
 
 void CSkeleton::SetState(int state)
 {
 	CGameObject::SetState(state);
+	switch (state)
+	{
+	case SKELETON_STATE_IDLE:
+		vx = 0;
+		vy = 0;
+		break;
+	case SKELETON_STATE_ACTIVE:
+		break;
+	}
 }
 
 CSkeleton* CSkeleton::__instance = NULL;

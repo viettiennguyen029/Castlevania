@@ -471,24 +471,6 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		x += min_tx * dx + nx * 0.2f;
 		y += min_ty * dy + ny * 0.2f;
 
-
-		// Activating Enemies when Simon has reached the destination in scene 4
-		if (CGame::GetInstance()->GetSceneId() == 4)
-		{
-			if (x < 556) // Activing ghost
-			{
-				CGhost* ghost = CGhost::GetInstance();
-				if (ghost->healthPoint > 0) ghost->SetVisible(true);
-			}
-
-			if (x<130) // Set Skeleton visible
-			{
-				CSkeleton* skeleton = CSkeleton::GetInstance();
-				if (skeleton->healthPoint > 0) skeleton->SetVisible(true);
-			}
-		}
-		
-
 		/*
 		Collision logic with others objects
 		*/

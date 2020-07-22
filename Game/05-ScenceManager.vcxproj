@@ -130,7 +130,7 @@
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Black_Knight.cpp" />
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="Bones.cpp" />
+    <ClCompile Include="Bone.cpp" />
     <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="BreakWall.cpp" />
     <ClCompile Include="Brick.cpp" />
@@ -187,7 +187,7 @@
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Black_Knight.h" />
     <ClInclude Include="Board.h" />
-    <ClInclude Include="Bones.h" />
+    <ClInclude Include="Bone.h" />
     <ClInclude Include="Boomerang.h" />
     <ClInclude Include="BreakWall.h" />
     <ClInclude Include="Brick.h" />

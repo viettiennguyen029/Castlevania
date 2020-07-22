@@ -316,8 +316,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 
 	case OBJECT_TYPE_SKELETON:
 	{
-		obj = CSkeleton::GetInstance();
-		//obj = new CSkeleton(x, y);
+		obj = new CSkeleton();
 		break;
 	}
 
@@ -328,16 +327,14 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		break;
 	}
 
-	case OBJECT_TYPE_BONES:
+	/*case OBJECT_TYPE_BONES:
 	{
-		obj = CBones::GetInstance();
-		//obj = new CBones();
+		obj = new CBones();
 		break;
-	}
+	}*/
 	case OBJECT_TYPE_GHOST:
 	{
-		//obj = new CGhost();
-		obj = CGhost::GetInstance();
+		obj = new CGhost();
 		break;
 	}
 
@@ -747,7 +744,7 @@ void CPlayScene::Update(DWORD dt)
 	player->Update(dt, &coObjects);
 	
 
-	// check if player is using stop watch
+	// check if Simon is using stop watch
 	if (CSimon::GetInstance()->StopWatch())
 	{
 		if (stopMoving_start < STOP_WATCH_IDLE_TIME)

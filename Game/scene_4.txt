@@ -1,7 +1,7 @@
 [PLAYER]
 # type	x	y	ani_set_id
-0	705	160	0
-#0	130	167	0
+#0	705	160	0
+0	255	160	0
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
