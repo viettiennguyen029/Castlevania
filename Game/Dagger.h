@@ -10,6 +10,6 @@ class CDagger: public CGameObject
 public:
 	CDagger();
 	virtual void Render();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving = false);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

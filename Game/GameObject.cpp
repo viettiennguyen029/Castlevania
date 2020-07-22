@@ -20,7 +20,7 @@ CGameObject::CGameObject()
 	score = 0;
 }
 
-void CGameObject::Update(DWORD dt,vector<LPGAMEOBJECT>* coObjects)
+void CGameObject::Update(DWORD dt,vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	this->dt = dt;
 	dx = vx*dt;

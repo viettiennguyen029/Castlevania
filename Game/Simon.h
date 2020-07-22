@@ -104,6 +104,7 @@ private:
 	bool onMovingPlatform = false;
 	bool atuo_crouching = false;
 	bool autoWalk = false;
+	bool using_stop_watch = false;
 
 	DWORD discolorationTime = 0;
 	DWORD auto_crouching_start = 0;
@@ -120,6 +121,9 @@ public:
 	
 	int GetSubWeapon() { return this->currentSubWeapon; }
 	void SetSubWeapon(int weapon) { this->currentSubWeapon = weapon; }
+
+	bool StopWatch() { return this->using_stop_watch; }
+	void SetStopWatch(bool watch) { this->using_stop_watch = watch; }
 
 	int GetHeartQuantity() { return this->heart_quantity; }
 

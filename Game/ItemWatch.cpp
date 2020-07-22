@@ -1,16 +1,15 @@
-#include "ItemAxe.h"
+#include "ItemWatch.h"
 #include "Brick.h"
 
-ItemAxe::ItemAxe()
+ItemWatch::ItemWatch()
 {
 	this->visible = false;
 }
 
-void ItemAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
+void ItemWatch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
-
-	vy += ITEM_GRAVITY * dt;				// simple fall down	
+	vy += ITEM_GRAVITY * dt;				// simple fall down
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -52,15 +51,15 @@ void ItemAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving 
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void ItemAxe::Render()
+void ItemWatch::Render()
 {
-	animation_set->at(state)->Render(x, y, 1);
+	animation_set->at(0)->Render(x, y, -1);
 }
 
-void ItemAxe::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void ItemWatch::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
-	right = x + ITEM_AXE_BBOX_WIDTH;
-	bottom = y + ITEM_AXE_BBOX_HEIGHT;
+	right = x + ITEM_WATCH_BBOX_WIDTH;
+	bottom = y + ITEM_WATCH_BBOX_HEIGHT;
 }

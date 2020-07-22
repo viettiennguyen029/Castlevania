@@ -9,7 +9,7 @@ class ItemBigHeart:public CGameObject
 	// DWORD timeAppear = -1;
 public:
 	ItemBigHeart();
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving = false);
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

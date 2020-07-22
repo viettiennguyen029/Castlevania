@@ -310,16 +310,40 @@ void CSimon::ProceedOverlapping()
 
 		else if (dynamic_cast<ItemAxe*>(ovObj))
 		{
-			DebugOut(L"[ITEMS] Holy water Collected \n");
+			DebugOut(L"[ITEMS] Axe Collected \n");
 			ovObj->SetVisible(false);
 			this->currentSubWeapon = int(SubWeapon::AXE);			
 		}
 
-		else if (dynamic_cast<ItemMoneyBag*>(ovObj))
+		else if (dynamic_cast<ItemWatch*>(ovObj))
 		{
-			DebugOut(L"[ITEMS] Money Bag Collected \n");
-			ovObj->SetVisible(false);
-		}		
+			DebugOut(L"[ITEMS] Stop watch Collected \n");
+ovObj->SetVisible(false);
+this->currentSubWeapon = int(SubWeapon::STOP_WATCH);
+		}
+
+		else if (dynamic_cast<ItemMoneyBagRed*>(ovObj))
+		{
+		DebugOut(L"[ITEMS] Money Bag Collected \n");
+		ovObj->SetVisible(false);
+		PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_100, x + 32, y + 5);
+		}
+
+		else if (dynamic_cast<ItemMoneyBagPurple*>(ovObj))
+		{
+		DebugOut(L"[ITEMS] Money Bag Collected \n");
+		ovObj->SetVisible(false);
+		PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_400, x + 32, y + 5);
+		}
+
+		else if (dynamic_cast<ItemMoneyBagYellow*>(ovObj))
+		{
+		DebugOut(L"[ITEMS] Money Bag Collected \n");
+		ovObj->SetVisible(false);
+		PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_700, x + 32, y + 5);
+		}
+
+
 	}
 }
 
@@ -330,21 +354,23 @@ CSimon::CSimon(float x, float y) :CGameObject()
 
 	this->x = x;
 	this->y = y;
-	
+
+	this->heart_quantity = 5;
+
 	SetState(SIMON_STATE_IDLE);
 
 	this->currentSubWeapon = int(SubWeapon::UNKNOWN);
-    whip = new CWhip();
+	whip = new CWhip();
 }
 
 void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 {
 	// Calculate x,y
 	CGameObject::Update(dt);
-	
+
 	// Simple fall down
 	vy += SIMON_GRAVITY * dt;
-	
+
 	// Simple logic with screen edge
 	if (vx < 0 && x < 0) x = 0;
 
@@ -355,7 +381,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		{
 			vx = 0;
 			discolorationTime += dt;
-		}			
+		}
 		else
 		{
 			powerUp = false;
@@ -367,8 +393,8 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	ovObjects.clear();
 	for (UINT i = 0; i < coObjects->size(); ++i)
 	{
-		if (this->IsOverlapping(coObjects->at(i)))		
-			ovObjects.push_back(coObjects->at(i));				
+		if (this->IsOverlapping(coObjects->at(i)))
+			ovObjects.push_back(coObjects->at(i));
 	}
 
 	if (ovObjects.size() != 0)
@@ -388,16 +414,24 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		ProceedAutoWalk();
 
 	// Checking subweapon
-	if (subWeapon )
+	if (subWeapon)
 	{
-		if (heart_quantity <= 0) subWeapon = false;
-
-		if (lastFrameAttack())
+		if (currentSubWeapon ==(int) SubWeapon::STOP_WATCH)
 		{
-			heart_quantity -= 1;
-			this->weapons->Select(int(currentSubWeapon));
-			subWeapon = false;
+			using_stop_watch = true;
 		}
+		else
+		{
+			if (heart_quantity <= 0) subWeapon = false;
+
+			if (lastFrameAttack())
+			{
+				heart_quantity -= 1;
+				this->weapons->Select(int(currentSubWeapon));
+				subWeapon = false;
+			}
+		}
+		
 	}
 
 	vector <LPCOLLISIONEVENT> coEvents;
@@ -539,7 +573,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			else if (dynamic_cast<ItemChain*>(e->obj))
 			{
-
+				
 				if (e->nx != 0 || e->ny != 0)
 				{
 					this->powerUp = true;
@@ -585,29 +619,60 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			else if (dynamic_cast<ItemAxe*>(e->obj))
 			{
-			DebugOut(L"[ITEMS] Holy water Collected \n");
+			DebugOut(L"[ITEMS] Axe Collected \n");
 			if (e->nx != 0 || e->ny != 0)
-				{
+			{
 				e->obj->SetVisible(false);
 				this->currentSubWeapon = int(SubWeapon::AXE);
-				}
 			}
+			}
+
+			else if (dynamic_cast<ItemWatch*>(e->obj))
+			{
+			DebugOut(L"[ITEMS] Stop watch Collected \n");
+			if (e->nx != 0 || e->ny != 0)
+			{
+				y = y - 0.4f;
+				e->obj->SetVisible(false);
+				this->currentSubWeapon = int(SubWeapon::STOP_WATCH);
+			}
+			}
+
 			
-			else if (dynamic_cast<ItemMoneyBag*>(e->obj))
+			else if (dynamic_cast<ItemMoneyBagRed*>(e->obj))
 			{
 				DebugOut(L"[ITEMS] Money Bag Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
 					e->obj->SetVisible(false);	
-					PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_100, e->obj->x + 5, e->obj->y+ 2);
-			
+					PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_100, this->x+ 32, this->y+ 10);			
 				}
-			}		
+			}	
+
+			else if (dynamic_cast<ItemMoneyBagPurple*>(e->obj))
+			{
+				DebugOut(L"[ITEMS] Money Bag Collected \n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+				e->obj->SetVisible(false);
+				PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_400, this->x + 32, this->y + 10);
+				}
+			}
+
+			else if (dynamic_cast<ItemMoneyBagYellow*>(e->obj))
+			{
+				DebugOut(L"[ITEMS] Money Bag Collected \n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+				e->obj->SetVisible(false);
+				PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_700, this->x + 32, this->y + 10);
+				}
+			}
 
 			else if (dynamic_cast<ItemCrown*>(e->obj))
 			{
-			DebugOut(L"[ITEMS] (+2000) \n");
-			if (e->nx != 0 || e->ny != 0)
+				DebugOut(L"[ITEMS] (+2000) \n");
+				if (e->nx != 0 || e->ny != 0)
 				{
 				e->obj->SetVisible(false);
 				PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_2000, e->obj->x + 5, e->obj->y + 2);
@@ -730,6 +795,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_IDLE:
 	{
+		subWeapon = false;
 		isStanding = true;
 		if (onMovingPlatform == true) { ; }
 		else vx = 0;
@@ -798,8 +864,6 @@ void CSimon::SetState(int state)
 	{
 		vx = 0;
 		subWeapon = true;
-		animation_set->at(SIMON_ANI_THROW)->Reset();
-		animation_set->at(SIMON_ANI_THROW)->SetAniStartTime(GetTickCount());
 
 		animation_set->at(SIMON_ANI_ATTACK)->Reset();
 		animation_set->at(SIMON_ANI_ATTACK)->SetAniStartTime(GetTickCount());
@@ -868,7 +932,7 @@ void CSimon::Render()
 	{
 		ani = SIMON_ANI_IDLE;
 	}
-	else if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_THROW)
+	else if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_THROW && currentSubWeapon != (int)SubWeapon::STOP_WATCH)
 	{
 		if (onStairs == 1)
 		{
@@ -883,7 +947,6 @@ void CSimon::Render()
 
 	}
 	else if (state == SIMON_STATE_SIT_ATTACK) ani = SIMON_ANI_SIT_ATTACK;
-	else if (state == SIMON_STATE_THROW) ani = SIMON_ANI_THROW;
 	else if (state == SIMON_STATE_JUMP) ani = SIMON_ANI_JUMP;
 	else if (state == SIMON_STATE_SIT) ani = SIMON_ANI_SIT;
 	else if (state == SIMON_STATE_DEFLECT) ani = SIMON_ANI_DEFLECT;

@@ -14,7 +14,7 @@ void CMovingPlatform::Render()
 	RenderBoundingBox();
 }
 
-void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
 

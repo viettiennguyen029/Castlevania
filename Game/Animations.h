@@ -40,6 +40,7 @@ public:
 	CAnimation(int defaultTime = 100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
 	void Add(int spriteId, DWORD time = 0);
 	int GetCurrentFrame() { return currentFrame; }
+	void SetCurrentFrame(int frame) { this->currentFrame = frame; }
 	void Render(float x, float y, int nx =1, int alpha = 255);
 	void RenderByFrame(int fameID, int nx, float x, float y, int alpha = 255); // Specific function for rendering whip
 	void Reset() { currentFrame = -1; }

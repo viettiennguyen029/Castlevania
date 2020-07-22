@@ -13,7 +13,7 @@ void CCandle::Render()
 	// RenderBoundingBox();
 }
 
-void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+void CCandle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMoving)
 {
 	if (state== CANDLE_DESTROYED 
 		&& animation_set->at(state)->IsOver(CANDLE_DESTROYED_EFFECT_TIME))

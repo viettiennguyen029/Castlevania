@@ -6,7 +6,7 @@ ItemInvisibility::ItemInvisibility()
 	this->visible = false;
 }
 
-void ItemInvisibility::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void ItemInvisibility::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
 

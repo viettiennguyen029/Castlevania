@@ -1,13 +1,13 @@
 ﻿#include "Whip.h"
 #include "Candle.h"
-#define WHIP_ANI_SET 36
+#define WHIP_ANI_SET 30
 
 CWhip::CWhip():CGameObject()
 {	
 	SetState(LONG_CHAIN);
 }
 
-void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
 	SetDamage(state);
 

@@ -1,15 +1,17 @@
 #pragma once
 #include "GameObject.h"
+#include "Brick.h"
 
-#define ITEM_CHAIN_BBOX_WIDTH		16
-#define ITEM_CHAIN_BBOX_HEIGHT		16
 
-class ItemChain :public CGameObject
+#define ITEM_MONEY_BAG_BBOX_WIDTH		12
+#define ITEM_MONEY_BAG_BBOX_HEIGHT	14
+
+class ItemMoneyBagYellow :public CGameObject
 {
-	DWORD timeAppear = -1;
 public:
-	ItemChain();
+	ItemMoneyBagYellow();
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving = false);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
+

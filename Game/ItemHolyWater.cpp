@@ -6,7 +6,7 @@ ItemHolyWater::ItemHolyWater()
 	SetVisible(false);
 }
 
-void ItemHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void ItemHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
 	CGameObject::Update(dt);
 

@@ -35,19 +35,21 @@
 
 #Small candle	extra1: item, extra 2: state
 2	96	153	2	81	1
-2	196	153	2	4	1
+2	196	153	2	86	1
 2	150	57	2	10	1
 
 #ITEMS
 #Big heart
-4	206	153	41
+#4	206	153	41
 4	44	85	41
 #Small heart
 44	40	57	44
 #Boomerang
 81	76	153	45
-#Money bag
-10	150	55	46	0
+#Money bag red
+10	150	55	46
+#Stop watch
+86	96	153	51
 
 # DAGGER
 7	46	145	43
@@ -55,13 +57,13 @@
 71	40	145	71
 
 #Black Knight
-#8	44	85	5	4
+8	44	85	5	4
 
 #Bat
-#9	40	57	6	44
+9	40	57	6	44
 
 #Crown item
-40	130	240	40
+40	130	232	40
 # WHIP
 #3	0	0	3
 

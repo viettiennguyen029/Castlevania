@@ -9,7 +9,6 @@ protected:
 	CKeyEventHandler * key_handler;
 	int id;
 	LPCWSTR sceneFilePath;	
-	LPCWSTR releaseScene;
 
 public: 
 	CScene(int id, LPCWSTR filePath);

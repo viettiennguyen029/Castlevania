@@ -31,7 +31,7 @@ void CRaven::SetState(int state)
 	}
 }
 
-void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
 	CGameObject::Update(dt);
 

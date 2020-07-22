@@ -49,10 +49,13 @@ enum class ItemType
 	DAGGER = 80,
 	BOOMERANG = 81,
 	HOLY_WATER = 82,
-	INVISIBILITY	=83,
+	INVISIBILITY = 83,
 	AXE = 84,
-	MEAT=85,
-	MONEY_BAG = 10
+	MEAT = 85,
+	MONEY_BAG_RED = 10,
+	MONEY_BAG_PURPLE = 11,
+	MONEY_BAG_YELLOW = 12,
+	STOP_WATCH = 86
 };
 
 
@@ -142,7 +145,7 @@ public:
 		float &rdy);
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL,bool stopMoving = false);
 	virtual void Render() = 0;
 	virtual void ResetAnimation();
 	virtual void SetState(int state) { this->state = state; }

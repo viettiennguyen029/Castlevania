@@ -10,7 +10,7 @@ void ItemCrown::Render()
 	animation_set->at(0)->Render(x, y, 1);
 }
 
-void ItemCrown::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void ItemCrown::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
 

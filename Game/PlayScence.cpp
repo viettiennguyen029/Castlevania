@@ -41,7 +41,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_ITEM_BIG_HEART			4
 #define OBJECT_TYPE_ITEM_SMALL_HEART	44
 #define OBJECT_TYPE_ITEM_CHAIN				5
-#define OBJECT_TYPE_ITEM_MONEY_BAG		10
+
+#define OBJECT_TYPE_ITEM_MONEY_BAG_RED			10
+#define OBJECT_TYPE_ITEM_MONEY_BAG_PURPLE	11
+#define OBJECT_TYPE_ITEM_MONEY_BAG_YELLOW	12
 
 #define OBJECT_TYPE_ITEM_DAGGER				80
 #define OBJECT_TYPE_ITEM_BOOMERANG	81
@@ -49,6 +52,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_ITEM_INVISIBILITY		83
 #define OBJECT_TYPE_ITEM_AXE					84
 #define OBJECT_TYPE_ITEM_MEAT					85
+#define OBJECT_TYPE_ITEM_WATCH				86
 
 #define OBJECT_TYPE_DAGGER					7
 #define OBJECT_TYPE_BOOMERANG			71
@@ -79,6 +83,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):	CScene(id, filePath)
 #define OBJECT_TYPE_POINT_EFFECTS			92
 
 #define MAX_SCENE_LINE 1024
+#define STOP_WATCH_IDLE_TIME	3000
 
 void CPlayScene::_ParseSection_SCENE_TEXTURES(string line)
 {
@@ -244,7 +249,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_HOLY_WATER:
 	{
 		obj = new CHolyWater();
-		//obj =  CHolyWater::GetInstance();
 		CSubWeapon::GetInstance()->Add((int)SubWeapon::HOLYWATER, obj);
 		break;
 	}
@@ -416,13 +420,27 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		break;
 	}
 
-	case OBJECT_TYPE_ITEM_MONEY_BAG:
+	case OBJECT_TYPE_ITEM_MONEY_BAG_RED:
 	{
-		int state = atoi(tokens[4].c_str());
-		obj = new ItemMoneyBag();
+		obj = new ItemMoneyBagRed();
 		obj->SetVisible(false);
-		obj->SetState(state);
-		items->AddItem((int)ItemType::MONEY_BAG, obj);
+		items->AddItem((int)ItemType::MONEY_BAG_RED, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_MONEY_BAG_PURPLE:
+	{
+		obj = new ItemMoneyBagPurple();
+		obj->SetVisible(false);
+		items->AddItem((int)ItemType::MONEY_BAG_PURPLE, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_MONEY_BAG_YELLOW:
+	{
+		obj = new ItemMoneyBagYellow();
+		obj->SetVisible(false);
+		items->AddItem((int)ItemType::MONEY_BAG_YELLOW, obj);
 		break;
 	}
 
@@ -431,6 +449,14 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		obj = new ItemBoomerang();
 		obj->SetVisible(false);
 		items->AddItem((int)ItemType::BOOMERANG, obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ITEM_WATCH:
+	{
+		obj = new ItemWatch();
+		obj->SetVisible(false);
+		items->AddItem((int)ItemType::STOP_WATCH, obj);
 		break;
 	}
 
@@ -532,50 +558,49 @@ void CPlayScene::_ParseSection_SCENE_TILE_MAP(string line)
 	this->offset_y += TILE_HEIGHT;
 }
 
-void CPlayScene::_ReleaseSection_SCENE_TEXTURES(string line)
-{
-	vector<string> tokens = split(line);	
-	
-	for (int i = 0; i < tokens.size(); i++)
-	{
-		int texID = atoi(tokens[i].c_str());
-		CTextures::GetInstance()->Release(texID);
-	}
-		
-}
+//void CPlayScene::_ReleaseSection_SCENE_TEXTURES(string line)
+//{
+//	vector<string> tokens = split(line);	
+//	
+//	for (int i = 0; i < tokens.size(); i++)
+//	{
+//		int texID = atoi(tokens[i].c_str());
+//		CTextures::GetInstance()->Release(texID);
+//	}		
+//}
 
-void CPlayScene::_ReleaseSection_SCENE_SPRITES(string line)
-{
-	vector<string> tokens = split(line);
+//void CPlayScene::_ReleaseSection_SCENE_SPRITES(string line)
+//{
+//	vector<string> tokens = split(line);
+//
+//	for (int i = 0; i < tokens.size(); i++)
+//	{
+//		int spriteID = atoi(tokens[i].c_str());
+//		CSprites::GetInstance()->Release(spriteID);
+//	}
+//}
 
-	for (int i = 0; i < tokens.size(); i++)
-	{
-		int spriteID = atoi(tokens[i].c_str());
-		CSprites::GetInstance()->Release(spriteID);
-	}
-}
+//void CPlayScene::_ReleaseSection_SCENE_ANIMATIONS(string line)
+//{
+//	vector<string> tokens = split(line);
+//
+//	for (int i = 0; i < tokens.size(); i++)
+//	{
+//		int aniID = atoi(tokens[i].c_str());
+//		CAnimations::GetInstance()->Release(aniID);
+//	}
+//}
 
-void CPlayScene::_ReleaseSection_SCENE_ANIMATIONS(string line)
-{
-	vector<string> tokens = split(line);
-
-	for (int i = 0; i < tokens.size(); i++)
-	{
-		int aniID = atoi(tokens[i].c_str());
-		CAnimations::GetInstance()->Release(aniID);
-	}
-}
-
-void CPlayScene::_ReleaseSection_SCENE_ANIMATION_SETS(string line)
-{
-	vector<string> tokens = split(line);
-
-	for (int i = 0; i < tokens.size(); i++)
-	{
-		int ani_set_id = atoi(tokens[i].c_str());
-		CAnimationSets::GetInstance()->Release(ani_set_id);
-	}
-}
+//void CPlayScene::_ReleaseSection_SCENE_ANIMATION_SETS(string line)
+//{
+//	vector<string> tokens = split(line);
+//
+//	for (int i = 0; i < tokens.size(); i++)
+//	{
+//		int ani_set_id = atoi(tokens[i].c_str());
+//		CAnimationSets::GetInstance()->Release(ani_set_id);
+//	}
+//}
 
 
 void CPlayScene::Load()
@@ -708,7 +733,7 @@ void CPlayScene::Update(DWORD dt)
 	// Get collide-able objects in the grid 
 	for (size_t i = 0; i < updateObject.size(); i++)
 	{
-		if (updateObject[i]->isVisible() == true)
+		if (updateObject[i]->isVisible() == true )
 			coObjects.push_back(updateObject[i]);
 	}
 	//DebugOut(L"Object: %d, Object update: %d\n", objects.size(), updateObject.size());
@@ -717,13 +742,34 @@ void CPlayScene::Update(DWORD dt)
 	for (size_t i = 0; i < updateObject.size(); i++)
 	{
 		if (updateObject[i]->isVisible() == true)
-		updateObject[i]->Update(dt, &coObjects);
+			updateObject[i]->Update(dt, &coObjects, stopMoving);				
 	}
 	player->Update(dt, &coObjects);
+	
+
+	// check if player is using stop watch
+	if (CSimon::GetInstance()->StopWatch())
+	{
+		if (stopMoving_start < STOP_WATCH_IDLE_TIME)
+		{
+			stopMoving = true;
+			stopMoving_start += dt;
+		}
+		else
+		{
+			stopMoving = false;
+			stopMoving_start = 0;
+			player->SetStopWatch(false);
+			player->SetState(SIMON_STATE_IDLE);
+		}
+	}
+	else
+		stopMoving = false;
 
 	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 	HUD->Update(dt);
+
 }
 
 void CPlayScene::Render()
@@ -867,28 +913,33 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		
 	case DIK_Q: // Use Dagger
 	{
-		simon->SetSubWeapon(7);
+		simon->SetSubWeapon(int(SubWeapon::DAGGER));
 		break;
 	}
 
 	case DIK_W: // Use Boomerang
 	{
-		simon->SetSubWeapon(71);
+		simon->SetSubWeapon(int(SubWeapon::BOOMERANG));
 		break;
 	}
 
 	case DIK_E: // Use Holy water
 	{
-		simon->SetSubWeapon(72);
+		simon->SetSubWeapon(int(SubWeapon::HOLYWATER));
 		break;
 	}
 
 	case DIK_R: // Use Axe
 	{
-		simon->SetSubWeapon(73);
+		simon->SetSubWeapon(int(SubWeapon::AXE));
 		break;
 	}
 
+	case DIK_T: // Use Stop Watch
+	{
+		simon->SetSubWeapon(int(SubWeapon::STOP_WATCH));
+		break;
+	}
 
 	case DIK_1:
 		CGame::GetInstance()->SwitchScene(1);
@@ -940,7 +991,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		return;
 
 	if (simon->GetState() == SIMON_STATE_THROW &&
-		simon->animation_set->at(SIMON_STATE_THROW)->IsOver(SIMON_ATTACK_TIME) == false)
+		simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false)
 		return;
 
 	if (simon->GetState() == SIMON_STATE_ATTACK &&

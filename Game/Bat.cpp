@@ -14,11 +14,18 @@ CBat::CBat(float x, float y) : CGameObject()
 void CBat::Render()
 {
 	int ani = -1;
-	if (vx == 0)
+	if (vx == 0 && state == BAT_STATE_IDLE)
 		ani = 0;
-	else
-		ani = 1;
-	animation_set->at(ani)->Render(x, y, nx);
+	else ani = 1;
+
+	if (stop)
+	{
+		int currentFrame = animation_set->at(ani)->GetCurrentFrame();
+		animation_set->at(ani)->SetCurrentFrame(currentFrame);
+		animation_set->at(ani)->RenderByFrame(currentFrame, nx, x, y);
+	}
+	else		
+		animation_set->at(ani)->Render(x, y, nx);	
 }
 
 void CBat::SetState(int state)
@@ -46,8 +53,19 @@ void CBat::SetState(int state)
 	}
 }
 
-void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
+
+	if (stopMoving)
+	{
+		stop = true;
+		return;
+	}
+	else
+	{
+		stop = false;
+	}
+
 	// Activating Bat logic
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);

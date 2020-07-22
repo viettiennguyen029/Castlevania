@@ -15,7 +15,7 @@ class CBreakWall: public CGameObject
 {
 public:
 	CBreakWall(float x, float y);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL) {};
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL, bool stopMoving = false) {};
 	void Destroy();
 	void SetState(int state);
 	void Render();

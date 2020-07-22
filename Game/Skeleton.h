@@ -19,7 +19,7 @@ class CSkeleton : public CGameObject
 	bool canThrowBones = false;
 public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL, bool stopMoving = false);
 	virtual void Render();
 
 	CSkeleton(float x = 0.0f, float y = 0.0f);

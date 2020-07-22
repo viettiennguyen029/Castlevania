@@ -9,8 +9,17 @@ void CBlack_Knight::GetBoundingBox(float& left, float& top, float& right, float&
 	bottom = top + BLACK_KNIGHT_BBOX_HEIGHT;
 }
 
-void CBlack_Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CBlack_Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
+	if (stopMoving)
+	{
+		stop = true;
+		return;
+	}
+	else
+	{
+		stop = false;
+	}
 	CGameObject::Update(dt);
 	vy += 0.0018f * dt;
 	vx = (nx > 0) ? BLACK_KNIGHT_WALKING_SPEED : -BLACK_KNIGHT_WALKING_SPEED;
@@ -76,7 +85,15 @@ void CBlack_Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBlack_Knight::Render()
 {
-	animation_set->at(state)->Render(x, y,nx);
+	if (stop)
+	{
+		int currentFrame = animation_set->at(state)->GetCurrentFrame();
+		animation_set->at(state)->SetCurrentFrame(currentFrame);
+		animation_set->at(state)->RenderByFrame(currentFrame, nx, x, y);
+	}
+	else
+		animation_set->at(state)->Render(x, y, nx);
+	
 }
 
 CBlack_Knight::CBlack_Knight(float x, float y)

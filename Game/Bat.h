@@ -14,11 +14,12 @@
 class CBat:public CGameObject
 {
 	float start_x, start_y; 
+	bool stop = false;
 public:
 	CBat(float x=0.0f,float y=0.0f); 
 	virtual void Render();
 	virtual void SetState(int state);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL, bool stopMoving = false);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
 

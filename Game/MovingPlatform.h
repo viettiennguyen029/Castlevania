@@ -9,7 +9,7 @@ class CMovingPlatform: public CGameObject
 public:
     CMovingPlatform();
     virtual void Render();
-    virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+    virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving = false);
     virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 
 };

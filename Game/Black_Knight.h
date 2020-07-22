@@ -11,11 +11,13 @@
 
 class CBlack_Knight : public CGameObject	
 {
+private:
+	bool stop = false;
 	float start_x;
 	float start_y;
 public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects= NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects= NULL, bool stopMoving = false);
 	virtual void Render();
 
 	CBlack_Knight(float x=0.0f, float y=0.0f);

@@ -49,7 +49,7 @@ void CHolyWater::SetState(int state)
 	
 }
 
-void CHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
 	CGameObject::Update(dt);
 	

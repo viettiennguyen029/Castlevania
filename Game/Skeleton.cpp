@@ -9,7 +9,7 @@ void CSkeleton::GetBoundingBox(float& left, float& top, float& right, float& bot
 	bottom = top + SKELETON_BBOX_HEIGHT;
 }
 
-void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
 

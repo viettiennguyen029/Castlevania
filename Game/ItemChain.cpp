@@ -11,7 +11,7 @@ void ItemChain::Render()
 	animation_set->at(0)->Render(x, y, -1);
 }
 
-void ItemChain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void ItemChain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
 	vy += ITEM_GRAVITY * dt;				// simple fall down

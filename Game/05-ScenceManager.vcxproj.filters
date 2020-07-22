@@ -10,14 +10,8 @@
     <Filter Include="Map">
       <UniqueIdentifier>{42520ce2-5265-4ca2-9b25-6909adbd5b54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects">
-      <UniqueIdentifier>{ade01cec-59f4-4ef4-aa78-915e6eced053}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Player">
       <UniqueIdentifier>{f8f09e29-d6e3-4890-a79a-0e2a4dd22083}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hidden Objects">
-      <UniqueIdentifier>{d6b43887-14c4-4199-a234-261ef22720a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Enemies">
       <UniqueIdentifier>{c12dded8-ba63-4c14-8cf2-be85543fcc1b}</UniqueIdentifier>
@@ -36,6 +30,9 @@
     </Filter>
     <Filter Include="Spatial Partition">
       <UniqueIdentifier>{f9141028-17b2-4439-88bc-3054fb1237e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Static Objects">
+      <UniqueIdentifier>{ade01cec-59f4-4ef4-aa78-915e6eced053}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,13 +58,10 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Brick.cpp">
-      <Filter>Objects</Filter>
+      <Filter>Static Objects</Filter>
     </ClCompile>
     <ClCompile Include="Candle.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Objects</Filter>
+      <Filter>Static Objects</Filter>
     </ClCompile>
     <ClCompile Include="ItemBigHeart.cpp">
       <Filter>Items</Filter>
@@ -90,15 +84,6 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Map</Filter>
     </ClCompile>
-    <ClCompile Include="Portal.cpp">
-      <Filter>Hidden Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="StairBottom.cpp">
-      <Filter>Hidden Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="StairTop.cpp">
-      <Filter>Hidden Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Bat.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
@@ -108,11 +93,8 @@
     <ClCompile Include="ItemBoomerang.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-    <ClCompile Include="ItemMoneyBag.cpp">
-      <Filter>Items</Filter>
-    </ClCompile>
     <ClCompile Include="MovingPlatform.cpp">
-      <Filter>Objects</Filter>
+      <Filter>Static Objects</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Boomerang.cpp">
@@ -124,14 +106,8 @@
     <ClCompile Include="Code.cpp">
       <Filter>HUD</Filter>
     </ClCompile>
-    <ClCompile Include="VariousStair.cpp">
-      <Filter>Hidden Objects</Filter>
-    </ClCompile>
     <ClCompile Include="ItemSmallHeart.cpp">
       <Filter>Items</Filter>
-    </ClCompile>
-    <ClCompile Include="BreakWall.cpp">
-      <Filter>Hidden Objects</Filter>
     </ClCompile>
     <ClCompile Include="WallPieces.cpp">
       <Filter>Effects</Filter>
@@ -141,9 +117,6 @@
     </ClCompile>
     <ClCompile Include="Zombie.cpp">
       <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Door.cpp">
-      <Filter>Hidden Objects</Filter>
     </ClCompile>
     <ClCompile Include="HunchBack.cpp">
       <Filter>Enemies</Filter>
@@ -193,6 +166,39 @@
     <ClCompile Include="PointEffects.cpp">
       <Filter>Effects</Filter>
     </ClCompile>
+    <ClCompile Include="ItemMoneyBagRed.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemMoneyBagPurple.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemMoneyBagYellow.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Frameworks</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Static Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Static Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="StairBottom.cpp">
+      <Filter>Static Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="StairTop.cpp">
+      <Filter>Static Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="VariousStair.cpp">
+      <Filter>Static Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakWall.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemWatch.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -220,13 +226,10 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Brick.h">
-      <Filter>Objects</Filter>
+      <Filter>Static Objects</Filter>
     </ClInclude>
     <ClInclude Include="Candle.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Objects</Filter>
+      <Filter>Static Objects</Filter>
     </ClInclude>
     <ClInclude Include="ItemBigHeart.h">
       <Filter>Items</Filter>
@@ -249,15 +252,6 @@
     <ClInclude Include="Tile.h">
       <Filter>Map</Filter>
     </ClInclude>
-    <ClInclude Include="Portal.h">
-      <Filter>Hidden Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="StairBottom.h">
-      <Filter>Hidden Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="StairTop.h">
-      <Filter>Hidden Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Bat.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -267,11 +261,8 @@
     <ClInclude Include="ItemBoomerang.h">
       <Filter>Items</Filter>
     </ClInclude>
-    <ClInclude Include="ItemMoneyBag.h">
-      <Filter>Items</Filter>
-    </ClInclude>
     <ClInclude Include="MovingPlatform.h">
-      <Filter>Objects</Filter>
+      <Filter>Static Objects</Filter>
     </ClInclude>
     <ClInclude Include="Boomerang.h">
       <Filter>Weapons</Filter>
@@ -282,14 +273,8 @@
     <ClInclude Include="Code.h">
       <Filter>HUD</Filter>
     </ClInclude>
-    <ClInclude Include="VariousStair.h">
-      <Filter>Hidden Objects</Filter>
-    </ClInclude>
     <ClInclude Include="ItemSmallHeart.h">
       <Filter>Items</Filter>
-    </ClInclude>
-    <ClInclude Include="BreakWall.h">
-      <Filter>Hidden Objects</Filter>
     </ClInclude>
     <ClInclude Include="WallPieces.h">
       <Filter>Effects</Filter>
@@ -299,9 +284,6 @@
     </ClInclude>
     <ClInclude Include="Zombie.h">
       <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Door.h">
-      <Filter>Hidden Objects</Filter>
     </ClInclude>
     <ClInclude Include="HunchBack.h">
       <Filter>Enemies</Filter>
@@ -350,6 +332,39 @@
     </ClInclude>
     <ClInclude Include="PointEffects.h">
       <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemMoneyBagRed.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemMoneyBagPurple.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemMoneyBagYellow.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Frameworks</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Static Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Static Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="StairBottom.h">
+      <Filter>Static Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="StairTop.h">
+      <Filter>Static Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="VariousStair.h">
+      <Filter>Static Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakWall.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemWatch.h">
+      <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

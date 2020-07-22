@@ -6,7 +6,7 @@ CWallPiece::CWallPiece()
 	SetVisible(false);
 }
 
-void CWallPiece::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+void CWallPiece::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMoving)
 {
 	CGameObject::Update(dt);
 	vy += WALLPIECES_GRAVITY * dt;

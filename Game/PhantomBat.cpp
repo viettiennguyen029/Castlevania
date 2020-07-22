@@ -80,7 +80,7 @@ void CPhantomBat::GetBoundingBox(float& left, float& top, float& right, float& b
 	bottom = y + PHANTOM_BAT_BBOX_HEIGHT;
 }
 
-void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
 	CGameObject::Update(dt);
 

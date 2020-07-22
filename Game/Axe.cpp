@@ -14,7 +14,7 @@ void CAxe::Render()
 	animation_set->at(state)->Render(x, y, nx);
 }
 
-void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
 	CGameObject::Update(dt);
 

@@ -9,7 +9,7 @@ ItemSmallHeart::ItemSmallHeart()
 	this->vx_variability = 0.0004f;
 }
 
-void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {	
 	CGameObject::Update(dt);
 

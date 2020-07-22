@@ -16,7 +16,7 @@ void PointEffect::Render()
 	//RenderBoundingBox();
 }
 
-void PointEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+void PointEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMoving)
 {
 	CGameObject::Update(dt);
 	if (visible)

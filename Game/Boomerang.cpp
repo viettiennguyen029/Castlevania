@@ -45,7 +45,7 @@ void CBoomerang::GetBoundingBox(float& left, float& top, float& right, float& bo
 	bottom = y + BOOMERANG_BBOX_HEIGHT;
 }
 
-void CBoomerang::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
+void CBoomerang::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 
 	float left, top, right, bottom;

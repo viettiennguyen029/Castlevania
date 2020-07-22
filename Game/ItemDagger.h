@@ -9,7 +9,7 @@ class ItemDagger :public CGameObject
 public:
 	ItemDagger();
 	void Render();
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving = false);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
 

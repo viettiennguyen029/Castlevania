@@ -6,7 +6,7 @@ ItemMeat::ItemMeat()
 	this->visible = false;
 }
 
-void ItemMeat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void ItemMeat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
 	CGameObject::Update(dt);
 

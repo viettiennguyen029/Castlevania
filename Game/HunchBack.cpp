@@ -10,7 +10,7 @@ void CHunchBack::GetBoundingBox(float& left, float& top, float& right, float& bo
 	bottom = y + HUNCH_BACK_BBOX_HEIGHT;
 }
 
-void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
 

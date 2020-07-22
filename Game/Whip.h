@@ -27,7 +27,7 @@ class CWhip : public CGameObject
 	CAnimation* hitEffect = CAnimations::GetInstance()->Get(HIT_EFFECT_ANIMATION);
 public:
 	CWhip();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) ;
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL, bool stopMoving = false) ;
 	virtual void Render() {}
 	virtual void Render(int currentFrame);
 	virtual void SetState(int state);

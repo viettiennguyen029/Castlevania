@@ -2,6 +2,13 @@
 #include "Sprites.h"
 #include "SubWeapon.h"
 
+#define DAGGER_SPRTITE_ID			40003
+#define BOOMERANG_SPITE_ID		40005
+#define HOLY_WATER_SPRTITE_ID	40007
+#define AXE_SPRTITE_ID					40009
+#define WATCH_SPRITE_ID				40011
+
+
 void Code::DrawNumber(int max, float x, float y, int s)
 {
 	string str = to_string(s);
@@ -55,23 +62,29 @@ void Code::DrawSubWeapon(float x, float y, int subweapon)
 	
 	case (int)SubWeapon::DAGGER:
 	{
-		CSprites::GetInstance()->Get(40003)->Draw(x, y+4, -1);
+		CSprites::GetInstance()->Get(DAGGER_SPRTITE_ID)->Draw(x, y+4, -1);
 		break;
 	}
 	case(int)SubWeapon::BOOMERANG:
 	{
-		CSprites::GetInstance()->Get(40005)->Draw(x, y+1, -1);
+		CSprites::GetInstance()->Get(BOOMERANG_SPITE_ID)->Draw(x, y+1, -1);
 		break;
 	}	
 	case (int)SubWeapon::HOLYWATER:
 	{
-		CSprites::GetInstance()->Get(40007)->Draw(x-3, y, 1);
+		CSprites::GetInstance()->Get(HOLY_WATER_SPRTITE_ID)->Draw(x-3, y, 1);
 		break;
 	}
 
 	case (int)SubWeapon::AXE:
 	{
-		CSprites::GetInstance()->Get(40009)->Draw(x, y + 1, -1);
+		CSprites::GetInstance()->Get(AXE_SPRTITE_ID)->Draw(x, y + 1, -1);
+		break;
+	}
+
+	case (int)SubWeapon::STOP_WATCH:
+	{
+		CSprites::GetInstance()->Get(WATCH_SPRITE_ID)->Draw(x, y, -1);
 		break;
 	}
 	default:

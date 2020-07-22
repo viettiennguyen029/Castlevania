@@ -6,7 +6,7 @@ ItemBigHeart::ItemBigHeart()
 	this->visible = false;
 }
 
-void ItemBigHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void ItemBigHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
 		
 	CGameObject::Update(dt);

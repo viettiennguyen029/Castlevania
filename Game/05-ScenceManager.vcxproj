@@ -151,9 +151,12 @@
     <ClCompile Include="ItemHolyWater.cpp" />
     <ClCompile Include="ItemInvisibility.cpp" />
     <ClCompile Include="ItemMeat.cpp" />
-    <ClCompile Include="ItemMoneyBag.cpp" />
+    <ClCompile Include="ItemMoneyBagPurple.cpp" />
+    <ClCompile Include="ItemMoneyBagRed.cpp" />
+    <ClCompile Include="ItemMoneyBagYellow.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="ItemSmallHeart.cpp" />
+    <ClCompile Include="ItemWatch.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="PhantomBat.cpp" />
@@ -205,9 +208,12 @@
     <ClInclude Include="ItemHolyWater.h" />
     <ClInclude Include="ItemInvisibility.h" />
     <ClInclude Include="ItemMeat.h" />
-    <ClInclude Include="ItemMoneyBag.h" />
+    <ClInclude Include="ItemMoneyBagPurple.h" />
+    <ClInclude Include="ItemMoneyBagRed.h" />
+    <ClInclude Include="ItemMoneyBagYellow.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="ItemSmallHeart.h" />
+    <ClInclude Include="ItemWatch.h" />
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="PhantomBat.h" />
     <ClInclude Include="PointEffects.h" />

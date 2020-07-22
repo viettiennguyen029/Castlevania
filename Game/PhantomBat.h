@@ -49,7 +49,7 @@ public:
 
 	CPhantomBat(float x = 0.0f, float y = 0.0f);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) ;
-	virtual void  Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void  Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving = false);
 	virtual void Render();
 
 	void GoToRetreats();

@@ -16,7 +16,7 @@ void CZombie::GetBoundingBox(float& left, float& top, float& right, float& botto
 	bottom = top + ZOMBIE_BBOX_HEIGHT;
 }
 
-void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
 

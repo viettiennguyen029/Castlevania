@@ -16,7 +16,7 @@ class CAxe :public CGameObject
 public:
 	CAxe();
 	virtual void Render();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving = false);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CAxe* GetInstance();
 };

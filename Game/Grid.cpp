@@ -37,9 +37,9 @@ void CGrid::GetObjectsInGrid(vector<LPGAMEOBJECT>&updateobjects, float left, flo
 	lastCellColumn = (int)(right) / CELL_WIDTH;
 	lastCellRow = (int)(bottom) / CELL_HEIGHT;
 
-	for (int row = firstCellRow; row <= lastCellRow+1 ; row++)
+	for (int row = firstCellRow; row <= lastCellRow ; row++)
 	{
-		for (int column = firstCellColumn; column <= lastCellColumn +1; column++)
+		for (int column = firstCellColumn; column <= lastCellColumn ; column++)
 		{
 			for (UINT k = 0; k < cells[row][column].size(); k++)
 			{

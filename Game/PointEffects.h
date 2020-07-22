@@ -17,7 +17,7 @@ public:
 	PointEffect();
 	virtual void SetState(int state);
 	virtual void Render();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL, bool stopMoving = false);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 };
 

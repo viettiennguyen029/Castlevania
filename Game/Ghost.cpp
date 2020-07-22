@@ -8,7 +8,7 @@ void CGhost::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	bottom = top + GHOST_BBOX_HEIGHT;
 }
 
-void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
 	vy = 0;

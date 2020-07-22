@@ -15,9 +15,12 @@
 #include "ItemChain.h"
 #include "ItemDagger.h"
 #include "ItemBoomerang.h"
-#include "ItemMoneyBag.h"
+#include "ItemMoneyBagRed.h"
+#include "ItemMoneyBagYellow.h"
+#include "ItemMoneyBagPurple.h"
 #include "ItemHolyWater.h"
 #include "ItemInvisibility.h"
+#include"ItemWatch.h"
 #include "ItemAxe.h"
 #include  "ItemMeat.h"
 #include "ItemCrown.h"
@@ -58,12 +61,15 @@ class CPlayScene: public CScene
 {
 protected: 
 	CSimon* player;	// A play scene has to have player, right? 
-	
-	Board* HUD;
-	
+	Board* HUD;	
 	CGrid* grid = CGrid::GetInstance();
+
 	int mapWidth, mapHeight;
 	int offset_y; // an empty space to render HUD
+
+	bool stopMoving = false;
+	DWORD stopMoving_start = 0;
+
 	
 	vector<LPTILE> tiledMap;	
 	vector<LPGAMEOBJECT> objects;				// Base objects
@@ -79,10 +85,10 @@ protected:
 	void _ParseSection_SCENE_MAP_INFO(string line);
 	void _ParseSection_SCENE_TILE_MAP(string line);
 
-	void _ReleaseSection_SCENE_TEXTURES(string line);
-	void _ReleaseSection_SCENE_SPRITES(string line);
-	void _ReleaseSection_SCENE_ANIMATIONS(string line);
-	void _ReleaseSection_SCENE_ANIMATION_SETS(string line);
+	//void _ReleaseSection_SCENE_TEXTURES(string line);
+	//void _ReleaseSection_SCENE_SPRITES(string line);
+	//void _ReleaseSection_SCENE_ANIMATIONS(string line);
+	//void _ReleaseSection_SCENE_ANIMATION_SETS(string line);
 
 public: 
 	CPlayScene(int id, LPCWSTR filePath);

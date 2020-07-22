@@ -1,17 +1,17 @@
-#include "ItemMoneyBag.h"
+#include "ItemMoneyBagRed.h"
 
 
-ItemMoneyBag::ItemMoneyBag()
+ItemMoneyBagRed::ItemMoneyBagRed()
 {
 	this->visible = false;
 }
 
-void ItemMoneyBag::Render()
+void ItemMoneyBagRed::Render()
 {
 	animation_set->at(state)->Render(x, y, -1);
 }
 
-void ItemMoneyBag::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
+void ItemMoneyBagRed::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
 	CGameObject::Update(dt);
 	vy += ITEM_GRAVITY * dt;				// simple fall down
@@ -39,7 +39,7 @@ void ItemMoneyBag::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); ++i)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-
+			
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
 				// Block brick
@@ -56,7 +56,7 @@ void ItemMoneyBag::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void ItemMoneyBag::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void ItemMoneyBagRed::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;

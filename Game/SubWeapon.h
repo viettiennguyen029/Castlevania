@@ -10,7 +10,8 @@ enum class SubWeapon
 	DAGGER = 7,
 	BOOMERANG = 71,
 	HOLYWATER = 72,
-	AXE = 73
+	AXE = 73, 
+	STOP_WATCH = 74
 };
 
 /*
