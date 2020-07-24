@@ -730,10 +730,24 @@ void CPlayScene::Update(DWORD dt)
 	// Get collide-able objects in the grid 
 	for (size_t i = 0; i < updateObject.size(); i++)
 	{
-		if (updateObject[i]->isVisible() == true )
-			coObjects.push_back(updateObject[i]);
+		if (updateObject[i]->isVisible() == true)
+		{
+			if (CSkeleton *skt =dynamic_cast<CSkeleton*>(updateObject[i]))
+			{
+				coObjects.push_back(skt);
+				vector<LPGAMEOBJECT> bones = skt->GetBones();
+
+				// Adding bones to coObjects
+				/*for (UINT i = 0; i < skt->GetBones().size(); i++)
+				{	
+					coObjects.push_back(bones[i]);
+				}	*/
+			}
+			else 
+				coObjects.push_back(updateObject[i]);
+		}			
 	}
-	//DebugOut(L"Object: %d, Object update: %d\n", objects.size(), updateObject.size());
+	//DebugOut(L"CoObject: %d, Object update: %d\n", coObjects.size(), updateObject.size());
 
 	// Call Update function of each object
 	for (size_t i = 0; i < updateObject.size(); i++)

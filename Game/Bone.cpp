@@ -35,7 +35,7 @@ void CBone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 	CGameObject::Update(dt);
  	vy += 0.0005f * dt; //gravity
 
-	if (abs(x - start_x) <= 6) 
+	if (abs(x - start_x) <= 4) 
 	{
 		vx = (nx > 0) ? BONE_FLY_SPEED_VX * dt : -BONE_FLY_SPEED_VX * dt;
 		//vy = -0.22f;
@@ -43,24 +43,28 @@ void CBone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 		int r = rand() % 2;
 		if (r == 0)
 		{
-			vy = -0.13f;
+			vy = -0.08f;
 		}
 		else
 		{
-			vy = -0.22f;
+			vy = -0.12f;
 		}
 	}
 	else
 	{
 		vx = (nx > 0) ? BONE_FLY_SPEED_VX * dt : -BONE_FLY_SPEED_VX * dt;
-		if (abs(x - start_x) >= 70)
-			vy = 0.3f;
+		if (abs(x - start_x) >= 60)
+			vy = 0.08f;
 	}
 
 	if (!IsInViewport())
 	{
 		SetVisible(false);
 	}
+
+	x += dx;
+	y += dy;
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 

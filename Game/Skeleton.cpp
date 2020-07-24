@@ -25,9 +25,7 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovin
 	{
 		stop = false;
 	}
-
-	CGameObject::Update(dt);
-	vy += 0.0011f * dt;
+	
 
 	if (start_untouchable != 0)
 	{
@@ -38,14 +36,25 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovin
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
 
-	nx = (this->x > xS) ? -1 : 1;
-	
-	if (xS - x < 130 && state == SKELETON_STATE_IDLE)
+	this->nx = (this->x > xS) ? -1 : 1;
+
+	vector<LPGAMEOBJECT> listBrick;
+
+	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		SetState(SKELETON_STATE_ACTIVE);
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+		{
+			listBrick.push_back(coObjects->at(i));
+		}
 	}
 
-	if (rand() % 150 < 2)
+	if ((xS - x < 105) && (yS - y>=49) &&state == SKELETON_STATE_IDLE)
+	{
+		SetState(SKELETON_STATE_ACTIVE);
+		DebugOut(L"Active Skeleton \n");
+	}
+
+	if (rand() % 150 < 2 && jumping == false)
 	{
 		LPGAMEOBJECT bone;
 		bone = new CBone(x, y, nx);
@@ -56,22 +65,22 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovin
 	{
 		bones.at(i)->Update(dt, coObjects, stop);
 		if (bones.at(i)->IsInViewport() == false)
-		{
-			delete bones.at(i);
 			bones.erase(bones.begin() + i);
-		}
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
-	CalcPotentialCollisions(coObjects, coEvents);
+	CalcPotentialCollisions(&listBrick, coEvents);
 
 	if (coEvents.size() == 0)
 	{
 		x += dx;
 		y += dy;
+
+		if(onGround)
+			jumping = true;
 	}
 
 	else
@@ -80,40 +89,60 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovin
 		float rdx, rdy;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x += min_tx * dx;
-		y += min_ty * dy;
+		x += min_tx * dx+ nx * 0.2f;
+		y += min_ty * dy+ ny*0.2f;
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT  e = coEventsResult[i];
 
 			if (dynamic_cast<CBrick*>(e->obj))
-			{			
-				float start1_x = 33;
-				float end_x = 57;
-
-				if (e->ny != 0)
+			{					
+				if (e->ny !=0)
 				{
-
-					int r = rand() % 10;
-					if (r == 0)
+					if (e->ny == -1)
 					{
-						canThrowBones = true;
+						vy = 0;						
+						onGround = true;
 					}
-
-					vy = 0;
-					y += ny * 0.4f; 
+					else y += dy;						
 				}
 
-				if (x >= end_x || x <= start1_x)
-				{
-					vx *= -1;
-				}
+				if (e->nx != 0 ) 
+					vx = -vx;
 			}
-		}
+		}		
+	}
 
-		// clean up collision events
-		for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	// clean up collision events
+	for (int i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
+	listBrick.clear();
+
+
+	CGameObject::Update(dt);
+	vy += 0.001f * dt;
+
+	if (jumping)
+	{
+		vy = -0.24f;
+		onGround = jumping = false;
+	}
+
+
+	if (abs(xS - x) > 98 && state != SKELETON_STATE_IDLE)
+	{
+		//DebugOut(L"Skeleton froce to Simon\n");
+		vx = 0.08 * nx;
+	}
+
+	if(abs(x - xS) < 22 && abs(y - yS) < 47)
+	{
+		if (coEvents.size() > 0)
+		{
+			vx = -0.06 * nx;
+			//DebugOut(L"Skeleton try to avoid to Simon\n");
+		}			
 	}
 
 }
@@ -157,9 +186,7 @@ void CSkeleton::SetState(int state)
 	}
 }
 
-CSkeleton* CSkeleton::__instance = NULL;
-CSkeleton* CSkeleton::GetInstance()
+ vector <LPGAMEOBJECT> CSkeleton::GetBones()
 {
-	if(__instance == NULL) __instance = new CSkeleton();
-	return __instance;
+	return this->bones;
 }

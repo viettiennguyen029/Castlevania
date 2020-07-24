@@ -711,7 +711,8 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			else if (dynamic_cast<CBat*>(e->obj) ||
 			dynamic_cast<CBlack_Knight*>(e->obj) || 
-			dynamic_cast<CHunchBack*>(e->obj) || 
+			dynamic_cast<CHunchBack*>(e->obj) ||
+			dynamic_cast<CSkeleton*>(e->obj) ||
 			dynamic_cast<CPhantomBat*>(e->obj))
 			{
 

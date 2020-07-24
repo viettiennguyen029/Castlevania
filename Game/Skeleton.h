@@ -10,20 +10,22 @@
 
 class CSkeleton : public CGameObject
 {
+private:
 	//CBones* bone;
-	static CSkeleton* __instance;
 
 	bool stop = false;
 	bool canThrowBones = false;
+	bool onGround = false;
+	bool jumping = false;
 
 	vector<LPGAMEOBJECT> bones; // a vector bones of skeleton
 public:
+	CSkeleton();
+
+	virtual void Render();
+	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL, bool stopMoving = false);
-	virtual void Render();
 
-	CSkeleton();
-	virtual void SetState(int state);
-
-	static CSkeleton* GetInstance();
+	vector <LPGAMEOBJECT> GetBones();
 };

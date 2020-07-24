@@ -4,7 +4,7 @@
 #define BONE_BBOX_WIDTH	15
 #define BONE_BBOX_HEIGHT	16
 
-#define BONE_FLY_SPEED_VX 0.0035f
+#define BONE_FLY_SPEED_VX 0.003f
 class CBone : public CGameObject
 {
 	bool stop;
