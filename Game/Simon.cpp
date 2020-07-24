@@ -967,7 +967,7 @@ void CSimon::Render()
 	if (untouchable) alpha = 128;
 
 	animation_set->at(ani)->Render(x, y, nx, alpha);
-	//RenderBoundingBox();	
+	RenderBoundingBox();	
 
 	// Whip rendering
 	if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_SIT_ATTACK)

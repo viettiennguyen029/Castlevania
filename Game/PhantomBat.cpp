@@ -15,8 +15,13 @@ bool CPhantomBat::IsInRetreats()
 	float left, top, right, bottom;
 	this->GetBoundingBox(left, top, right, bottom);
 
+	if (left < retreats_x && right > retreats_x) vx = 0;
+	if (top < retreats_y && bottom > retreats_y) vy = 0;
+
 	if (left < retreats_x && right > retreats_x && top < retreats_y && bottom > retreats_y)
 		return true;
+
+	return false;
 }
 
 void CPhantomBat::GetBossPosition()
@@ -143,13 +148,6 @@ void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMov
 	if (coEvents.size() == 0)
 	{
 
-		float left, top, right, bottom;
-		CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
-		if (x < left && x + PHANTOM_BAT_BBOX_WIDTH > right)
-			vx = -vx;
-		if (y < top +50 && y + PHANTOM_BAT_BBOX_HEIGHT > bottom-5)
-			vx = -vy;
-
 		y += dy;
 		x += dx;
 	}
@@ -161,13 +159,19 @@ void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMov
 
 		x += min_tx * dx;
 		y += min_ty * dy;
-		
-
+	
 	}
 
 
 	// clean up collision events
 	for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
+	/*float left, top, right, bottom;
+		CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
+		if (x < left || x + PHANTOM_BAT_BBOX_WIDTH > right-20)
+			vx = -vx;
+		if (y < top +50 || y + PHANTOM_BAT_BBOX_HEIGHT > bottom-5)
+			vx = -vy;*/
 }
 
 void CPhantomBat::Render()
@@ -178,6 +182,7 @@ void CPhantomBat::Render()
 	else ani = 1;
 
 	animation_set->at(ani)->Render(x, y, 1);
+	RenderBoundingBox();
 }
 
 void CPhantomBat::GoToRetreats()
@@ -188,16 +193,16 @@ void CPhantomBat::GoToRetreats()
 		retreats = false;
 		TakeARetreats();
 	}
-	else // Going to the retreat point
-	{
-		vx = (boss_x < retreats_x) ?
-			PHANTOM_BAT_RETREATS_VX :
-			-PHANTOM_BAT_RETREATS_VX;
+	//else // Going to the retreat point
+	//{
+	//	/*vx = (boss_x < retreats_x) ?
+	//		PHANTOM_BAT_RETREATS_VX :
+	//		-PHANTOM_BAT_RETREATS_VX;
 
-		vy = (boss_y < retreats_y) ?
-			PHANTOM_BAT_RETREATS_VY :
-			-PHANTOM_BAT_RETREATS_VY;
-	}	
+	//	vy = (boss_y < retreats_y) ?
+	//		PHANTOM_BAT_RETREATS_VY :
+	//		-PHANTOM_BAT_RETREATS_VY;*/
+	//}	
 }
 
 void CPhantomBat::TakeARetreats()
@@ -214,8 +219,8 @@ void CPhantomBat::SwoopDown()
 	if (swoopDown_start == 0)
 	{
 		// Vector speed to run into Simon for an attack
-		vx = (player_x - boss_x) / (PHANTOM_BAT_SWOOP_DOWN_TIME / 2);
-		vy = (player_y - boss_y) / (PHANTOM_BAT_SWOOP_DOWN_TIME / 2);
+		vx = (player_x -boss_x) / (PHANTOM_BAT_SWOOP_DOWN_TIME / 2.5);
+		vy = (player_y - boss_y) / (PHANTOM_BAT_SWOOP_DOWN_TIME / 2.5);
 
 		// To keep the boss move not too fast
 		vx = (vx > 0) ?
@@ -245,6 +250,15 @@ void CPhantomBat::ProceedAttacking()
 		// Going to rest ( will move with lower speed )
 		retreats = true;
 		CalcRetreatPoint();
+
+		// Assign retreat speed
+		vx = (boss_x < retreats_x) ?
+			PHANTOM_BAT_RETREATS_VX :
+			-PHANTOM_BAT_RETREATS_VX;
+
+		vy = (boss_y < retreats_y) ?
+			PHANTOM_BAT_RETREATS_VY :
+			-PHANTOM_BAT_RETREATS_VY;
 	}
 
 	// Keep decreasing the Boss's vy to create flying -up-movement
