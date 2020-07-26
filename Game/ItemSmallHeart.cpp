@@ -13,17 +13,23 @@ void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stop
 {	
 	CGameObject::Update(dt);
 
-	vy += ITEM_GRAVITY * dt;				// simple fall down	
+	//vy += ITEM_GRAVITY * dt;				// simple fall down	
 
-	if (vy != 0)
-	{
-		vx += vx_variability * dt;
-		vy = 0.03f;
+	vy = 0.04;
 
-		if (vx >= 0.1f || vx <= -0.1f)
-			vx_variability *= -1;
-	}
-	else vy = 0;
+	// Horizontal movement
+	vx += vx_variability * dt;
+	if (abs(vx) > 0.1f && vx * vx_variability > 0) vx_variability = -vx_variability;
+
+	//if (vy != 0)
+	//{
+	//	vx += vx_variability * dt;
+	//	vy = 0.03f;
+
+	//	if (vx >= 0.1f || vx <= -0.1f)
+	//		vx_variability *= -1;
+	//}
+	//else vy = 0;
 
 	if (visible)
 	{	
@@ -65,10 +71,11 @@ void ItemSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stop
 				if (e->ny <0)
 				{
 					//y += 0.4f * e->ny;
-					vx=vy = 0;
+					vy = 0;
 					y += 0.2f * e->ny;
 					//vx_variability = 0;
 				}				
+				vy = vx = 0;
 			}
 
 			else if (dynamic_cast<CStairTop*>(e->obj) ||  (dynamic_cast<CStairBottom*>(e->obj)))

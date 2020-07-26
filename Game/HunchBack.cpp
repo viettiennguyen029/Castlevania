@@ -12,35 +12,63 @@ void CHunchBack::GetBoundingBox(float& left, float& top, float& right, float& bo
 
 void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
-	CGameObject::Update(dt);
+	if (stopMoving == true)
+	{
+		stop = true;
+		return;
+	} 
+	else
+	{
+		stop = false;
+	}
 
-	
-	// Fall down
-	vy += HUNCHBACK_GRAVITY * dt;	
+	CGameObject::Update(dt);
 
 	//Activating Hunch Back to jump down
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-
-	float xH, yH;
-	this->GetPosition(xH, yH);
-
-	if (xS - xH <= 98 && yS - yH <= 34) // Active Point 
+	
+	if (xS -this->x<= DISTANCE_ACTIVE_HUNCH_BACK && startWaitingTime == 0)
 	{
-		SetState(HUNCH_BACK_STATE_JUMP);
-	}	
-
-	if (xH -xS>100)
-	{
-		SetOrientation(-1);
-		//SetState(HUNCH_BACK_STATE_IDLE);
+		startWaitingTime = GetTickCount();
 	}
 
-	if (xS - xH > 100)
+
+	if (startWaitingTime > 0)
 	{
-		SetOrientation(1);
+		if (GetTickCount() - startWaitingTime >= HUNCH_BACK_WATING_TIME)
+		{
+			SetState(HUNCH_BACK_STATE_JUMP);
+
+			if (CSimon::GetInstance()->GetUntouchable() == 1)
+			{
+				if (grounding) LargeHopping();
+				vy+= LARGE_HOPPING_GRAVITY * dt;
+			}
+			else
+			{
+				if (grounding)
+				{
+					Hopping();
+					DetectPlayer();					
+				}
+				vy += HUNCH_BACK_GRAVITY * dt;
+			}			
+		}
+
+		else
+		{
+			vy += HUNCH_BACK_GRAVITY * dt;
+			vx = vy = 0;
+			hopping = false;
+		}
 	}
 	
+	// untouchable
+	if (start_untouchable != 0)
+	{
+		Untouchable();
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -59,49 +87,65 @@ void CHunchBack::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovi
 		float rdx, rdy;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x += min_tx * dx+ nx*0.4f;
-		if (ny <= 0)
-			y += min_ty * dy + ny * 0.4f;
-		
+		x += min_tx * dx;
+		y += min_ty * dy;		
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT  e = coEventsResult[i];
 
-			if (dynamic_cast<CBrick*>(e->obj))
+			if (dynamic_cast<CBrick*>(e->obj) || 
+				dynamic_cast<CBreakWall*>(e->obj))
 			{
 			
-				if (nx != 0) x += dx;
-				if (e->ny != 0)
+				if (e->ny < 0)
 				{
-					if (e->ny == -1) vy = 0; // hunch back standing on brick
-					else 	y += dy; //hunch back can jump through brick
+					if (hopping)
+					{
+						hopping = false;
+						startWaitingTime = 0;
+						//DebugOut(L"Hunchback Grounding\n");
+					}
+					grounding = true;
+					y += ny * 0.4f;
 				}
 
-				if (hopping)
-				{
-					// Random vy with small and large hops
-					float minvy = -0.1f;
-					float maxvy = -0.2f;
-					vy = minvy + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (maxvy - minvy)));
-				}
-				
-			
-			}
-
-			else
-			{
 				if (e->nx != 0)
-					x += dx;
-				else if (e->ny < 0) 
-					y += dy;
+				{
+					LargeHopping();
+					DetectPlayer();
+				}
 			}
 		}
 	}
-
-
 	// clean up collision events
 	for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
+	if (this->IsInViewport() == false && startWaitingTime != 0)
+		SetVisible(false);
+}
+
+void CHunchBack::Hopping()
+{
+	if (!hopping)
+	{
+		vy = -SMALL_HOPPING_VY;
+		hopping = true;
+		dy = this->dt * vy;
+		vx = SMALL_HOPPING_VX * nx;
+		grounding = false;
+	}
+}
+
+void CHunchBack::LargeHopping()
+{
+	if (!hopping)
+	{
+		vy = -LARGE_HOPPING_VY;
+		hopping = true;
+		vx = LARGE_HOPPING_VX * nx;
+		grounding = false;
+	}
 }
 
 void CHunchBack::Render()
@@ -110,17 +154,26 @@ void CHunchBack::Render()
 	switch (this->state)
 	{
 	case HUNCH_BACK_STATE_IDLE:
-		ani = 0;
-		
+		ani = 0; // 2 frames		
 		break;
 	case HUNCH_BACK_STATE_JUMP:
-		ani = 1;
+		if (hopping) ani = 1; //frame 1 Jumping
+		else ani = 2; //  frame  2 Grounding ?????
 		break;
 		
-	default:
+	default: 
 		break;
 	};
-	animation_set->at(ani)->Render(x, y,nx);	
+
+
+	if (stop)
+	{
+		int currentFrame = animation_set->at(ani)->GetCurrentFrame();
+		animation_set->at(ani)->SetCurrentFrame(currentFrame);
+		animation_set->at(ani)->RenderByFrame(currentFrame, nx, x, y);
+	}
+	else
+		animation_set->at(ani)->Render(x, y, nx);
 }
 
 CHunchBack::CHunchBack()
@@ -129,6 +182,23 @@ CHunchBack::CHunchBack()
 	this->healthPoint = 2;
 	vx = vy = 0;
 	SetState(HUNCH_BACK_STATE_IDLE);
+}
+
+void CHunchBack::DetectPlayer()
+{
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
+
+	if (xS > x + HUNCH_BACK_BBOX_WIDTH)
+	{
+		SetOrientation(1);
+		//DebugOut(L"Hunchback turnover to hopping to Simon\n");
+	}
+	else if (xS + SIMON_BBOX_WIDTH < x)
+	{
+		SetOrientation(-1);
+		//DebugOut(L"Hunchback turnover to hopping to Simon\n");
+	}
 }
 
 void CHunchBack::SetState(int state)
@@ -145,12 +215,7 @@ void CHunchBack::SetState(int state)
 
 	case HUNCH_BACK_STATE_JUMP:
 	{
-		hopping = true;
-		if (nx == 1) vx = HUNCH_BACK_JUMP_SPEED_X;
-		else vx = -HUNCH_BACK_JUMP_SPEED_X;
 		break;
+	}	
 	}
-		
-	}
-	this->state = state;
 }

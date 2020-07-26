@@ -677,6 +677,9 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {	
+	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
+	if (player == NULL) return;
+
 	// We know that Simon is the first object in the list hence we won't add him into the colliable object list
 	vector<LPGAMEOBJECT> coObjects;
 	
@@ -697,9 +700,10 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow simon
 	float cx, cy;
 	player->GetPosition(cx, cy);
-	CGame* game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
 
+	CGame* game = CGame::GetInstance();
+
+	cx -= game->GetScreenWidth() / 2;
 	if (cx >= (mapWidth - SCREEN_WIDTH))
 		cx = mapWidth - SCREEN_WIDTH;
 
@@ -710,6 +714,7 @@ void CPlayScene::Update(DWORD dt)
 	game->GetCameraBoundingBox(left, top, right, bottom);
 
 	updateObject.clear();
+	coObjects.clear();
 
 	//Get objects in grid
 	grid->GetObjectsInGrid(updateObject, left, top, right, bottom);
@@ -755,6 +760,7 @@ void CPlayScene::Update(DWORD dt)
 		if (updateObject[i]->isVisible() == true)
 			updateObject[i]->Update(dt, &coObjects, stopMoving);				
 	}
+
 	player->Update(dt, &coObjects);
 	
 
@@ -777,8 +783,7 @@ void CPlayScene::Update(DWORD dt)
 	else
 		stopMoving = false;
 
-	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
+	
 	HUD->Update(dt);
 
 }
@@ -849,7 +854,7 @@ void CPlayScene::Unload()
 #pragma endregion
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<CSimon*>(objects[i]) ||
+		if (/*dynamic_cast<CSimon*>(objects[i]) ||*/
 			dynamic_cast<CWhip*>(objects[i]) ||
 			dynamic_cast<CDagger*>(objects[i]) ||
 			dynamic_cast<CBoomerang*>(objects[i]))
@@ -864,9 +869,10 @@ void CPlayScene::Unload()
 
 	grid->Clear();
 
+	updateObject.clear();
 	objects.clear();
 	tiledMap.clear();
-
+	
 	CItems::GetInstance()->Clear();
 	CWallPieces::GetInstance()->Clear();
 	PointEffects::GetInstance()->Clear();
@@ -988,6 +994,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	CGame *game = CGame::GetInstance();
 	CSimon *simon = ((CPlayScene*)scence)->GetPlayer();
 
+
+	if (simon == NULL) return;
 
 	// When Simon is not touched on the ground, continue rendering jump animation
 	if (simon->GetState() == SIMON_STATE_JUMP && simon->isOnGround() == false)		

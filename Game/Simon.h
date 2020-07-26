@@ -60,7 +60,7 @@
 #define SIMON_AUTO_DOWNSTAIR_TIME		290
 #define SIMON_DISCOLOR_TIME			700
 
-#define SIMON_DEFLECT_TIME				800
+#define SIMON_DEFLECT_TIME				400
 #define SIMON_DEFLECT_SPEED_X			0.06f
 #define SIMON_DEFLECT_SPEED_Y			0.14f
 #define SIMON_UNTOUCHABLE_TIME	3000
@@ -134,6 +134,7 @@ public:
 	virtual void Update(DWORD dt, vector <LPGAMEOBJECT>* coObject = NULL);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	int GetUntouchable() { return this->untouchable; }
 
 	void Render();
 	void SetState(int state);	

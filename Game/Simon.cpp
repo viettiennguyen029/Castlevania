@@ -516,18 +516,33 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					CBoomerang* bm = dynamic_cast<CBoomerang*> (e->obj);
 					bm->SetTurnOver(false);
 				}
+
+				
 			}
 
 			// Collision logic when Simon is on theMoving Platform
 			else if (dynamic_cast<CMovingPlatform*>(e->obj))
 			{			
-				if (e->nx != 0) x += dx;
-
+				/*if (e->nx != 0) x += dx;
+				
 				CMovingPlatform* m = dynamic_cast<CMovingPlatform*> (e->obj);
 				onMovingPlatform = true;
 				this->vx = m->vx;
 				vy = 0;
-				DebugOut(L"On Moving Platform\n");
+				DebugOut(L"On Moving Platform\n");*/
+				if (e->ny < 0)
+				{
+					y += ny * 0.4f;
+					vy = 0;
+					onMovingPlatform = true;
+					vx = e->obj->vx;
+				}
+				else
+				{
+					onMovingPlatform = false;
+					vx = 0;
+				}
+
 			}
 
 			// Collision logic with tems
@@ -676,9 +691,14 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			// switching scene logic		
 			else if (dynamic_cast<CPortal*> (e->obj))
 			{
-			DebugOut(L"[INFO] Portal detection ! %d \n");
-			CPortal* p = dynamic_cast<CPortal*> (e->obj);
-			CGame::GetInstance()->SwitchScene(p->GetSceneId());
+			if (e->nx != 0 || e->ny != 0)
+			{
+				vx = vy = 0;
+				DebugOut(L"[INFO] Portal detection ! %d \n");
+				CPortal* p = dynamic_cast<CPortal*> (e->obj);
+				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+			}
+			
 			}
 
 			else if (dynamic_cast<CRaven*>(e->obj))
@@ -709,11 +729,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			}
 			}
 
-			else if (dynamic_cast<CBat*>(e->obj) ||
-			dynamic_cast<CBlack_Knight*>(e->obj) || 
-			dynamic_cast<CHunchBack*>(e->obj) ||
-			dynamic_cast<CSkeleton*>(e->obj) ||
-			dynamic_cast<CPhantomBat*>(e->obj))
+			else if (dynamic_cast<CBat*>(e->obj) || dynamic_cast<CBlack_Knight*>(e->obj) || dynamic_cast<CHunchBack*>(e->obj) || dynamic_cast<CSkeleton*>(e->obj) || dynamic_cast<CPhantomBat*>(e->obj))
 			{
 
 			if ((e->nx != 0 || e->ny != 0) && untouchable == 0)
@@ -957,7 +973,7 @@ void CSimon::Render()
 		}	
 		else 
 		{
-			if (onMovingPlatform == true ) ani = SIMON_ANI_IDLE;
+			if (onMovingPlatform == true && state == SIMON_STATE_IDLE) ani = SIMON_ANI_IDLE;
 			else ani = SIMON_ANI_WALKING;
 		}
 	}
@@ -967,7 +983,7 @@ void CSimon::Render()
 	if (untouchable) alpha = 128;
 
 	animation_set->at(ani)->Render(x, y, nx, alpha);
-	RenderBoundingBox();	
+	//RenderBoundingBox();	
 
 	// Whip rendering
 	if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_SIT_ATTACK)
