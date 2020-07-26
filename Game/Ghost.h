@@ -10,7 +10,8 @@
 class CGhost : public CGameObject
 {
 private:
-	static CGhost* __instance;
+	//static CGhost* __instance;
+	bool stop = false;
 public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL, bool stopMoving = false);
@@ -18,6 +19,6 @@ public:
 
 	CGhost();
 	virtual void SetState(int state);
-	static CGhost* GetInstance();
+	//static CGhost* GetInstance();
 };
 

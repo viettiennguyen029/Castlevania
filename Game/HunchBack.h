@@ -9,7 +9,7 @@
 #define SMALL_HOPPING_VX		0.16f
 #define SMALL_HOPPING_VY		0.08f
 
-#define LARGE_HOPPING_VX		0.12f
+#define LARGE_HOPPING_VX		0.1f
 #define LARGE_HOPPING_VY		 0.36f
 
 #define HUNCH_BACK_GRAVITY			0.0006

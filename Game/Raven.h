@@ -24,6 +24,7 @@ class CRaven : public CGameObject
 	bool attackAgain = false;
 	DWORD attackAgain_start = 0;
 	
+	bool stop = false;
 public:
 	CRaven();
 	virtual void Render();

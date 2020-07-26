@@ -8,7 +8,7 @@
 #define PHANTOM_BAT_BBOX_HEIGHT		22
 
 #define PHANTOM_BAT_RETREATS_TIME			1500
-#define PHANTOM_BAT_SWOOP_DOWN_TIME	1000
+#define PHANTOM_BAT_SWOOP_DOWN_TIME	1200
 
 #define PHANTOM_BAT_RETREATS_VX		0.06f
 #define PHANTOM_BAT_RETREATS_VY		0.06f
@@ -22,6 +22,7 @@
 
 class CPhantomBat : public CGameObject
 {
+private:
 	float start_x, start_y;
 
 	float boss_x;			// Position of  the boss
@@ -33,6 +34,7 @@ class CPhantomBat : public CGameObject
 	float retreats_x;	//Position for the boss to take a retreats
 	float retreats_y;
 
+	bool stop = false;
 	bool inActive = true;
 	bool retreats = false;
 

@@ -106,8 +106,7 @@ void CHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovi
 			}
 
 			else if (dynamic_cast<CBrick*> (e->obj))
-			{
-				
+			{				
 				vx = vy = 0;
 				SetState(HOLY_WATER_STATE_BURN);
 				if (!burning)
@@ -120,6 +119,20 @@ void CHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovi
 					burning_start = GetTickCount();
 				}
 			}
+
+			else if (dynamic_cast<CHunchBack*> (e->obj) || 
+				dynamic_cast<CSkeleton*> (e->obj) || 
+				dynamic_cast<CRaven*> (e->obj) ||
+				dynamic_cast<CGhost*> (e->obj) ||
+				dynamic_cast<CPhantomBat*>(e->obj) ||
+				dynamic_cast<CZombie*> (e->obj))
+			{
+				e->obj->TakeDamage(this->damage);
+				float l, t, r, b;
+				e->obj->GetBoundingBox(l, t, r, b);
+				hitEffects.push_back({ (l + r) / 2, (t + b) / 2 });
+			}
+
 		}
 
 		// clean up collision events

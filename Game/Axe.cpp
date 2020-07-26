@@ -12,6 +12,28 @@ CAxe::CAxe():CGameObject()
 void CAxe::Render()
 {
 	animation_set->at(state)->Render(x, y, nx);
+	ShowHitEffect();
+}
+
+void CAxe::ShowHitEffect()
+{
+	if (hitEffects.size() > 0)
+	{
+		if (startShow == 0)
+		{
+			startShow = GetTickCount();
+		}
+
+		else if (GetTickCount() - startShow > HIT_EFFECT_LIFE_SPAN)
+		{
+			startShow = 0;
+			hitEffects.clear();
+		}
+
+		// rendering hit effect based on the coordinate vector
+		for (auto coord : hitEffects)
+			hitEffect->Render(coord[0], coord[1], -1);
+	}
 }
 
 void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
@@ -72,6 +94,23 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 				e->obj->animation_set->at(CANDLE_DESTROYED)->SetAniStartTime(GetTickCount());
 			}
 
+			else if (dynamic_cast<CBat*>(e->obj) ||
+				dynamic_cast<CBlack_Knight*>(e->obj) ||
+				dynamic_cast<CRaven*>(e->obj) ||
+				dynamic_cast<CHunchBack*>(e->obj) ||
+				dynamic_cast<CGhost*>(e->obj) ||
+				dynamic_cast<CPhantomBat*>(e->obj) ||
+				dynamic_cast<CZombie*>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					vx = 0;
+					e->obj->TakeDamage(this->damage);
+					float l, t, r, b;
+					e->obj->GetBoundingBox(l, t, r, b);
+					hitEffects.push_back({ (l + r) / 2, (t + b) / 2 });
+				}
+			}
 			
 			
 		}

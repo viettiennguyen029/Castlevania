@@ -707,7 +707,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cx >= (mapWidth - SCREEN_WIDTH))
 		cx = mapWidth - SCREEN_WIDTH;
 
-	game->SetCamPos(cx, 0.0f /*cy*/);
+	game->SetCamPos(cx+10, 0.0f /*cy*/);
 
 	// Get the bounding box of the viewport
 	float left, top, right, bottom;
@@ -1000,7 +1000,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	// When Simon is not touched on the ground, continue rendering jump animation
 	if (simon->GetState() == SIMON_STATE_JUMP && simon->isOnGround() == false)		
 		return;
-
+	
 	// Condition to stopping Simon's attacking loop
 	if (simon->GetState() == SIMON_STATE_ATTACK &&
 		simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false) return;
@@ -1029,15 +1029,26 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if (simon->onStairs == 0)
+		if (simon->onStairs == 0 )
 		{
 			simon->SetOrientation(1);
-			simon->SetState(SIMON_STATE_WALKING);
+			if (simon->GetState() != SIMON_STATE_SIT) 
+				simon->SetState(SIMON_STATE_WALKING);
+			
 		}
 		else
 		{
-			simon->SetOrientation(1);
-			simon->SetState(SIMON_STATE_GO_UPSTAIR);
+			if (simon->onStairs == 1)
+				if (simon->nx == 1)
+					simon->SetState(SIMON_STATE_GO_UPSTAIR);
+				else
+					simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
+
+			else if (simon->onStairs == -1)
+				if (simon->nx == 1)
+					simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
+				else
+					simon->SetState(SIMON_STATE_GO_UPSTAIR);
 		}
 		
 	}
@@ -1047,11 +1058,23 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		if (simon->onStairs == 0)
 		{
 			simon->SetOrientation(-1);
-			simon->SetState(SIMON_STATE_WALKING);
+			if (simon->GetState() != SIMON_STATE_SIT)
+				simon->SetState(SIMON_STATE_WALKING);
+			//simon->SetState(SIMON_STATE_WALKING);
 		}
 		else
 		{
-			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);						
+			if (simon->onStairs == 1)
+				if (simon->nx == 1)
+					simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
+				else
+					simon->SetState(SIMON_STATE_GO_UPSTAIR);
+
+			else if (simon->onStairs == -1)
+				if (simon->nx == 1)
+					simon->SetState(SIMON_STATE_GO_UPSTAIR);
+				else
+					simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
 		}
 	}
 

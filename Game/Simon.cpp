@@ -318,8 +318,21 @@ void CSimon::ProceedOverlapping()
 		else if (dynamic_cast<ItemWatch*>(ovObj))
 		{
 			DebugOut(L"[ITEMS] Stop watch Collected \n");
-ovObj->SetVisible(false);
-this->currentSubWeapon = int(SubWeapon::STOP_WATCH);
+			ovObj->SetVisible(false);
+			this->currentSubWeapon = int(SubWeapon::STOP_WATCH);
+		}
+
+		else if (dynamic_cast<ItemMeat*>(ovObj))
+		{
+			DebugOut(L"[INFO] Player's HP refilled \n");
+			ovObj->SetVisible(false);
+			this->HP = 16;	
+		}
+
+		else if (dynamic_cast<ItemInvisibility*>(ovObj))
+		{
+			ovObj->SetVisible(false);
+			DebugOut(L"\n[INFO] Touch Item Invisibility");
 		}
 
 		else if (dynamic_cast<ItemMoneyBagRed*>(ovObj))
@@ -343,7 +356,6 @@ this->currentSubWeapon = int(SubWeapon::STOP_WATCH);
 		PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_700, x + 32, y + 5);
 		}
 
-
 	}
 }
 
@@ -356,6 +368,7 @@ CSimon::CSimon(float x, float y) :CGameObject()
 	this->y = y;
 
 	this->heart_quantity = 5;
+	this->HP = 16;
 
 	SetState(SIMON_STATE_IDLE);
 
@@ -416,7 +429,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	// Checking subweapon
 	if (subWeapon)
 	{
-		if (currentSubWeapon ==(int) SubWeapon::STOP_WATCH)
+		if (currentSubWeapon == (int)SubWeapon::STOP_WATCH)
 		{
 			using_stop_watch = true;
 		}
@@ -431,18 +444,18 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				subWeapon = false;
 			}
 		}
-		
+
 	}
 
 	vector <LPCOLLISIONEVENT> coEvents;
 	vector <LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
-		
+
 	// turn off collision when simon is die
-	if (state != SIMON_STATE_DIE )
+	if (state != SIMON_STATE_DIE)
 	{
-		
+
 		CalcPotentialCollisions(coObjects, coEvents);
 	}
 
@@ -457,7 +470,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	if (coEvents.size() == 0)
 	{
 		x += dx;
-		y += dy;			
+		y += dy;
 		//DebugOut(L"No Collision!\n");
 	}
 	else
@@ -501,11 +514,11 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					}
 				}
 				else  //Turn off collision with brick when simon is on stairs
-				{							
+				{
 					x += dx;
 					y += dy;
 				}
-					
+
 			}
 
 			else if (dynamic_cast<CBoomerang*>(e->obj))
@@ -516,15 +529,20 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 					CBoomerang* bm = dynamic_cast<CBoomerang*> (e->obj);
 					bm->SetTurnOver(false);
 				}
+			}
 
-				
+			else if (dynamic_cast<CHolyWater*>(e->obj))
+			{
+				// Process normally
+				if (e->nx != 0) x += dx;
+				if (e->ny != 0) y += dy;
 			}
 
 			// Collision logic when Simon is on theMoving Platform
 			else if (dynamic_cast<CMovingPlatform*>(e->obj))
-			{			
+			{
 				/*if (e->nx != 0) x += dx;
-				
+
 				CMovingPlatform* m = dynamic_cast<CMovingPlatform*> (e->obj);
 				onMovingPlatform = true;
 				this->vx = m->vx;
@@ -570,7 +588,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			else if (dynamic_cast<ItemChain*>(e->obj))
 			{
-				
+
 				if (e->nx != 0 || e->ny != 0)
 				{
 					this->powerUp = true;
@@ -598,7 +616,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] Boomerang Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
-					y = y -0.4f;
+					y = y - 0.4f;
 					e->obj->SetVisible(false);
 					this->currentSubWeapon = int(SubWeapon::BOOMERANG);
 				}
@@ -616,43 +634,63 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			else if (dynamic_cast<ItemAxe*>(e->obj))
 			{
-			DebugOut(L"[ITEMS] Axe Collected \n");
+				DebugOut(L"[ITEMS] Axe Collected \n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+					this->currentSubWeapon = int(SubWeapon::AXE);
+				}
+			}
+
+			else if (dynamic_cast<ItemInvisibility*>(e->obj))
+			{
+			
 			if (e->nx != 0 || e->ny != 0)
 			{
+				y = y - 0.4f;
 				e->obj->SetVisible(false);
-				this->currentSubWeapon = int(SubWeapon::AXE);
+			}
+			}
+
+			else if (dynamic_cast<ItemMeat*>(e->obj))
+			{
+			DebugOut(L"[INFO] Player's HP refilled \n");
+			if (e->nx != 0 || e->ny != 0)
+			{
+				y = y - 0.4f;
+				e->obj->SetVisible(false);
+				this->HP = 16;
 			}
 			}
 
 			else if (dynamic_cast<ItemWatch*>(e->obj))
 			{
-			DebugOut(L"[ITEMS] Stop watch Collected \n");
-			if (e->nx != 0 || e->ny != 0)
-			{
-				y = y - 0.4f;
-				e->obj->SetVisible(false);
-				this->currentSubWeapon = int(SubWeapon::STOP_WATCH);
-			}
+				DebugOut(L"[ITEMS] Stop watch Collected \n");
+				if (e->nx != 0 || e->ny != 0)
+				{
+					y = y - 0.4f;
+					e->obj->SetVisible(false);
+					this->currentSubWeapon = int(SubWeapon::STOP_WATCH);
+				}
 			}
 
-			
 			else if (dynamic_cast<ItemMoneyBagRed*>(e->obj))
 			{
 				DebugOut(L"[ITEMS] Money Bag Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
-					e->obj->SetVisible(false);	
-					PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_100, this->x+ 32, this->y+ 10);			
+					e->obj->SetVisible(false);
+					PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_100, this->x + 32, this->y + 10);
 				}
-			}	
+			}
 
 			else if (dynamic_cast<ItemMoneyBagPurple*>(e->obj))
 			{
 				DebugOut(L"[ITEMS] Money Bag Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
-				e->obj->SetVisible(false);
-				PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_400, this->x + 32, this->y + 10);
+					e->obj->SetVisible(false);
+					PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_400, this->x + 32, this->y + 10);
 				}
 			}
 
@@ -661,8 +699,8 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] Money Bag Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
-				e->obj->SetVisible(false);
-				PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_700, this->x + 32, this->y + 10);
+					e->obj->SetVisible(false);
+					PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_700, this->x + 32, this->y + 10);
 				}
 			}
 
@@ -671,77 +709,83 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] (+2000) \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
-				e->obj->SetVisible(false);
-				PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_2000, e->obj->x + 5, e->obj->y + 2);
+					e->obj->SetVisible(false);
+					PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_2000, e->obj->x + 5, e->obj->y + 2);
 				}
 			}
 #pragma endregion
-			
-			else if (dynamic_cast<CStairBottom*> (e->obj) || 
-				dynamic_cast<CStairTop*> (e->obj) || 
-				dynamic_cast<CVariousStair*>(e->obj))				
+
+			else if (dynamic_cast<CStairBottom*> (e->obj) ||
+				dynamic_cast<CStairTop*> (e->obj) ||
+				dynamic_cast<CVariousStair*>(e->obj))
 			{
-				DebugOut(L"[INFO] Stair detection ! Direction: %d \n",e->nx);
+				DebugOut(L"[INFO] Stair detection ! Direction: %d \n", e->nx);
 				// Process normally
 				if (e->nx != 0) x += dx;
 				if (e->ny != 0) y += dy;
-	
+
 			}
 
 			// switching scene logic		
 			else if (dynamic_cast<CPortal*> (e->obj))
 			{
-			if (e->nx != 0 || e->ny != 0)
-			{
-				vx = vy = 0;
-				DebugOut(L"[INFO] Portal detection ! %d \n");
-				CPortal* p = dynamic_cast<CPortal*> (e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
-			}
-			
+				if (e->nx != 0 || e->ny != 0)
+				{
+					vx = vy = 0;
+					DebugOut(L"[INFO] Portal detection ! %d \n");
+					CPortal* p = dynamic_cast<CPortal*> (e->obj);
+					CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				}
+
 			}
 
 			else if (dynamic_cast<CRaven*>(e->obj))
 			{
-			if ((e->nx != 0 || e->ny != 0) && untouchable == 0)
-			{
-				e->obj->SetVisible(false);
-				if (onStairs == 0)
+				if ((e->nx != 0 || e->ny != 0) && untouchable == 0)
 				{
-					StartUntouchable();
-					DebugOut(L"[INFO] Enemies collision, Simon is Damaged \n");
+					e->obj->SetVisible(false);
+					if (onStairs == 0)
+					{
+						StartUntouchable();
+						DebugOut(L"[INFO] Enemies collision, Simon is Damaged \n");
 
-					//this->nx = (e->nx != 0) ?	-(e->nx) :	-(e->obj->GetOrientation());
+						//this->nx = (e->nx != 0) ?	-(e->nx) :	-(e->obj->GetOrientation());
 
-					if (e->nx != 0)
-						this->nx = -(e->nx);
+						if (e->nx != 0)
+							this->nx = -(e->nx);
+						else
+							this->nx = -(e->obj->GetOrientation());
+
+						SetState(SIMON_STATE_DEFLECT);
+					}
 					else
-						this->nx = -(e->obj->GetOrientation());
-
-					SetState(SIMON_STATE_DEFLECT);
-				}
-				else
-				{
-					StartUntouchable();
-					if (e->nx != 0) x += dx;
-					if (e->ny != 0) y += dy;
+					{
+						StartUntouchable();
+						if (e->nx != 0) x += dx;
+						if (e->ny != 0) y += dy;
+					}
 				}
 			}
-			}
 
-			else if (dynamic_cast<CBat*>(e->obj) || dynamic_cast<CBlack_Knight*>(e->obj) || dynamic_cast<CHunchBack*>(e->obj) || dynamic_cast<CSkeleton*>(e->obj) || dynamic_cast<CPhantomBat*>(e->obj))
+			else if (dynamic_cast<CBat*>(e->obj) || 
+			dynamic_cast<CBlack_Knight*>(e->obj) ||
+			dynamic_cast<CHunchBack*>(e->obj) || 
+			dynamic_cast<CSkeleton*>(e->obj) || 
+			dynamic_cast<CPhantomBat*>(e->obj))
 			{
+			if (state == SIMON_STATE_DEFLECT)
+				return;
+			if (untouchable)  return;
 
 			if ((e->nx != 0 || e->ny != 0) && untouchable == 0)
 			{
-
+				this->HP -= 2;
 				if (onStairs == 0)
 				{
 					StartUntouchable();
 					DebugOut(L"[INFO] Enemies collision, Simon is Damaged \n");
 
 					//this->nx = (e->nx != 0) ?	-(e->nx) :	-(e->obj->GetOrientation());
-
 					if (e->nx != 0)
 						this->nx = -(e->nx);
 					else
@@ -760,8 +804,8 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			else
 			{
- 				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;							
+			if (nx != 0) vx = 0;
+			if (ny != 0) vy = 0;
 			}
 		}
 	}
@@ -783,8 +827,8 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			whip->Update(dt, coObjects);
 		}
 	}
-
 }
+
 
 void CSimon::SetState(int state)
 {	
@@ -892,6 +936,7 @@ void CSimon::SetState(int state)
 		vx = vy = dx = dy = 0;
 
 		this->vx = (-this->nx) * SIMON_DEFLECT_SPEED_X;
+		
 		vy = -SIMON_DEFLECT_SPEED_Y;
 
 		animation_set->at(SIMON_ANI_DEFLECT)->Reset();
@@ -947,7 +992,7 @@ void CSimon::Render()
 	}
 	else if (state == SIMON_STATE_SIT_ATTACK) ani = SIMON_ANI_SIT_ATTACK;
 	else if (state == SIMON_STATE_JUMP) ani = SIMON_ANI_JUMP;
-	else if (state == SIMON_STATE_SIT) ani = SIMON_ANI_SIT;
+	else if (state == SIMON_STATE_SIT)  	ani = SIMON_ANI_SIT;	
 	else if (state == SIMON_STATE_DEFLECT) ani = SIMON_ANI_DEFLECT;
 	else if (onStairs !=0)
 	{

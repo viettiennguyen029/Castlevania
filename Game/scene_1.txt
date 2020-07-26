@@ -28,7 +28,7 @@
 
 # BRICK 
 # extra 1 = width, extra 2 = height
-1	0	200	1	700	16
+1	0	196	1	700	16
 
 
 # WHIP

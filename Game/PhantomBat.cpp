@@ -87,6 +87,16 @@ void CPhantomBat::GetBoundingBox(float& left, float& top, float& right, float& b
 
 void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
+	if(stopMoving)
+	{
+		stop = true;
+		return;
+	}
+	else
+	{
+	stop = false;
+	}
+
 	CGameObject::Update(dt);
 
 	// Update the current boss's central position
@@ -147,7 +157,6 @@ void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMov
 
 	if (coEvents.size() == 0)
 	{
-
 		y += dy;
 		x += dx;
 	}
@@ -181,13 +190,20 @@ void CPhantomBat::Render()
 	if (inActive==true) ani = 0;
 	else ani = 1;
 
-	animation_set->at(ani)->Render(x, y, 1);
-	RenderBoundingBox();
+	if (stop)
+	{
+		int currentFrame = animation_set->at(ani)->GetCurrentFrame();
+		animation_set->at(ani)->SetCurrentFrame(currentFrame);
+		animation_set->at(ani)->RenderByFrame(currentFrame, nx, x, y);
+	}
+	else
+		animation_set->at(ani)->Render(x, y, nx);
+
+	//RenderBoundingBox();
 }
 
 void CPhantomBat::GoToRetreats()
-{
-	
+{	
 	if (IsInRetreats()) // Check if boss has reached to the retreat point or not
 	{
 		retreats = false;

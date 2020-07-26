@@ -13,9 +13,14 @@ class CAxe :public CGameObject
 	static CAxe* __instance;
 	bool swinging = true;
 	DWORD swinging_start = 0;
+
+	vector<vector<float>> hitEffects; //a vector for saving the hit effects coordinates when the whip hits the target
+	int startShow = 0;
+	CAnimation* hitEffect = CAnimations::GetInstance()->Get(HIT_EFFECT_ANIMATION);
 public:
 	CAxe();
 	virtual void Render();
+	void ShowHitEffect();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving = false);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CAxe* GetInstance();

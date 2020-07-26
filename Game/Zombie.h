@@ -11,6 +11,8 @@
 
 class CZombie : public CGameObject
 {
+private:
+	bool stop = false;
 public:
 	CZombie();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

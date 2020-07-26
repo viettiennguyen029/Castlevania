@@ -57,7 +57,7 @@
 #define SIMON_DIE_DEFLECT_SPEED		0.5
 #define SIMON_ATTACK_TIME				350
 #define SIMON_AUTO_UPSTAIR_TIME			280
-#define SIMON_AUTO_DOWNSTAIR_TIME		290
+#define SIMON_AUTO_DOWNSTAIR_TIME		280
 #define SIMON_DISCOLOR_TIME			700
 
 #define SIMON_DEFLECT_TIME				400
@@ -85,7 +85,11 @@ struct AutoInfo
 class CSimon : public CGameObject
 {
 private:
+	// HUD's infor
 	int heart_quantity = 0;
+	int HP;
+	int score;
+
 	static CSimon* __instance; 
 	float start_x, start_y; // Initial position of simon at scene instead of (0,0)
 
@@ -126,6 +130,8 @@ public:
 	void SetStopWatch(bool watch) { this->using_stop_watch = watch; }
 
 	int GetHeartQuantity() { return this->heart_quantity; }
+	int GetScore() { return this->score; }
+	int GetHP() { return this->HP; }
 
 	bool PowingUp() { return this->powerUp; }
 	
@@ -141,8 +147,6 @@ public:
 	void Reset();
 	bool isOnGround() { return vy == 0; }	
 	bool lastFrameAttack();
-
-	//PointEffects* point_effect = PointEffects::GetInstance();
 
 	static CSimon* GetInstance();
 

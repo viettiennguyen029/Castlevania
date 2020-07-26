@@ -10,6 +10,16 @@ void CGhost::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
+	if (stopMoving)
+	{
+		stop = true;
+		return;
+	}
+	else
+	{
+		stop = false;
+	}
+
 	CGameObject::Update(dt);
 	vy = 0;
 	vx = (nx > 0) ? GHOST_MOVING_SPEED : -GHOST_MOVING_SPEED;
@@ -47,13 +57,19 @@ void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 
 void CGhost::Render()
 {
-	animation_set->at(state)->Render(x, y, nx);	
+	if (stop)
+	{
+		int currentFrame = animation_set->at(0)->GetCurrentFrame();
+		animation_set->at(0)->SetCurrentFrame(currentFrame);
+		animation_set->at(0)->RenderByFrame(currentFrame, nx, x, y);
+	}
+	else
+		animation_set->at(0)->Render(x, y, nx);
 }
 
 CGhost::CGhost()
 {
 	this->healthPoint = 2;
-	this->SetVisible(false);
 	SetState(GHOST_STATE_MOVING);
 	this->nx = -1;
 }
@@ -73,9 +89,9 @@ void CGhost::SetState(int state)
 
 }
 
-CGhost* CGhost::__instance = NULL;
-CGhost* CGhost::GetInstance()
-{
-	if (__instance == NULL) __instance = new CGhost();
-		return __instance;
-}
+//CGhost* CGhost::__instance = NULL;
+//CGhost* CGhost::GetInstance()
+//{
+//	if (__instance == NULL) __instance = new CGhost();
+//		return __instance;
+//}

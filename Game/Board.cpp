@@ -17,13 +17,13 @@ void Board::Render()
 	code->DrawNumber(2, cx + 234, cy + 8, game->GetSceneId());  // Curent Scene
 
 	code->DrawNumber(2, cx + 200, cy + 18, simon->GetHeartQuantity()); // Heart quantity
-	code->DrawNumber(2, cx + 200, cy + 28, 03); // Current stage
+	code->DrawNumber(2, cx + 200, cy + 28, 03); // Current Life's Points
 
 	// Sub-weapon
 	code->DrawSubWeapon(cx + 158, cy + 17, simon->GetSubWeapon());
 
 	// HP
-	code->DrawHP(cx + 60, cy + 18, 0, 14); // Player's HP
+	code->DrawHP(cx + 60, cy + 18, 0, simon->GetHP()); // Player's HP
 	code->DrawHP(cx + 60, cy + 28, 1, 13); // Boss's HP
 }
 

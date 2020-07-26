@@ -18,6 +18,16 @@ void CZombie::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 {
+	if (stopMoving == true)
+	{
+		stop = true;
+		return;
+	}
+	else
+	{
+		stop = false;
+	}
+
 	CGameObject::Update(dt);
 
 	// Simple fall down
@@ -71,7 +81,15 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 
 void CZombie::Render()
 {
-	animation_set->at(ZOMBIE_STATE_MOVING)->Render(x, y, nx);
+	if (stop)
+	{
+		int currentFrame = animation_set->at(0)->GetCurrentFrame();
+		animation_set->at(0)->SetCurrentFrame(currentFrame);
+		animation_set->at(0)->RenderByFrame(currentFrame, nx, x, y);
+	}
+	else
+		animation_set->at(0)->Render(x, y, nx);
+	//animation_set->at(ZOMBIE_STATE_MOVING)->Render(x, y, nx);
 }
 
 void CZombie::SetState(int state)

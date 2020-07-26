@@ -8,7 +8,15 @@ CRaven::CRaven()
 
 void CRaven::Render()
 {
-	animation_set->at(state)->Render(x, y, nx);
+	//animation_set->at(state)->Render(x, y, nx);
+	if (stop)
+	{
+		int currentFrame = animation_set->at(state)->GetCurrentFrame();
+		animation_set->at(state)->SetCurrentFrame(currentFrame);
+		animation_set->at(state)->RenderByFrame(currentFrame, nx, x, y);
+	}
+	else
+		animation_set->at(state)->Render(x, y, nx);
 }
 
 void CRaven::SetState(int state)
@@ -33,6 +41,16 @@ void CRaven::SetState(int state)
 
 void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 {
+	if (stopMoving == true)
+	{
+		stop = true;
+		return;
+	}
+	else
+	{
+		stop = false;
+	}
+
 	CGameObject::Update(dt);
 
 	float xS, yS;
