@@ -637,6 +637,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] Axe Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
+					y = y - 0.4f;
 					e->obj->SetVisible(false);
 					this->currentSubWeapon = int(SubWeapon::AXE);
 				}
@@ -771,15 +772,16 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			dynamic_cast<CBlack_Knight*>(e->obj) ||
 			dynamic_cast<CHunchBack*>(e->obj) || 
 			dynamic_cast<CSkeleton*>(e->obj) || 
+			dynamic_cast<CBone*>(e->obj) ||
 			dynamic_cast<CPhantomBat*>(e->obj))
 			{
-			if (state == SIMON_STATE_DEFLECT)
+			/*if (state == SIMON_STATE_DEFLECT)
 				return;
-			if (untouchable)  return;
+			if (untouchable)  return;*/
 
 			if ((e->nx != 0 || e->ny != 0) && untouchable == 0)
 			{
-				this->HP -= 2;
+				//this->HP -= 2;
 				if (onStairs == 0)
 				{
 					StartUntouchable();

@@ -37,6 +37,8 @@ void CPhantomBat::DetectPlayer()
 	
 	player_x = (left + right) / 2;
 	player_y = (top + bottom) / 2;
+
+	//DebugOut(L"Detecting Simon\n");
 }
 
 void CPhantomBat::CalcRetreatPoint()
@@ -55,7 +57,7 @@ void CPhantomBat::CalcRetreatPoint()
 		}
 	}
 
-	if (abs(retreats_x - player_y) < PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON)
+	if (abs(retreats_y - player_y) < PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON)
 	{
 		retreats_y = player_y - PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON;
 	}
@@ -63,11 +65,20 @@ void CPhantomBat::CalcRetreatPoint()
 	// Keep the BossBat being inside viewport
 	float left, top, right, bottom;
 	CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
-	if (retreats_x > right)		retreats_x = player_x - PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON;
-	if (retreats_x < left)		retreats_x = player_x + PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON;
 
-	if (retreats_y < top && retreats_y > bottom)
+	if (retreats_x > right)		
+		retreats_x = player_x - PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON;
+
+	if (retreats_x < left)		
+		retreats_x = player_x + PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON;
+
+	if (retreats_y < top || retreats_y > bottom)
 		retreats_y = retreats_y - PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON;
+
+	/*if (retreats_y < top || retreats_y > bottom)
+		DebugOut(L"Retreat point out of camera !\n");*/
+
+	
 }
 
 CPhantomBat::CPhantomBat(float x, float y)
@@ -175,12 +186,12 @@ void CPhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMov
 	// clean up collision events
 	for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-	/*float left, top, right, bottom;
+	float left, top, right, bottom;
 		CGame::GetInstance()->GetCameraBoundingBox(left, top, right, bottom);
-		if (x < left || x + PHANTOM_BAT_BBOX_WIDTH > right-20)
+		if (x < left || x + PHANTOM_BAT_BBOX_WIDTH > right)
 			vx = -vx;
-		if (y < top +50 || y + PHANTOM_BAT_BBOX_HEIGHT > bottom-5)
-			vx = -vy;*/
+		if (y < top +40 || y + PHANTOM_BAT_BBOX_HEIGHT > bottom)
+			vx = -vy;
 }
 
 void CPhantomBat::Render()
@@ -208,7 +219,10 @@ void CPhantomBat::GoToRetreats()
 	{
 		retreats = false;
 		TakeARetreats();
+		DebugOut(L"Going to rest point !\n");
 	}
+
+	
 	//else // Going to the retreat point
 	//{
 	//	/*vx = (boss_x < retreats_x) ?
@@ -228,6 +242,7 @@ void CPhantomBat::TakeARetreats()
 		retreat_start = GetTickCount();
 		vx = vy = 0;
 	}
+	DebugOut(L"Take a short rest !\n");
 }
 
 void CPhantomBat::SwoopDown()
@@ -249,6 +264,8 @@ void CPhantomBat::SwoopDown()
 
 		// Start timer for attacking action
 		swoopDown_start = GetTickCount();
+		 
+
 	}
 }
 

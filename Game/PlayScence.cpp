@@ -341,6 +341,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_PHANTOM_BAT:
 	{
 		obj = new CPhantomBat(x,y);
+		boss = (CPhantomBat*)obj;
 		break;
 	}
 
@@ -703,11 +704,30 @@ void CPlayScene::Update(DWORD dt)
 
 	CGame* game = CGame::GetInstance();
 
-	cx -= game->GetScreenWidth() / 2;
-	if (cx >= (mapWidth - SCREEN_WIDTH))
-		cx = mapWidth - SCREEN_WIDTH;
+	if (boss !=NULL)
+	{
+		if (boss->inActive == false) // Lock cam
+		{
+			cx = mapWidth - SCREEN_WIDTH;
+			game->SetCamPos(cx+10.0f , 0.0f);
+		}
+		else
+		{
+			cx -= game->GetScreenWidth() / 2;
+			game->SetCamPos(cx+10.0f, 0.0f);
+		}
+		
+			
+	}
+	else
+	{
+		cx -= game->GetScreenWidth() / 2;
+		if (cx >= (mapWidth - SCREEN_WIDTH))
+			cx = mapWidth - SCREEN_WIDTH;
 
-	game->SetCamPos(cx+10, 0.0f /*cy*/);
+		game->SetCamPos(cx + 10, 0.0f /*cy*/);
+	}
+	
 
 	// Get the bounding box of the viewport
 	float left, top, right, bottom;
@@ -743,10 +763,10 @@ void CPlayScene::Update(DWORD dt)
 				vector<LPGAMEOBJECT> bones = skt->GetBones();
 
 				// Adding bones to coObjects
-				/*for (UINT i = 0; i < skt->GetBones().size(); i++)
+				for (UINT i = 0; i < skt->GetBones().size(); i++)
 				{	
 					coObjects.push_back(bones[i]);
-				}	*/
+				}	
 			}
 			else 
 				coObjects.push_back(updateObject[i]);

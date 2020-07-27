@@ -18,7 +18,7 @@
 
 #define PHANTOM_BAT_BACK_TO_RETREATS_SPEED_VY	-0.004f
 
-#define PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON	100
+#define PHANTOM_BAT_MIN_DISTANCE_WITH_SIMON	150
 
 class CPhantomBat : public CGameObject
 {
@@ -31,17 +31,18 @@ private:
 	float player_x;		// Position of the player
 	float player_y;
 
-	float retreats_x;	//Position for the boss to take a retreats
+	float retreats_x;	//Position for the boss to take a Retreats
 	float retreats_y;
 
 	bool stop = false;
-	bool inActive = true;
+	//bool inActive = true;
 	bool retreats = false;
 
-	DWORD retreat_start = 0; 
+	DWORD retreat_start = 0;
 	DWORD swoopDown_start = 0;
 
 public:
+	bool inActive = true;
 	bool IsActive();
 	bool IsInRetreats();
 

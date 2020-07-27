@@ -60,6 +60,8 @@ class CPlayScene: public CScene
 {
 protected: 
 	CSimon* player;	// A play scene has to have player, right? 
+	CPhantomBat* boss;   
+
 	Board* HUD;	
 	CGrid* grid = CGrid::GetInstance();
 
