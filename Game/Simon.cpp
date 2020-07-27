@@ -570,6 +570,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] Heart Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
+					y = y - 0.2f;
 					heart_quantity += 5;
 					e->obj->SetVisible(false);
 				}
@@ -773,7 +774,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			dynamic_cast<CHunchBack*>(e->obj) || 
 			dynamic_cast<CSkeleton*>(e->obj) || 
 			dynamic_cast<CBone*>(e->obj) ||
-			dynamic_cast<CPhantomBat*>(e->obj))
+			dynamic_cast<CBossBat*>(e->obj))
 			{
 			/*if (state == SIMON_STATE_DEFLECT)
 				return;

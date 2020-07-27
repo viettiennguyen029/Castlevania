@@ -24,7 +24,7 @@ void Board::Render()
 
 	// HP
 	code->DrawHP(cx + 60, cy + 18, 0, simon->GetHP()); // Player's HP
-	code->DrawHP(cx + 60, cy + 28, 1, 13); // Boss's HP
+	code->DrawHP(cx + 60, cy + 28, 1, 16); // Boss's HP
 }
 
 Board::Board()
@@ -33,6 +33,7 @@ Board::Board()
 	count = GetTickCount();
 	isStop = false;
 	code = new Code();
+	
 }
 
 Board* Board::GetInstance()

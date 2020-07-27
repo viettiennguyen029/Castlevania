@@ -16,6 +16,7 @@ class Board
 	bool isStop= false;
 
 	CSimon* simon = CSimon::GetInstance();
+
 public: 
 	Board();	
 	void Render();

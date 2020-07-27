@@ -340,8 +340,8 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 
 	case OBJECT_TYPE_PHANTOM_BAT:
 	{
-		obj = new CPhantomBat(x,y);
-		boss = (CPhantomBat*)obj;
+		obj = new CBossBat();
+		boss = (CBossBat*)obj;
 		break;
 	}
 
@@ -706,7 +706,7 @@ void CPlayScene::Update(DWORD dt)
 
 	if (boss !=NULL)
 	{
-		if (boss->inActive == false) // Lock cam
+		if (boss->IsSleeping() == false) // Lock cam
 		{
 			cx = mapWidth - SCREEN_WIDTH;
 			game->SetCamPos(cx+10.0f , 0.0f);

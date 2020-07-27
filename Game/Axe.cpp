@@ -99,7 +99,7 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 				dynamic_cast<CRaven*>(e->obj) ||
 				dynamic_cast<CHunchBack*>(e->obj) ||
 				dynamic_cast<CGhost*>(e->obj) ||
-				dynamic_cast<CPhantomBat*>(e->obj) ||
+				dynamic_cast<CBossBat*>(e->obj) ||
 				dynamic_cast<CZombie*>(e->obj))
 			{
 				if (e->nx != 0 || e->ny != 0)

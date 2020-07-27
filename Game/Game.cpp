@@ -240,8 +240,8 @@ void CGame::GetCameraBoundingBox(float& left, float& top, float& right, float& b
 {
 	left = this->cam_x;
 	top = this->cam_y;
-	right = left + GetScreenWidth();
-	bottom = top + GetScreenHeight();
+	right = this->cam_x + GetScreenWidth();
+	bottom = this->cam_y + GetScreenHeight();
 }
 
 CGame::~CGame()

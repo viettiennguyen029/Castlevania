@@ -136,9 +136,6 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Spatial Partition</Filter>
     </ClCompile>
-    <ClCompile Include="PhantomBat.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="ItemInvisibility.cpp">
       <Filter>Items</Filter>
     </ClCompile>
@@ -197,6 +194,9 @@
       <Filter>Items</Filter>
     </ClCompile>
     <ClCompile Include="Bone.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="BossBat.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
@@ -300,9 +300,6 @@
     <ClInclude Include="Skeleton.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="PhantomBat.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Spatial Partition</Filter>
     </ClInclude>
@@ -364,6 +361,9 @@
       <Filter>Items</Filter>
     </ClInclude>
     <ClInclude Include="Bone.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="BossBat.h">
       <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>

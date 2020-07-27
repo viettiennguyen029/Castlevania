@@ -124,7 +124,7 @@ void CHolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovi
 				dynamic_cast<CSkeleton*> (e->obj) || 
 				dynamic_cast<CRaven*> (e->obj) ||
 				dynamic_cast<CGhost*> (e->obj) ||
-				dynamic_cast<CPhantomBat*>(e->obj) ||
+				dynamic_cast<CBossBat*>(e->obj) ||
 				dynamic_cast<CZombie*> (e->obj))
 			{
 				e->obj->TakeDamage(this->damage);

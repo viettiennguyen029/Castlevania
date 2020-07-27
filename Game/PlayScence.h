@@ -31,7 +31,7 @@
 #include "Raven.h"
 #include"Ghost.h"
 #include "Bat.h"
-#include "PhantomBat.h"
+#include "BossBat.h"
 #include "Zombie.h"
 #include "StairTop.h"
 #include "StairBottom.h"
@@ -60,7 +60,7 @@ class CPlayScene: public CScene
 {
 protected: 
 	CSimon* player;	// A play scene has to have player, right? 
-	CPhantomBat* boss;   
+	CBossBat* boss;   
 
 	Board* HUD;	
 	CGrid* grid = CGrid::GetInstance();

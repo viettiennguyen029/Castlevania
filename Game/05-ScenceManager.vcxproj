@@ -132,6 +132,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Bone.cpp" />
     <ClCompile Include="Boomerang.cpp" />
+    <ClCompile Include="BossBat.cpp" />
     <ClCompile Include="BreakWall.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Candle.cpp" />
@@ -159,7 +160,6 @@
     <ClCompile Include="ItemWatch.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovingPlatform.cpp" />
-    <ClCompile Include="PhantomBat.cpp" />
     <ClCompile Include="PointEffects.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Raven.cpp" />
@@ -189,6 +189,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Bone.h" />
     <ClInclude Include="Boomerang.h" />
+    <ClInclude Include="BossBat.h" />
     <ClInclude Include="BreakWall.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Candle.h" />
@@ -215,7 +216,6 @@
     <ClInclude Include="ItemSmallHeart.h" />
     <ClInclude Include="ItemWatch.h" />
     <ClInclude Include="MovingPlatform.h" />
-    <ClInclude Include="PhantomBat.h" />
     <ClInclude Include="PointEffects.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Raven.h" />
