@@ -3,84 +3,82 @@
 0	30	170	0
 
 [OBJECTS]
-# type	x	y	ani_set_id	extra_settings per object type
-# 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 
-# 7 = Dagger,71 = Boomerang, 8 = Black Knight, 9 = Bat, 90 = Break wall, 91 = Wall pieces
+# type	x	y	ani_set_id	row_index	col_index
 
 #================ BRICK ==================
-1	0	216	1	230	16
+1	0	216	1	4	0	230	16
 # vertical wall right
-1	224	167	1	16	48
-1	240	103	1	16	64
+1	224	56	1	1	2	16	64
+1	224	167	1	3	2	16	48
+1	240	103	1	2	2	16	64
 # Stair 1
-1	165	153	1	80	16
+1	165	153	1	3	1	80	16
 # Stair 2
-1	34	121	1	124	16
+1	34	121	1	1	0	124	16
 # vertical wall left
-1	2	56	1	14	64
-1	16	104	1	16	16
-#Breakable, extra 1 =state, extra 2 = item
-90	224	121	90	0	-1
-90	224	137	90	0	-1
-90	128	217	90	0	-1
+1	2	56	1	1	0	14	64
+1	16	104	1	2	0	16	16
+#Breakable x	y	ani_set	row_index	col_index
+90	224	121	90	2	2	0	-1
+90	224	137	90	2	2	0	-1
+90	128	217	90	1	4	0	-1
 
 #Wall pieces
-91	222	122	91
-91	226	124	91
-91	228	125	91
-91	224	126	91
+91	222	122	91	2	2	
+91	226	124	91	2	2
+91	228	125	91	2	2
+91	224	126	91	2	2
 
 #Point effect
-92	150	190	92
+92	150	190	92	1	4
 
 #Small candle	extra1: item, extra 2: state
-2	96	153	2	81	1
-2	196	153	2	86	1
-2	150	57	2	10	1
+2	96	153	2	3	1	81	1
+2	196	153	2	3	2	86	1
+2	150	57	2	1	1	10	1
 
 #ITEMS
 #Big heart
-#4	206	153	41
-4	44	85	41
+4	44	85	41	1	0
 #Small heart
-44	40	57	44
+44	40	57	44	0	0
 #Boomerang
-81	76	153	45
+81	76	153	45	3	0
 #Money bag red
-10	150	55	46
+10	150	55	46	1	1
 #Stop watch
-86	96	153	51
+86	96	153	51	3	1
+#Crown item
+40	130	232	40	4	1
 
 # DAGGER
-7	46	145	43
+7	46	145	43	3	0
 # BOOMERANG
-71	40	145	71
+71	40	145	71	3	0
 
 #Black Knight
-8	44	85	5	4
+8	44	85	5	0	0	4
 
 #Bat
-9	40	57	6	44
+9	40	57	6	0	0	44
 
-#Crown item
-40	130	232	40
 # WHIP
 #3	0	0	3
 
 # STAIR bottom, extra = nx
--2	102	186	0	1
--2	70	90	0	1
+-2	102	186	0	3	1	1
+-2	70	90	0	1	0	1
 
 # STAIR top
--3	166	123	0	1
+-3	166	123	0	2	1	1
 
 # --- SCENE PORTAL ----
-# type	l	t	ani_set_id	r	b	scene_id
-50	140	42	0	155	45	3
+# type	l	t	ani_set_id	row_index	col_index	r	b	scene_id
+50	140	42	0	0	1	155	45	3
 
 #width	height	offset_y
 [MAP_INFO]
-265	112	40
+260	112	40
 [TILE_MAP]
 0	1	2	2	3	4	1	5	6
 0	1	2	3	2	7	1	5	6

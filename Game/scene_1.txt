@@ -1,42 +1,50 @@
 [PLAYER]
 # type	x	y	ani_set_id
 0	46	130	0
+
 [OBJECTS]
-# type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Candle, 3= Whip, 4= Items_BigHeart, 5 = Items_Chain, 6 = Items_Dagger, 7 = Dagger
+# type	x	y	ani_set_id	row_index	col_index	extra_settings per object type
 
 # CANDLE
 #extra_settings = Item Object ID
-2	100	166	2	4	0
-2	210	166	2	5	0
-2	330	166	2	5	0
-2	450	166	2	4	0
-2	570	166	2	80	0
+2	100	166	2	3	1	4	0
+2	210	166	2	3	2	5	0
+2	330	166	2	3	3	5	0
+2	450	166	2	3	4	4	0
+2	570	166	2	3	5	80	0
 
 # ITEMS
 #BigHeart
-4	100	166	41
-4	450	166	41
+4	100	166	41	0	0
+4	450	166	41	0	0
 #Chain
-5	210	166	42
-5	330	166	42
+5	210	166	42	0	0
+5	330	166	42	0	0
 #Dagger
-80	570	166	43
+80	570	166	43	0	0
 
 #DAGGER
-7	570	166	43
+7	570	166	43	0	0
 
 # BRICK 
 # extra 1 = width, extra 2 = height
-1	0	196	1	700	16
-
+#1	0	196	1	4	0	700	16
+1	0	196	1	4	0	96	16
+1	96	196	1	4	1	96	16
+1	192	196	1	4	2	96	16
+1	288	196	1	4	3	96	16
+1	384	196	1	4	4	96	16
+1	480	196	1	4	5	96	16
+1	576	196	1	4	6	96	16
+1	672	196	1	4	7	28	16
 
 # WHIP
 #3	0	0	3
 
 # --- SCENE PORTAL ----
-# type	l	t	ani_set_id	r	b	scene_id
-50	680	150	0	700	210	2
+# type	l	t	ani_set_id	row_index	col_index	r	b	scene_id
+50	680	150	0	3	7	700	210	2
+
 
 [MAP_INFO]
 #width	#height	#offset_y

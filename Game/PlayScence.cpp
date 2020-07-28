@@ -212,6 +212,9 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	float y = atof(tokens[2].c_str());
 	int ani_set_id = atoi(tokens[3].c_str());
 
+	int row_index = atoi(tokens[4].c_str());
+	int col_index = atoi(tokens[5].c_str());
+
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
@@ -222,11 +225,12 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	
 	case OBJECT_TYPE_BRICK:
 	{
-		int width = atoi(tokens[4].c_str());
-		int height = atoi(tokens[5].c_str());
+		int width = atoi(tokens[6].c_str());
+		int height = atoi(tokens[7].c_str());
 		obj = new CBrick();
 		obj->SetWidth(width);
 		obj->SetHeight(height);
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 	
@@ -260,17 +264,29 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		break;
 	}
 
-	case OBJECT_TYPE_MOVING_PLATFORM: obj = new CMovingPlatform(); break;
+	case OBJECT_TYPE_MOVING_PLATFORM: 
+	{
+		obj = new CMovingPlatform(); 
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
+		break;
+	}
 
-	case OBJECT_TYPE_CROWN_ITEM: obj = new ItemCrown(); break;
+	case OBJECT_TYPE_CROWN_ITEM:
+	{
+		obj = new ItemCrown(); 
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
+		break;
+		
+	}
 
 	case OBJECT_TYPE_BREAK_WALL:
 	{
-		int state = atoi(tokens[4].c_str());
-		int it = atoi(tokens[5].c_str());
+		int state = atoi(tokens[6].c_str());
+		int it = atoi(tokens[7].c_str());
 		obj = new CBreakWall(x, y); 
 		obj->SetState(state);
 		obj->SetItemId(it);
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -289,16 +305,18 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BAT:
 	{
-		int it = atoi(tokens[4].c_str());
+		int it = atoi(tokens[6].c_str());
 		obj = new CBat(x,y);
 		obj->SetItemId(it);
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}	
 	case OBJECT_TYPE_BLACK_KNIGHT: 
 	{
-		int it = atoi(tokens[4].c_str());
+		int it = atoi(tokens[6].c_str());
 		obj = new CBlack_Knight(x,y); 
 		obj->SetItemId(it);
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -311,12 +329,14 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_HUNCH_BACK:
 	{
 		obj = new CHunchBack();
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
 	case OBJECT_TYPE_SKELETON:
 	{
 		obj = new CSkeleton();
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -335,6 +355,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_GHOST:
 	{
 		obj = new CGhost();
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -342,16 +363,18 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	{
 		obj = new CBossBat();
 		boss = (CBossBat*)obj;
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
 	case OBJECT_TYPE_CANDLE: 
 	{
-		 int it = atoi(tokens[4].c_str());
-		 int state = atoi(tokens[5].c_str());
+		 int it = atoi(tokens[6].c_str());
+		 int state = atoi(tokens[7].c_str());
 		obj = new CCandle();	
 		obj->SetState(state);
 		obj->SetItemId(it);		
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -463,22 +486,25 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		int nx = atoi(tokens[4].c_str());
 		obj = new CVariousStair();		
 		obj->SetOrientation(nx);
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
 	case OBJECT_TYPE_STAIR_BOTTOM:
 	{
-		int nx = atoi(tokens[4].c_str());		
+		int nx = atoi(tokens[6].c_str());		
 		obj = new CStairBottom();
 		obj->SetOrientation(nx);
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
 	case OBJECT_TYPE_STAIR_TOP:
 	{
-		int nx = atoi(tokens[4].c_str());
+		int nx = atoi(tokens[6].c_str());
 		obj = new CStairTop();	
 		obj->SetOrientation(nx);
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -492,10 +518,11 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 
 	case OBJECT_TYPE_PORTAL:
 	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int scene_id = atoi(tokens[6].c_str());
+		float r = atof(tokens[6].c_str());
+		float b = atof(tokens[7].c_str());
+		int scene_id = atoi(tokens[8].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -512,8 +539,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 
 	if (obj->isVisible() == false)
 		invisibleObjects.push_back(obj);
-
-	grid ->Classify(obj);
 	
 }
 
@@ -739,6 +764,8 @@ void CPlayScene::Update(DWORD dt)
 	//Get objects in grid
 	grid->GetObjectsInGrid(updateObject, left, top, right, bottom);
 
+	
+
 	//hiddenObject.clear();
 	for (size_t i = 0; i < invisibleObjects.size(); i++)
 	{
@@ -772,7 +799,7 @@ void CPlayScene::Update(DWORD dt)
 				coObjects.push_back(updateObject[i]);
 		}			
 	}
-	//DebugOut(L"CoObject: %d, Object update: %d\n", coObjects.size(), updateObject.size());
+	DebugOut(L"CoObject: %d, Object update: %d\n", coObjects.size(), updateObject.size());
 
 	// Call Update function of each object
 	for (size_t i = 0; i < updateObject.size(); i++)
@@ -814,11 +841,20 @@ void CPlayScene::Render()
 	for (int i = 0; i < tiledMap.size(); i++)
 		tiledMap[i]->Render();
 
-	for (int i = objects.size() - 1; i >= 0; i--)
+	/*for (int i = objects.size() - 1; i >= 0; i--)
 	{
 		if (objects[i]->visible == false)
 			continue;
 		objects[i]->Render();
+	}	*/
+
+	
+	//[NOTES]  : Comment these
+	for (int i = updateObject.size() - 1; i >= 0; i--)
+	{
+		if (updateObject[i]->visible == false)
+			continue;
+		updateObject[i]->Render();
 	}	
 
 	player->Render();// Simon is rendered at the last 

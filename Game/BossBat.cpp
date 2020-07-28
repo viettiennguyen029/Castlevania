@@ -1,6 +1,7 @@
 #include "BossBat.h"
 #include "Game.h"
 
+
 void CBossBat::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;

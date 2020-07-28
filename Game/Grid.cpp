@@ -1,6 +1,7 @@
 #include "Grid.h"
 #include <unordered_set>
 #include "Brick.h"
+#include "Utils.h"
 
 #define CELL_WIDTH	96
 #define CELL_HEIGHT	48
@@ -26,6 +27,14 @@ void CGrid::Classify(LPGAMEOBJECT obj)
 	}	
 }
 
+void CGrid::PutObjectIntoGrid(LPGAMEOBJECT obj, int row_index, int column_index)
+{
+	if (obj == NULL)
+		return;
+	
+	cells[row_index][column_index].push_back(obj);
+}
+
 void CGrid::GetObjectsInGrid(vector<LPGAMEOBJECT>&updateobjects, float left, float top, float right, float bottom)
 {
 	int firstCellColumn, firstCellRow;		// the left-top cell that containing the rectangle's area
@@ -44,13 +53,15 @@ void CGrid::GetObjectsInGrid(vector<LPGAMEOBJECT>&updateobjects, float left, flo
 			for (UINT k = 0; k < cells[row][column].size(); k++)
 			{
 				// Check the object if is in the vector or not ! Ref: https://en.cppreference.com/w/cpp/algorithm/find
-				if ((find(updateobjects.begin(), updateobjects.end(), cells[row][column].at(k)) != updateobjects.end()== false))
-				{
+				//if ((find(updateobjects.begin(), updateobjects.end(), cells[row][column].at(k)) != updateobjects.end()== false))
+				//{
 					if (cells[row][column].at(k)->isVisible())
 					{
 						updateobjects.push_back(cells[row][column].at(k));
-					}					
-				}
+						//DebugOut(L"Row index: %d, Col index: %d\n", row, column);
+					}			
+	
+				//}
 			}
 		}
 	}

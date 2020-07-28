@@ -380,6 +380,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 {
 	// Calculate x,y
 	CGameObject::Update(dt);
+	DebugOut(L"Simon's positon: %f \n", this->x);
 
 	// Simple fall down
 	vy += SIMON_GRAVITY * dt;
@@ -681,6 +682,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[ITEMS] Money Bag Collected \n");
 				if (e->nx != 0 || e->ny != 0)
 				{
+					y = y - 0.2f;
 					e->obj->SetVisible(false);
 					PointEffects::GetInstance()->ShowPoint(POINT_EFFECT_100, this->x + 32, this->y + 10);
 				}
