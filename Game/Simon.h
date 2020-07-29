@@ -49,6 +49,7 @@
 #define SIMON_ANI_IDLE_DOWNSTAIR	12
 #define SIMON_ANI_THROW					13
 #define SIMON_ANI_POWER_UP			14
+#define SIMON_ANI_DIE							15
 
 #define SIMON_GRAVITY						0.0006f	
 #define SIMON_WALKING_SPEED			0.065f
@@ -62,7 +63,7 @@
 
 #define SIMON_DEFLECT_TIME				400
 #define SIMON_DEFLECT_SPEED_X			0.06f
-#define SIMON_DEFLECT_SPEED_Y			0.14f
+#define SIMON_DEFLECT_SPEED_Y			0.18f
 #define SIMON_UNTOUCHABLE_TIME	3000
 
 #define SIMON_BBOX_WIDTH			16
@@ -87,11 +88,12 @@ class CSimon : public CGameObject
 private:
 	// HUD's infor
 	int heart_quantity = 0;
-	int HP;
 	int score;
 
 	static CSimon* __instance; 
 	float start_x, start_y; // Initial position of simon at scene instead of (0,0)
+
+	int  revieScene; // Handle player's revie scene
 
 	float firstY; // Check if simon is falling down in the large distance
 	int untouchable;
@@ -129,9 +131,12 @@ public:
 	bool StopWatch() { return this->using_stop_watch; }
 	void SetStopWatch(bool watch) { this->using_stop_watch = watch; }
 
+	void SetBackScene(int scene_id) { this->revieScene = scene_id; }
+	int GetBackScene() { return this->revieScene; }
+
 	int GetHeartQuantity() { return this->heart_quantity; }
 	int GetScore() { return this->score; }
-	int GetHP() { return this->HP; }
+	int GetHP() { return this->healthPoint; }
 
 	bool PowingUp() { return this->powerUp; }
 	

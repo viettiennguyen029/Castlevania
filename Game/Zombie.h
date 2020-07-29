@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-#define ZOMBIE_MOVING_SPEED	0.0f
+#define ZOMBIE_MOVING_SPEED	0.04f
 #define ZOMBIE_GRAVITY				0.002f
 
 #define ZOMBIE_STATE_MOVING	0

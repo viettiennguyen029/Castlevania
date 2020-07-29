@@ -170,12 +170,14 @@ void CPlayScene::_ParseSection_SCENE_ANIMATION_SETS(string line)
 void CPlayScene::_ParseSection_SCENE_PLAYER(string line)
 {
 	vector<string> tokens = split(line);
-	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 4) return; // skip invalid lines - an object set must have at least id, x, y
 
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
 	int ani_set_id = atoi(tokens[3].c_str());
+	int nx = atoi(tokens[4].c_str());
+	int backScene = atoi(tokens[5].c_str());
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -192,8 +194,15 @@ void CPlayScene::_ParseSection_SCENE_PLAYER(string line)
 	player = (CSimon*)playerObj;
 
 	playerObj->SetPosition(x, y);
+
+	//playerObj->SetState(0);
+	
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 	playerObj->SetAnimationSet(ani_set);
+
+	player->SetState(0);
+	player->SetOrientation(nx);
+	player->SetBackScene(backScene);
 
 	DebugOut(L"[INFO] Player object created!\n");
 }
@@ -323,6 +332,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_ZOMBIE:
 	{
 		obj = new CZombie();
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -483,7 +493,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 
 	case OBJECT_TYPE_VARIOUS_STAIR:
 	{
-		int nx = atoi(tokens[4].c_str());
+		int nx = atoi(tokens[6].c_str());
 		obj = new CVariousStair();		
 		obj->SetOrientation(nx);
 		grid->PutObjectIntoGrid(obj, row_index, col_index);
@@ -704,7 +714,7 @@ void CPlayScene::Load()
 void CPlayScene::Update(DWORD dt)
 {	
 	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
+	if (player == NULL ) return;
 
 	// We know that Simon is the first object in the list hence we won't add him into the colliable object list
 	vector<LPGAMEOBJECT> coObjects;
@@ -733,16 +743,13 @@ void CPlayScene::Update(DWORD dt)
 	{
 		if (boss->IsSleeping() == false) // Lock cam
 		{
-			cx = mapWidth - SCREEN_WIDTH;
-			game->SetCamPos(cx+10.0f , 0.0f);
+			cx = mapWidth - SCREEN_WIDTH;			
 		}
 		else
 		{
 			cx -= game->GetScreenWidth() / 2;
-			game->SetCamPos(cx+10.0f, 0.0f);
-		}
-		
-			
+		}		
+		game->SetCamPos(cx + 10.0f, 0.0f);
 	}
 	else
 	{
@@ -759,12 +766,10 @@ void CPlayScene::Update(DWORD dt)
 	game->GetCameraBoundingBox(left, top, right, bottom);
 
 	updateObject.clear();
-	coObjects.clear();
+
 
 	//Get objects in grid
 	grid->GetObjectsInGrid(updateObject, left, top, right, bottom);
-
-	
 
 	//hiddenObject.clear();
 	for (size_t i = 0; i < invisibleObjects.size(); i++)
@@ -772,10 +777,10 @@ void CPlayScene::Update(DWORD dt)
 		if (invisibleObjects[i]->isVisible())
 		{
 			// Condition to prevent adding object repeatedly
-			if (find(updateObject.begin(), updateObject.end(), invisibleObjects[i]) != updateObject.end() == false)
-			{
+			//if (find(updateObject.begin(), updateObject.end(), invisibleObjects[i]) != updateObject.end() == false)
+			//{
 				updateObject.push_back(invisibleObjects[i]);
-			}
+			//}
 		}
 	}
 
@@ -831,6 +836,28 @@ void CPlayScene::Update(DWORD dt)
 		stopMoving = false;
 
 	
+	// Handle die
+	if (CSimon::GetInstance()->GetState() == SIMON_STATE_DIE )
+	{
+		if (dying < 3000)
+		{
+			player_die = true;
+			dying += dt;
+		}
+		else
+		{
+			player_die = false;
+			dying = 0;
+			player->healthPoint = 16;
+			game->SwitchScene(player->GetBackScene());
+		}
+	}
+	else
+	{
+		player_die = false;
+	}
+
+
 	HUD->Update(dt);
 
 }
@@ -841,21 +868,21 @@ void CPlayScene::Render()
 	for (int i = 0; i < tiledMap.size(); i++)
 		tiledMap[i]->Render();
 
-	/*for (int i = objects.size() - 1; i >= 0; i--)
+	for (int i = objects.size() - 1; i >= 0; i--)
 	{
 		if (objects[i]->visible == false)
 			continue;
 		objects[i]->Render();
-	}	*/
+	}
 
 	
 	//[NOTES]  : Comment these
-	for (int i = updateObject.size() - 1; i >= 0; i--)
+	/*for (int i = updateObject.size() - 1; i >= 0; i--)
 	{
 		if (updateObject[i]->visible == false)
 			continue;
 		updateObject[i]->Render();
-	}	
+	}	*/
 
 	player->Render();// Simon is rendered at the last 
 	HUD->Render();
@@ -1082,6 +1109,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		return ;
 	
 	if (simon->PowingUp() == true) return;
+
+	if (simon->GetState() == SIMON_STATE_DIE)
+		return;
 	
 	if (game->IsKeyDown(DIK_RIGHT))
 	{

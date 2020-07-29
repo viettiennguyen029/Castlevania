@@ -1,7 +1,7 @@
 [PLAYER]
-# type	x	y	ani_set_id
-0	705	160	0
-#0	55	60	0
+# type	x	y	ani_set	nx	back_scene
+0	705	160	0	-1	4
+#0	55	60	0	-1	4
 
 [OBJECTS]
 # type	x	y	ani_set_id	row_index	col_index

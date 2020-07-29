@@ -1,6 +1,6 @@
 [PLAYER]
-# type	x	y	ani_set_id
-0	364	202	0
+# type	x	y	ani_set	nx	back_scene
+0	364	202	0	1	2
 #0	450	80	0
 
 [OBJECTS]

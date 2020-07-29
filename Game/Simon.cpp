@@ -326,7 +326,7 @@ void CSimon::ProceedOverlapping()
 		{
 			DebugOut(L"[INFO] Player's HP refilled \n");
 			ovObj->SetVisible(false);
-			this->HP = 16;	
+			this->healthPoint = 16;	
 		}
 
 		else if (dynamic_cast<ItemInvisibility*>(ovObj))
@@ -368,9 +368,9 @@ CSimon::CSimon(float x, float y) :CGameObject()
 	this->y = y;
 
 	this->heart_quantity = 5;
-	this->HP = 16;
+	this->healthPoint = 16;
 
-	SetState(SIMON_STATE_IDLE);
+	SetState(SIMON_ANI_IDLE);
 
 	this->currentSubWeapon = int(SubWeapon::UNKNOWN);
 	whip = new CWhip();
@@ -456,7 +456,6 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	// turn off collision when simon is die
 	if (state != SIMON_STATE_DIE)
 	{
-
 		CalcPotentialCollisions(coObjects, coEvents);
 	}
 
@@ -662,7 +661,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			{
 				y = y - 0.4f;
 				e->obj->SetVisible(false);
-				this->HP = 16;
+				this->healthPoint = 16;
 			}
 			}
 
@@ -774,6 +773,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			else if (dynamic_cast<CBat*>(e->obj) || 
 			dynamic_cast<CBlack_Knight*>(e->obj) ||
 			dynamic_cast<CHunchBack*>(e->obj) || 
+			dynamic_cast<CZombie*>(e->obj) ||
 			dynamic_cast<CSkeleton*>(e->obj) || 
 			dynamic_cast<CBone*>(e->obj) ||
 			dynamic_cast<CBossBat*>(e->obj))
@@ -784,7 +784,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 
 			if ((e->nx != 0 || e->ny != 0) && untouchable == 0)
 			{
-				//this->HP -= 2;
+				this->healthPoint -= 2;
 				if (onStairs == 0)
 				{
 					StartUntouchable();
@@ -832,6 +832,13 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			whip->Update(dt, coObjects);
 		}
 	}
+
+	if (this->healthPoint <= 0)
+	{
+		this->healthPoint = 0;
+		SetState(	SIMON_STATE_DIE);
+		return;
+	}
 }
 
 
@@ -856,12 +863,6 @@ void CSimon::SetState(int state)
  		else vx = -SIMON_WALKING_SPEED;
 		break;
 	}	
-
-	case SIMON_STATE_DIE:
-	{
-		vy = -SIMON_DIE_DEFLECT_SPEED;
-		break;
-	}
 
 	case SIMON_STATE_JUMP:
 	{
@@ -940,14 +941,19 @@ void CSimon::SetState(int state)
 	{
 		vx = vy = dx = dy = 0;
 
-		this->vx = (-this->nx) * SIMON_DEFLECT_SPEED_X;
-		
-		vy = -SIMON_DEFLECT_SPEED_Y;
+		this->vy = -SIMON_DEFLECT_SPEED_Y;
+		this->vx = (-this->nx) * SIMON_DEFLECT_SPEED_X;		
 
 		animation_set->at(SIMON_ANI_DEFLECT)->Reset();
 		animation_set->at(SIMON_ANI_DEFLECT)->SetAniStartTime(GetTickCount());
 		
 		break;		
+	}
+
+	case SIMON_STATE_DIE:
+	{
+		vx = vy = 0;
+		break;
 	}
 	
 	}
@@ -979,7 +985,7 @@ void CSimon::Render()
 
 	if (state == SIMON_STATE_DIE)
 	{
-		ani = SIMON_ANI_IDLE;
+		ani = SIMON_ANI_DIE;
 	}
 	else if (state == SIMON_STATE_ATTACK || state == SIMON_STATE_THROW && currentSubWeapon != (int)SubWeapon::STOP_WATCH)
 	{

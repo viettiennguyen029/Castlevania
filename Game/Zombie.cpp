@@ -4,7 +4,8 @@
 CZombie::CZombie()
 {
 	this->healthPoint = 1;
-	this->vx = 0.06f;
+	//this->vx = 0.06f;
+	SetOrientation(-1);
 	SetState(ZOMBIE_STATE_MOVING);
 }
 
@@ -67,11 +68,12 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
-				if (e->ny != 0)
+				if (e->ny ==-1)
 				{
+					y = y  -0.2f;
 					vy = 0;
-					y += ny * 0.4f;
 				}
+				
 			}
 
 		}

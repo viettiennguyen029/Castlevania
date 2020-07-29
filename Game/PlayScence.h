@@ -71,6 +71,8 @@ protected:
 	bool stopMoving = false;
 	DWORD stopMoving_start = 0;
 
+	bool player_die = false; // Handle case player is died
+	DWORD dying = 0;
 	
 	vector<LPTILE> tiledMap;	
 	vector<LPGAMEOBJECT> objects;				// Base objects

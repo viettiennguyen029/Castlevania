@@ -5,7 +5,7 @@
 #define CELL_HEIGHT	48
 
 #define COLUMN_MAX	10
-#define ROW_MAX			6
+#define ROW_MAX			5
 /*
 	Grid is a set of cells next to each others
 */

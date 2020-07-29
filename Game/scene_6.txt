@@ -1,7 +1,7 @@
 [PLAYER]
-# type	x	y	ani_set_id
-0	10	70	0
-#0	464	120	0
+# type	x	y	ani_set	nx	back_scene
+0	10	70	0	1	6
+#0	464	120	0	1	6
 
 [OBJECTS]
 # type	x	y	ani_set_id	row_index	col_index
@@ -63,7 +63,11 @@
 73	348	150	73	3	3
 
 # Zombie
-#63	30	180	63
+63	260	180	63	3	2
+63	290	180	63	3	2
+63	285	88	63	2	2
+63	502	180	63	3	5
+63	550	180	63	3	5
 
 # Phantom Bat
 67	620	65	67	1	6
