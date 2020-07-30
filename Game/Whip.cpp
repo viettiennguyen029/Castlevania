@@ -34,6 +34,7 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 				dynamic_cast<CBat*>(temp)||
 				dynamic_cast<CHunchBack*>(temp)||
 				dynamic_cast<CZombie*>(temp) ||
+				dynamic_cast<CRaven*>(temp) ||
 				dynamic_cast<CSkeleton*>(temp) ||
 				dynamic_cast<CGhost*>(temp))
 			{

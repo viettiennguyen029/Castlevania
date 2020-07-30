@@ -41,7 +41,7 @@
 44	74	55	44	1	0
 
 # Moving Platform
-30	32	122	33	0	1
+30	32	122	33	2	0
 
 #Break wall, extra 1 =state, extra 2 = item
 90	352	121	90	2	3	0	-1
@@ -59,9 +59,9 @@
 9	300	62	6	0	3	44
 
 #DAGGER
-7	46	105	43	0	3
+7	46	105	43	0	1
 # BOOMERANG
-71	40	145	71	0	3
+71	40	145	71	0	1
 
 #Black Knight
 8	322	120	5	2	3	4
@@ -72,7 +72,7 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	g_row	g_col	r	b	scene_id
-50	1	80	0	1	0	6	100	4
+50	10	80	0	2	0	16	100	4
 
 #Width	height	offset_y
 [MAP_INFO]

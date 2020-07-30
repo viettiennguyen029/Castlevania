@@ -4,6 +4,8 @@
 #include "Simon.h"
 #include "Code.h"
 
+#define DEFAULT_GAME_TIME	300
+
 class Board
 {
 	//int score;
@@ -21,6 +23,7 @@ public:
 	Board();	
 	void Render();
 	void Update(DWORD dt);
+	void ResetTimer();
 	static Board* GetInstance();
 };
 

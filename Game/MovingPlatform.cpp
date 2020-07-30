@@ -36,8 +36,8 @@ void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool sto
 		float rdy = 0;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x += min_tx * dx+nx*0.2f;
-		y += min_ty * dy ;
+		x += min_tx * dx + nx * 0.2f;		
+		y += min_ty * dy + ny * 0.2f;
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
@@ -45,8 +45,10 @@ void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool sto
 			// Collision with brick
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
-				if (e->nx != 0||e->ny!=0)
+				if (nx != 0 && ny == 0)
 				{
+					//this->nx *= -1;
+					//vx *= -1;
 					//DebugOut(L" Redirecting Moving Platform\n");
 					vx = -vx;
 				}				

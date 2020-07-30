@@ -221,6 +221,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	float y = atof(tokens[2].c_str());
 	int ani_set_id = atoi(tokens[3].c_str());
 
+	// Grid index
 	int row_index = atoi(tokens[4].c_str());
 	int col_index = atoi(tokens[5].c_str());
 
@@ -239,7 +240,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		obj = new CBrick();
 		obj->SetWidth(width);
 		obj->SetHeight(height);
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 	
@@ -276,16 +276,13 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_MOVING_PLATFORM: 
 	{
 		obj = new CMovingPlatform(); 
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
 	case OBJECT_TYPE_CROWN_ITEM:
 	{
 		obj = new ItemCrown(); 
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
-		break;
-		
+		break;		
 	}
 
 	case OBJECT_TYPE_BREAK_WALL:
@@ -295,7 +292,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		obj = new CBreakWall(x, y); 
 		obj->SetState(state);
 		obj->SetItemId(it);
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -317,7 +313,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		int it = atoi(tokens[6].c_str());
 		obj = new CBat(x,y);
 		obj->SetItemId(it);
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}	
 	case OBJECT_TYPE_BLACK_KNIGHT: 
@@ -325,28 +320,24 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		int it = atoi(tokens[6].c_str());
 		obj = new CBlack_Knight(x,y); 
 		obj->SetItemId(it);
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
 	case OBJECT_TYPE_ZOMBIE:
 	{
 		obj = new CZombie();
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
 	case OBJECT_TYPE_HUNCH_BACK:
 	{
 		obj = new CHunchBack();
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
 	case OBJECT_TYPE_SKELETON:
 	{
 		obj = new CSkeleton();
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -365,7 +356,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	case OBJECT_TYPE_GHOST:
 	{
 		obj = new CGhost();
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
+		CSpawnGhost::GetInstance()->Add(1,obj);
 		break;
 	}
 
@@ -373,7 +364,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	{
 		obj = new CBossBat();
 		boss = (CBossBat*)obj;
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -384,7 +374,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		obj = new CCandle();	
 		obj->SetState(state);
 		obj->SetItemId(it);		
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -496,7 +485,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		int nx = atoi(tokens[6].c_str());
 		obj = new CVariousStair();		
 		obj->SetOrientation(nx);
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -505,7 +493,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		int nx = atoi(tokens[6].c_str());		
 		obj = new CStairBottom();
 		obj->SetOrientation(nx);
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -514,7 +501,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		int nx = atoi(tokens[6].c_str());
 		obj = new CStairTop();	
 		obj->SetOrientation(nx);
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -532,7 +518,6 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 		float b = atof(tokens[7].c_str());
 		int scene_id = atoi(tokens[8].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
-		grid->PutObjectIntoGrid(obj, row_index, col_index);
 		break;
 	}
 
@@ -549,6 +534,8 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 
 	if (obj->isVisible() == false)
 		invisibleObjects.push_back(obj);
+	else
+		grid->PutObjectIntoGrid(obj, row_index, col_index);
 	
 }
 
@@ -767,7 +754,6 @@ void CPlayScene::Update(DWORD dt)
 
 	updateObject.clear();
 
-
 	//Get objects in grid
 	grid->GetObjectsInGrid(updateObject, left, top, right, bottom);
 
@@ -777,10 +763,10 @@ void CPlayScene::Update(DWORD dt)
 		if (invisibleObjects[i]->isVisible())
 		{
 			// Condition to prevent adding object repeatedly
-			//if (find(updateObject.begin(), updateObject.end(), invisibleObjects[i]) != updateObject.end() == false)
-			//{
+			if (find(updateObject.begin(), updateObject.end(), invisibleObjects[i]) != updateObject.end() == false)
+			{
 				updateObject.push_back(invisibleObjects[i]);
-			//}
+			}
 		}
 	}
 
@@ -804,7 +790,7 @@ void CPlayScene::Update(DWORD dt)
 				coObjects.push_back(updateObject[i]);
 		}			
 	}
-	DebugOut(L"CoObject: %d, Object update: %d\n", coObjects.size(), updateObject.size());
+	//DebugOut(L"CoObject: %d, Object update: %d\n", coObjects.size(), updateObject.size());
 
 	// Call Update function of each object
 	for (size_t i = 0; i < updateObject.size(); i++)
@@ -839,7 +825,7 @@ void CPlayScene::Update(DWORD dt)
 	// Handle die
 	if (CSimon::GetInstance()->GetState() == SIMON_STATE_DIE )
 	{
-		if (dying < 3000)
+		if (dying < SIMON_DYING_TIME)
 		{
 			player_die = true;
 			dying += dt;
@@ -848,7 +834,8 @@ void CPlayScene::Update(DWORD dt)
 		{
 			player_die = false;
 			dying = 0;
-			player->healthPoint = 16;
+			player->healthPoint = SIMON_MAX_MANA;
+			HUD->ResetTimer();
 			game->SwitchScene(player->GetBackScene());
 		}
 	}
@@ -857,9 +844,7 @@ void CPlayScene::Update(DWORD dt)
 		player_die = false;
 	}
 
-
 	HUD->Update(dt);
-
 }
 
 void CPlayScene::Render()
@@ -874,15 +859,6 @@ void CPlayScene::Render()
 			continue;
 		objects[i]->Render();
 	}
-
-	
-	//[NOTES]  : Comment these
-	/*for (int i = updateObject.size() - 1; i >= 0; i--)
-	{
-		if (updateObject[i]->visible == false)
-			continue;
-		updateObject[i]->Render();
-	}	*/
 
 	player->Render();// Simon is rendered at the last 
 	HUD->Render();
@@ -953,6 +929,7 @@ void CPlayScene::Unload()
 	grid->Clear();
 
 	updateObject.clear();
+	invisibleObjects.clear();
 	objects.clear();
 	tiledMap.clear();
 	
@@ -1166,9 +1143,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	else if (game->IsKeyDown(DIK_DOWN))
 	{
-		if (simon->onStairs == 0 && simon->GetOverlapObjectSize() ==0)
+		/*if (simon->onStairs == 0 && simon->GetOverlapObjectSize() ==0)
 			simon->SetState(SIMON_STATE_SIT);
-		else
+		else*/
 			simon->SetState(SIMON_STATE_GO_DOWNSTAIR);
 	}
 

@@ -27,9 +27,10 @@ void Board::Render()
 	code->DrawHP(cx + 60, cy + 28, 1, 16); // Boss's HP
 }
 
+
 Board::Board()
 { 
-	time = 300;
+	time = DEFAULT_GAME_TIME;
 	count = GetTickCount();
 	isStop = false;
 	code = new Code();
@@ -52,7 +53,20 @@ void Board::Update(DWORD dt)
 	}
 	if (GetTickCount() - count >= 1000)
 	{
-		time--;
-		count = GetTickCount();
+		if (time <= 0)
+		{
+			ResetTimer();
+		}
+		else
+		{
+			time--;
+			count = GetTickCount();
+		}
+		
 	}
+}
+
+void Board::ResetTimer()
+{
+	time = DEFAULT_GAME_TIME;
 }

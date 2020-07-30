@@ -4,6 +4,7 @@
 CRaven::CRaven()
 {
 	SetState(RAVEN_STATE_IDLE);
+	this->damage = 2;
 }
 
 void CRaven::Render()
@@ -31,12 +32,16 @@ void CRaven::SetState(int state)
 		break;
 	}
 	case RAVEN_STATE_FLYING:
-	{
-		
+	{		
 		break;
 	}
 
 	}
+}
+
+float CRaven::CalcDistance(float x1, float y1, float x2, float y2)
+{
+	return (float)sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
 
 void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
@@ -52,89 +57,75 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving )
 	}
 
 	CGameObject::Update(dt);
+	x += dx;
+	y += dy;
 
 	float xS, yS;
-	CSimon::GetInstance()->GetPosition(xS, yS);
+	CSimon::GetInstance()->GetPosition(xS,yS);
 
-	// Raven detecting Simon
-	if (buffSpeed == false)
-	{
+	if (buffSpeed == false) // Redirect player 
+	{		
 		nx = (x > xS) ? -1 : 1;
 		ny = (y > yS) ? -1 : 1;
 	}
 
-	// Caculate distance to active raven 
-	/*
-	NOTES: Recaculate this point
-	*/
-	if (x - xS < 80)
+	if (CalcDistance(x, y, xS, yS) <= DISTANCE_TO_ACTIVE_RAVEN && this->IsInViewport())
 	{
 		if (state == RAVEN_STATE_IDLE)
 		{
-			activeRaven = true;
-			active_raven_start = GetTickCount();
+			raven_change_state = GetTickCount();
 			SetState(RAVEN_STATE_FLYING);
+			float VX = abs(xS - this->x);
+			float VY = abs(yS - this->y);
 
-			//float VX = abs(target->GetPositionX() - this->x);
-			// float VY = abs(target->GetPositionY() - this->y);
-	
 			vx = (float)(RAVEN_FLYING_DOWN_SPEED)*nx;
 			vy = (float)(RAVEN_FLYING_DOWN_SPEED)*ny;
 		}
 	}
 
-	// Stop a bit to find player
-	if (GetTickCount() - active_raven_start > RAVEN_FLYING_DOWN_TIME == true && attackingPlayer== false && state != RAVEN_STATE_IDLE)
+	if (GetTickCount()- raven_change_state > RAVEN_DELAY_TIME &&
+		detectPlayer == false && reDetectPlayer == false && state != RAVEN_STATE_IDLE) //Stop a  bit 
 	{
-		active_raven_start = 0;
-		attackingPlayer = true;
-		attackingPlayer_start = GetTickCount();
+		detectPlayer = true;
+		raven_find_target = GetTickCount();
 		vx = 0;
 		vy = 0;
 	}
 
-	
-	// Start attacking
-	if (GetTickCount() - attackingPlayer_start > RAVEN_DELAY_TIME== true &&  attackingPlayer == true && buffSpeed == false)
+	if (GetTickCount() -raven_find_target > RAVEN_DETECT_TIME && detectPlayer == true && buffSpeed == false)
 	{
-		attackingPlayer_start = 0;
+		raven_find_target = 0;
 		buffSpeed = true;
-
-		attackAgain = true;
-		attackAgain_start = GetTickCount();
-
-		float DX = abs(xS - this->x);
-		float DY = abs(yS- this->y);
-
-		vx = (float)(DX * 0.0025) * nx;
-		vy = (float)(DY * 0.0025) * ny;
+		raven_want_to_play_again = GetTickCount(); 
+		doyouwanttobuildasnowman = true;
+		float VX = abs(xS - this->x);
+		float VY = abs(yS - this->y);
+		vx = (float)(VX * RAVEN_ATTACK_VELOCITY) * nx;
+		vy = (float)(VY * RAVEN_ATTACK_VELOCITY) * ny;
 	}
 
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	if (coEvents.size() == 0)
+	// Do you want to build a snow man
+	if (GetTickCount() - raven_want_to_play_again > RAVEN_ATTACK_TIME && doyouwanttobuildasnowman == true)
 	{
-		y += dy;
-		x += dx;
+		buffSpeed = false;
+		detectPlayer = false;
+		doyouwanttobuildasnowman = false;
+		reDetectPlayer = true;
+		raven_find_target = GetTickCount();
+		vx = vy = 0;
 	}
-	else
+
+	if (GetTickCount()- raven_find_target> RAVEN_DETECT_TIME
+		&& reDetectPlayer == true && buffSpeed == false)
 	{
-		float min_tx, min_ty, nx, ny;
-		float rdx, rdy;
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-		x += min_tx * dx;
-		y += min_ty * dy;	
-
+		buffSpeed = true;
+		float VX = abs(xS - this->x);
+		float VY = abs(yS - this->y);
+		vx = (float)(VX * RAVEN_ATTACK_VELOCITY) * nx;
+		vy = (float)(VY * RAVEN_ATTACK_VELOCITY) * ny;
 	}
 
-	// clean up collision events
-	for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	
 }
 
 void CRaven::GetBoundingBox(float& left, float& top, float& right, float& bottom)

@@ -1,11 +1,12 @@
 #include "Ghost.h"
+#include "Simon.h"
 
 void CGhost::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
-	right = left + GHOST_BBOX_WIDTH;
-	bottom = top + GHOST_BBOX_HEIGHT;
+	right = x + GHOST_BBOX_WIDTH;
+	bottom = y + GHOST_BBOX_HEIGHT;
 }
 
 void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
@@ -21,38 +22,43 @@ void CGhost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
 	}
 
 	CGameObject::Update(dt);
-	vy = 0;
-	vx = (nx > 0) ? GHOST_MOVING_SPEED : -GHOST_MOVING_SPEED;
+	// Update the position
+	x += dx;
+	y += dy;
+
+	DetectPlayer();
+
+	if (vy==0)
+	{
+		SetState(GHOST_STATE_FLYING);
+	}
+
+	if (CSimon::GetInstance()->GetUntouchable() == 1)
+	{
+		SetState(GHOST_STATE_ATTACK_PLAYER);
+	}
+
+
+	if (y + GHOST_BBOX_HEIGHT <= start_y)
+	{
+		vy = GHOST_FLYING_SPEED_VY;
+		flyingup = true;
+	}
+	if (y >= start_y && flyingup)
+	{
+		vy = 0;
+		flyingup = false;
+	}
 
 	if (start_untouchable != 0)
 	{
 		Untouchable();
 	}
 
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	if (coEvents.size() == 0)
+	if (!this->IsInViewport())
 	{
-		y += dy;
-		x += dx;
+		SetVisible(false);
 	}
-
-	else
-	{
-		float min_tx, min_ty, nx, ny;
-		float rdx, rdy;
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-		x += min_tx * dx;
-		y += min_ty * dy;		
-	}
-	// clean up collision events
-	for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
 }
 
 void CGhost::Render()
@@ -67,31 +73,98 @@ void CGhost::Render()
 		animation_set->at(0)->Render(x, y, nx);
 }
 
+void CGhost::DetectPlayer()
+{
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
+
+	if (xS > x + GHOST_BBOX_WIDTH)
+	{
+		SetOrientation(1);
+	}
+	else if (xS + SIMON_BBOX_WIDTH < x)
+	{
+		SetOrientation(-1);
+	}
+}
+
 CGhost::CGhost()
 {
-	this->healthPoint = 2;
-	SetState(GHOST_STATE_MOVING);
+	this->healthPoint = 3;
 	this->nx = -1;
+	SetState(GHOST_STATE_FLYING);
+	SetVisible(false);
 }
 
 void CGhost::SetState(int state)
 {
-	CGameObject::SetState(state);
+	
 	switch (state)
 	{
-	case GHOST_STATE_MOVING:
+	case GHOST_STATE_FLYING:
 	{
 		vy = 0;
-		vx = (nx > 0) ? 0.052f : -0.052f;
+		vx = (nx > 0) ? GHOST_FLYING_SPEED_VX : -GHOST_FLYING_SPEED_VX;
+		this->GetPosition(x, start_y);
 		break;
 	}
+
+	case GHOST_STATE_ATTACK_PLAYER:
+	{
+		vy = -GHOST_FLYING_SPEED_VY;
+		vx = (nx > 0) ? GHOST_FLYING_SPEED_VX : -GHOST_FLYING_SPEED_VX;
+		break;
+	}
+	default:
+		break;
 	}
 
 }
 
-//CGhost* CGhost::__instance = NULL;
-//CGhost* CGhost::GetInstance()
-//{
-//	if (__instance == NULL) __instance = new CGhost();
-//		return __instance;
-//}
+
+void CSpawnGhost::Add(int obj_type, LPGAMEOBJECT ghost)
+{
+	ghost->SetVisible(false);
+	this->ghosts[obj_type].push_back(ghost);
+}
+
+void CSpawnGhost::SetVisible()
+{
+	LPGAMEOBJECT ghost = Get(1);
+	if (ghost == NULL)
+	{
+		return;
+	}
+	else
+	{
+		ghost->SetVisible(true);
+	}
+}
+
+LPGAMEOBJECT CSpawnGhost::Get(int obj_type)
+{
+	if (ghosts[obj_type].empty())
+		DebugOut(L"[ERROR] Ghost not found \n");
+	else
+	{
+		for (auto i = ghosts[obj_type].begin(); i != ghosts[obj_type].end(); ++i)
+		{
+			return (*i);
+			break;
+		}
+	}
+}
+
+void CSpawnGhost::Clear()
+{
+	ghosts.clear();
+}
+
+CSpawnGhost* CSpawnGhost::__instance = NULL;
+CSpawnGhost* CSpawnGhost::GetInstance()
+{
+	if (__instance == NULL)
+		__instance = new CSpawnGhost();
+
+	return __instance;
+}

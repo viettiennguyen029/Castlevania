@@ -87,7 +87,9 @@ void CSimon::GoDownStair()
 		// Do nothing if there is no stairs overlapped
 		if (stairs == NULL)
 		{
-			state = SIMON_STATE_IDLE;
+			state = SIMON_STATE_SIT;
+			vx = vy = 0;
+			isStanding = false;
 			return;
 		}
 
@@ -326,7 +328,7 @@ void CSimon::ProceedOverlapping()
 		{
 			DebugOut(L"[INFO] Player's HP refilled \n");
 			ovObj->SetVisible(false);
-			this->healthPoint = 16;	
+			this->healthPoint = SIMON_MAX_MANA;
 		}
 
 		else if (dynamic_cast<ItemInvisibility*>(ovObj))
@@ -368,7 +370,7 @@ CSimon::CSimon(float x, float y) :CGameObject()
 	this->y = y;
 
 	this->heart_quantity = 5;
-	this->healthPoint = 16;
+	this->healthPoint = SIMON_MAX_MANA;
 
 	SetState(SIMON_ANI_IDLE);
 
@@ -380,7 +382,6 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 {
 	// Calculate x,y
 	CGameObject::Update(dt);
-	DebugOut(L"Simon's positon: %f \n", this->x);
 
 	// Simple fall down
 	vy += SIMON_GRAVITY * dt;
@@ -464,6 +465,16 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+	}
+
+	// Active a ghost in scene 4
+	if (CGame::GetInstance()->GetSceneId() == 4)
+	{
+		LPGAMEOBJECT ghost = CSpawnGhost::GetInstance()->Get(1);
+		if (x <= 605 && ghost->isVisible() == false&& ghost->healthPoint >= 3)
+		{
+			CSpawnGhost::GetInstance()->SetVisible();
+		}
 	}
 
 	// No collision, process normally
@@ -558,7 +569,8 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 				else
 				{
 					onMovingPlatform = false;
-					vx = 0;
+					dx = dy = vx = vy = 0;
+					//vx = 0;
 				}
 
 			}
@@ -661,7 +673,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			{
 				y = y - 0.4f;
 				e->obj->SetVisible(false);
-				this->healthPoint = 16;
+				this->healthPoint = SIMON_MAX_MANA;
 			}
 			}
 
@@ -746,6 +758,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			{
 				if ((e->nx != 0 || e->ny != 0) && untouchable == 0)
 				{
+					this->healthPoint -= 2;
 					e->obj->SetVisible(false);
 					if (onStairs == 0)
 					{
@@ -773,6 +786,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			else if (dynamic_cast<CBat*>(e->obj) || 
 			dynamic_cast<CBlack_Knight*>(e->obj) ||
 			dynamic_cast<CHunchBack*>(e->obj) || 
+			dynamic_cast<CGhost*>(e->obj) ||
 			dynamic_cast<CZombie*>(e->obj) ||
 			dynamic_cast<CSkeleton*>(e->obj) || 
 			dynamic_cast<CBone*>(e->obj) ||
@@ -839,6 +853,13 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		SetState(	SIMON_STATE_DIE);
 		return;
 	}
+
+	if (this->y >300)
+	{
+		SetState(SIMON_STATE_DIE);
+		return;
+	}
+	
 }
 
 
