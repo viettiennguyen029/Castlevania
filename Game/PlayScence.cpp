@@ -364,6 +364,7 @@ void CPlayScene::_ParseSection_SCENE_OBJECTS(string line)
 	{
 		obj = new CBossBat();
 		boss = (CBossBat*)obj;
+		HUD->GetBoss(obj);
 		break;
 	}
 
@@ -701,7 +702,8 @@ void CPlayScene::Load()
 void CPlayScene::Update(DWORD dt)
 {	
 	// skip the rest if scene was already unloaded (Simon::Update might trigger PlayScene::Unload)
-	if (player == NULL ) return;
+	if (player == NULL )
+		return;
 
 	// We know that Simon is the first object in the list hence we won't add him into the colliable object list
 	vector<LPGAMEOBJECT> coObjects;
@@ -753,6 +755,9 @@ void CPlayScene::Update(DWORD dt)
 	game->GetCameraBoundingBox(left, top, right, bottom);
 
 	updateObject.clear();
+	coObjects.clear();
+
+	//updateObject.push_back(player);
 
 	//Get objects in grid
 	grid->GetObjectsInGrid(updateObject, left, top, right, bottom);
@@ -862,6 +867,7 @@ void CPlayScene::Render()
 
 	player->Render();// Simon is rendered at the last 
 	HUD->Render();
+	
 }
 
 /*
@@ -913,20 +919,16 @@ void CPlayScene::Unload()
 #pragma endregion
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (/*dynamic_cast<CSimon*>(objects[i]) ||*/
-			dynamic_cast<CWhip*>(objects[i]) ||
-			dynamic_cast<CDagger*>(objects[i]) ||
-			dynamic_cast<CBoomerang*>(objects[i]))
-		{
-			;
-		}
-		else
-		{
-			delete objects[i];
-		}
+		delete objects[i];
 	}
 
 	grid->Clear();
+
+	//for (int i = 0; i < updateObject.size(); i++)
+	//	delete updateObject[i];
+
+	//for (int i = 0; i < invisibleObjects.size(); i++)
+	//	delete invisibleObjects[i];
 
 	updateObject.clear();
 	invisibleObjects.clear();
@@ -936,6 +938,8 @@ void CPlayScene::Unload()
 	CItems::GetInstance()->Clear();
 	CWallPieces::GetInstance()->Clear();
 	PointEffects::GetInstance()->Clear();
+	CSubWeapon::GetInstance()->Clear();
+	CSpawnGhost::GetInstance()->Clear();
 
 	player = NULL;
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);	
@@ -1061,9 +1065,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (simon->GetState() == SIMON_STATE_JUMP && simon->isOnGround() == false)		
 		return;
 	
+
 	// Condition to stopping Simon's attacking loop
 	if (simon->GetState() == SIMON_STATE_ATTACK &&
-		simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false) return;
+		simon->animation_set->at(SIMON_ANI_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false) 
+		return;
 	
 	if (simon->GetState() == SIMON_STATE_SIT_ATTACK && 
 		simon->animation_set->at(SIMON_ANI_SIT_ATTACK)->IsOver(SIMON_ATTACK_TIME) == false)

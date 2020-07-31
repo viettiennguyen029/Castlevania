@@ -141,7 +141,7 @@ public:
 	int GetHP() { return this->healthPoint; }
 
 	bool PowingUp() { return this->powerUp; }
-	
+
 	CSimon(float x=0.0f, float y =0.0f);
 	
 	virtual void Update(DWORD dt, vector <LPGAMEOBJECT>* coObject = NULL);

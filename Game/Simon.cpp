@@ -389,6 +389,11 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 	// Simple logic with screen edge
 	if (vx < 0 && x < 0) x = 0;
 
+	//if (onMovingPlatform)
+	//{
+	//	vy = 0;
+	//}
+
 	// Discoloration time logic
 	if (powerUp)
 	{
@@ -467,7 +472,7 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	// Active a ghost in scene 4
+	 //Active a ghost in scene 4
 	if (CGame::GetInstance()->GetSceneId() == 4)
 	{
 		LPGAMEOBJECT ghost = CSpawnGhost::GetInstance()->Get(1);
@@ -514,9 +519,10 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			// Collision logic with Brick 
 			else if (dynamic_cast<CBrick*>(e->obj))
 			{
-				onMovingPlatform = false;
+				
 				if (onStairs == 0)
 				{
+					onMovingPlatform = false;
 					if (e->ny != 0)
 					{
 						//vy = 0;
@@ -552,25 +558,31 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			// Collision logic when Simon is on theMoving Platform
 			else if (dynamic_cast<CMovingPlatform*>(e->obj))
 			{
-				/*if (e->nx != 0) x += dx;
-
-				CMovingPlatform* m = dynamic_cast<CMovingPlatform*> (e->obj);
 				onMovingPlatform = true;
-				this->vx = m->vx;
-				vy = 0;
-				DebugOut(L"On Moving Platform\n");*/
+				//vx = e->obj->vx;
+				//dx = vx * dt;
+
+				//if (e->ny == -1)
+				//{
+				//	this->vy = 0; //GRAVITY * dt;
+				//	x += dx;
+				//}
+				//if (e->nx != 0)
+				//{
+				//	vx = 0;
+				//}
+
+
 				if (e->ny < 0)
-				{
-					y += ny * 0.4f;
+				{					
+					y += ny * 0.4;
 					vy = 0;
-					onMovingPlatform = true;
 					vx = e->obj->vx;
 				}
 				else
 				{
-					onMovingPlatform = false;
-					dx = dy = vx = vy = 0;
-					//vx = 0;
+					onMovingPlatform 	= false;
+					vx = 0;
 				}
 
 			}
@@ -746,12 +758,13 @@ void CSimon::Update(DWORD dt, vector <LPGAMEOBJECT>* coObjects)
 			{
 				if (e->nx != 0 || e->ny != 0)
 				{
-					vx = vy = 0;
-					DebugOut(L"[INFO] Portal detection ! %d \n");
+					x += nx * 0.2f;
+					//vx = vy = 0;
+					DebugOut(L"[INFO] Portal detection ! \n");
 					CPortal* p = dynamic_cast<CPortal*> (e->obj);
 					CGame::GetInstance()->SwitchScene(p->GetSceneId());
+					return;
 				}
-
 			}
 
 			else if (dynamic_cast<CRaven*>(e->obj))
@@ -871,6 +884,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_IDLE:
 	{
+		
 		subWeapon = false;
 		isStanding = true;
 		if (onMovingPlatform == true) { ; }
@@ -880,6 +894,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_WALKING:
 	{
+		
 		if (nx > 0) vx = SIMON_WALKING_SPEED;
  		else vx = -SIMON_WALKING_SPEED;
 		break;
@@ -887,6 +902,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_JUMP:
 	{
+	
 		if (onMovingPlatform==true) vx = 0;
 		isStanding = true;
 		vy = -SIMON_JUMP_SPEED_Y;			
@@ -895,6 +911,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_SIT:
 	{
+		
 		isStanding = false;
 		vx = 0;
 		vy = 0;
@@ -902,6 +919,7 @@ void CSimon::SetState(int state)
 	}
 	case SIMON_STATE_ATTACK:
 	{
+		
 		animation_set->at(SIMON_ANI_ATTACK)->Reset();
 		animation_set->at(SIMON_ANI_ATTACK_UPSTAIR)->Reset();
 		animation_set->at(SIMON_ANI_ATTACK_DOWNSTAIR)->Reset();
@@ -923,6 +941,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_SIT_ATTACK:
 	{
+		
 		animation_set->at(SIMON_ANI_ATTACK)->Reset();
 
 		animation_set->at(SIMON_ANI_SIT_ATTACK)->Reset();
@@ -932,6 +951,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_THROW:
 	{
+		
 		vx = 0;
 		subWeapon = true;
 
@@ -948,18 +968,21 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_GO_UPSTAIR:
 	{
+		
 		GoUpStair();
 		break;
 	}
 
 	case SIMON_STATE_GO_DOWNSTAIR:
 	{
+		
 		GoDownStair();
 		break; 
 	}
 
 	case SIMON_STATE_DEFLECT:
 	{
+		
 		vx = vy = dx = dy = 0;
 
 		this->vy = -SIMON_DEFLECT_SPEED_Y;
@@ -973,6 +996,7 @@ void CSimon::SetState(int state)
 
 	case SIMON_STATE_DIE:
 	{
+		
 		vx = vy = 0;
 		break;
 	}

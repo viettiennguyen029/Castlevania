@@ -24,8 +24,24 @@ void Board::Render()
 
 	// HP
 	code->DrawHP(cx + 60, cy + 18, 0, simon->GetHP()); // Player's HP
-	code->DrawHP(cx + 60, cy + 28, 1, 16); // Boss's HP
+	if (boss == NULL)
+	{
+		code->DrawHP(cx + 60, cy + 28, 1, 16); // Boss's HP
+	}
+	else
+	{
+		int bossHP = boss->healthPoint;
+		if (bossHP <= 0)
+			bossHP = 0;
+		code->DrawHP(cx + 60, cy + 28, 1, bossHP);
+	}
+	
 }
+
+//void Board::RenderBossHP(float x, float y,int bossHP)
+//{
+//	code->DrawHP(x, y, 1, bossHP);
+//}
 
 
 Board::Board()

@@ -74,6 +74,10 @@ void CGrid::Clear()
 		for (int j = 0; j < COLUMN_MAX; j++)
 		{
 			cells[i][j].clear();
+			for (UINT k = 0; k < cells[row][column].size(); k++)
+			{
+				delete (cells[row][column].at(k));
+			}
 		}
 	}		
 }

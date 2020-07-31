@@ -1,7 +1,7 @@
 [PLAYER]
 # type	x	y	ani_set	nx	back_scene
-0	38	120	0	-1	4
-#0	84	200	0	-1	4
+#0	38	120	0	-1	4
+0	84	200	0	-1	4
 
 [OBJECTS]
 # type	x	y	row_index	col_index

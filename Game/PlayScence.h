@@ -73,6 +73,8 @@ protected:
 
 	bool player_die = false; // Handle case player is died
 	DWORD dying = 0;
+
+	//float cx, cy; // cam_x, cam_y
 	
 	vector<LPTILE> tiledMap;	
 	vector<LPGAMEOBJECT> objects;				// Base objects

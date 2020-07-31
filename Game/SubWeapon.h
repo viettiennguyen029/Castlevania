@@ -32,6 +32,7 @@ public:
 
 	LPGAMEOBJECT GetWeapon(int weapon);
 	void Add(int weapon, LPGAMEOBJECT obj);
+	void Clear();
 	CSubWeapon() { ; }
 	static CSubWeapon* GetInstance();
 };

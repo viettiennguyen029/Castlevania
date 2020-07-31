@@ -58,10 +58,10 @@ void CBlack_Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopM
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
 				// The limmied of the knight is the width of the bricks under its feet
-				CBrick* b = dynamic_cast<CBrick*>(e->obj);
+				//CBrick* b = dynamic_cast<CBrick*>(e->obj);
 
-				this->start_x = b->x+1;
-				float end_x = start_x + b->width- BLACK_KNIGHT_BBOX_WIDTH-1;
+				this->start_x = e->obj->x+1;
+				float end_x = start_x + e->obj->width- BLACK_KNIGHT_BBOX_WIDTH-1;
 
 				if (e->ny!=0)
 				{
@@ -69,7 +69,7 @@ void CBlack_Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopM
 					y += ny * 0.4f;
 				}
 
-				if (x >= end_x || x <= start_x)
+				if ((x >= end_x && vx > 0) ||( x <= start_x && vx < 0))
 				{
 					ReDirection();
 				}

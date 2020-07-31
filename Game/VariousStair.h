@@ -8,6 +8,6 @@ class CVariousStair:public CGameObject
 {
 public:
 	CVariousStair();
-	virtual void Render(){ RenderBoundingBox(); }
+	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 };

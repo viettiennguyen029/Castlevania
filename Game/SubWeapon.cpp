@@ -8,6 +8,11 @@ void CSubWeapon::Add(int weapon, LPGAMEOBJECT obj)
 	subweapons[weapon].push_back(obj);
 }
 
+void CSubWeapon::Clear()
+{
+	subweapons.clear();
+}
+
 
 void CSubWeapon::Select(int weapon)
 {

@@ -5,7 +5,7 @@
 
 #define AXE_GRAVITY		0.0012
 
-#define AXE_FLY_SPEED_VX	0.009f
+#define AXE_FLY_SPEED_VX	0.01f
 #define AXE_FLY_SPEED_VY		0.3
 
 class CAxe :public CGameObject

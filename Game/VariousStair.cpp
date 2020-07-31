@@ -5,6 +5,11 @@ CVariousStair::CVariousStair()
 
 }
 
+void CVariousStair::Render()
+{
+	//RenderBoundingBox();
+}
+
 void CVariousStair::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;

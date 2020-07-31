@@ -18,12 +18,15 @@ class Board
 	bool isStop= false;
 
 	CSimon* simon = CSimon::GetInstance();
+	LPGAMEOBJECT boss;
+	//CBossBat *boss = CPhan
 
 public: 
 	Board();	
 	void Render();
+	//void RenderBossHP(float x, float y, int bossHP);
+	void GetBoss(LPGAMEOBJECT _boss) { this->boss = _boss; }
 	void Update(DWORD dt);
 	void ResetTimer();
 	static Board* GetInstance();
 };
-

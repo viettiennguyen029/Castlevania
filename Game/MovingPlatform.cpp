@@ -5,13 +5,13 @@
 CMovingPlatform::CMovingPlatform(): CGameObject()
 {
 	vx = MOVING_PLATFORM_SPEED;
-	//vy = 0;
+	vy = 0;
 }
 
 void CMovingPlatform::Render()
 {
 	animation_set->at(0)->Render(x, y, 1);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMoving)
@@ -37,7 +37,7 @@ void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool sto
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 		x += min_tx * dx + nx * 0.2f;		
-		y += min_ty * dy + ny * 0.2f;
+		y += min_ty * dy ;
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
@@ -45,7 +45,7 @@ void CMovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool sto
 			// Collision with brick
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
-				if (nx != 0 && ny == 0)
+				if (nx != 0)
 				{
 					//this->nx *= -1;
 					//vx *= -1;

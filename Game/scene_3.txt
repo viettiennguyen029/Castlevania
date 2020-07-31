@@ -1,13 +1,13 @@
 [PLAYER]
 # type	x	y	ani_set	nx	back_scene
 0	364	202	0	1	2
-#0	450	80	0
+#0	204	80	0	1	2
 
 [OBJECTS]
 # type	x	y	ani_set_id	row_index	col_index
 #BRICKS
 # top wall
-1	1	122	1	2	0	32	16
+1	1	122	1	2	0	34	16
 1	97	122	1	2	1	64	16
 1	193	122	1	2	2	96	16
 1	369	122	1	2	3	80	16
@@ -20,6 +20,8 @@
 1	353	137	1	2	3	16	64
 # Vertical wall
 1	480	64	1	0	5	16	90
+#Test moving
+#1	32	122	1	2	0	48	16
 
 #Small Candle
 2	458	55	2	1	4	44	1
